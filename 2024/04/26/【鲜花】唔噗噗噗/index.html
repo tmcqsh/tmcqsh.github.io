@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="雕像爆炸的充要条件是“唔噗噗噗”。这时候我们就称 “雕像爆炸” 可以推出 “唔噗噗噗”，同时 “唔噗噗噗” 也可以推出 “雕像爆炸”。这记作：  \text{“雕像爆炸”}\Leftrightarrow\text{“唔噗噗噗”}和符号 $\Leftrightarrow$ 被迫在一起的两个可怜的小东西有什么共同特征呢？我们一起来看看吧。 从左到右 给定一个周长为 $L$ 的圆，从一个点出发，有 $n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【鲜花】唔噗噗噗">
+<meta property="og:url" content="http://example.com/2024/04/26/%E3%80%90%E9%B2%9C%E8%8A%B1%E3%80%91%E5%94%94%E5%99%97%E5%99%97%E5%99%97/index.html">
+<meta property="og:site_name" content="Qinshihuang&#39;s Blog">
+<meta property="og:description" content="雕像爆炸的充要条件是“唔噗噗噗”。这时候我们就称 “雕像爆炸” 可以推出 “唔噗噗噗”，同时 “唔噗噗噗” 也可以推出 “雕像爆炸”。这记作：  \text{“雕像爆炸”}\Leftrightarrow\text{“唔噗噗噗”}和符号 $\Leftrightarrow$ 被迫在一起的两个可怜的小东西有什么共同特征呢？我们一起来看看吧。 从左到右 给定一个周长为 $L$ 的圆，从一个点出发，有 $n">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-26T13:35:04.000Z">
+<meta property="article:modified_time" content="2024-04-26T13:36:17.363Z">
+<meta property="article:author" content="Qinshihuang">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2024/04/26/%E3%80%90%E9%B2%9C%E8%8A%B1%E3%80%91%E5%94%94%E5%99%97%E5%99%97%E5%99%97/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>【鲜花】唔噗噗噗 | Qinshihuang's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Qinshihuang's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/26/%E3%80%90%E9%B2%9C%E8%8A%B1%E3%80%91%E5%94%94%E5%99%97%E5%99%97%E5%99%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Qinshihuang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Qinshihuang's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【鲜花】唔噗噗噗
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-26 21:35:04 / 修改时间：21:36:17" itemprop="dateCreated datePublished" datetime="2024-04-26T21:35:04+08:00">2024-04-26</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="雕像爆炸的充要条件是“唔噗噗噗”。"><a href="#雕像爆炸的充要条件是“唔噗噗噗”。" class="headerlink" title="雕像爆炸的充要条件是“唔噗噗噗”。"></a>雕像爆炸的充要条件是“唔噗噗噗”。</h1><p>这时候我们就称 “雕像爆炸” 可以<strong>推出</strong> “唔噗噗噗”，同时 “唔噗噗噗” <strong>也</strong>可以推出 “雕像爆炸”。这记作：</p>
+<script type="math/tex; mode=display">
+\text{“雕像爆炸”}\Leftrightarrow\text{“唔噗噗噗”}</script><p>和符号 $\Leftrightarrow$ 被迫在一起的两个可怜的小东西有什么共同特征呢？我们一起来看看吧。</p>
+<h2 id="从左到右"><a href="#从左到右" class="headerlink" title="从左到右"></a>从左到右</h2><blockquote>
+<p>给定一个周长为 $L$ 的圆，从一个点出发，有 $n$ 个黑白熊雕像，编号为 $1$ 到 $n$，第 $i$ 个雕像在顺<br>时针 $X_i$ 米处，如果你没有在 $T_i$ 秒内收集到这个黑白熊雕像，那么这个雕像就会发出“唔噗噗噗”<br>的声音然后爆炸。</p>
+</blockquote>
+<p>想读懂这句话是什么意思，关键在于要读懂这句话。</p>
+<p>首先我们来看第一句，“给定一个周长为 $L$ 的圆。”很酷啊！我们大家都知道圆周长公式为</p>
+<script type="math/tex; mode=display">
+L=2\pi r</script><p>同时，我们可以在下面的一句话中找到一些特殊而奇妙、神奇又美好、可爱又萌萌的性质：</p>
+<blockquote>
+<p>第一行两个<strong>整数</strong> $n,L$ 代表雕像数和圆的周长。</p>
+</blockquote>
+<p>太对了！这说明 $L$ 是一个地地道道的整数，也就是说 $L\in\mathbf{Z}$。其实我们还可以发现这里的 $L$ 显然是一个正整数。太对了！一个更紧确的界就是显而易见的：$L\in\mathbf{N}^+$。</p>
+<p>同时，我们还注意到 $\pi$ 是一个著名的无理数，所以我们可以惊奇地发现：$r$ 不是一个有理数！</p>
+<p>这句话的另一个表达方式是：$r\in \mathbf{R}\setminus\mathbf Q$。</p>
+<p>还有一个表达方式：$r$ 不能被表达为两个互质整数 $p,q$ 的比值。</p>
+<p>$\Huge\text{太对了！}$</p>
+<p>中间那些部分没啥用，我们就先跳过了。</p>
+<hr>
+<h1 id="广告之后马上回来！"><a href="#广告之后马上回来！" class="headerlink" title="广告之后马上回来！"></a>广告之后马上回来！</h1><p><strong>你好，我是广告。</strong></p>
+<p><strong>你好，我是广告。</strong></p>
+<p><strong>你好，我是广告。</strong></p>
+<p><strong>你好，我是广告。</strong></p>
+<p><strong>你好，我是广告。</strong></p>
+<p><strong>你好，我是广告。</strong></p>
+<p><strong>你好，我是广告。</strong></p>
+<p><strong>你好，我是广告。</strong></p>
+<p><strong>你好，我是广告。</strong></p>
+<p><strong>你好，我是广告。</strong></p>
+<p><strong>你好，我是广告。</strong></p>
+<p><strong>你好，我是广告。</strong></p>
+<p><strong>你好，我是广告。</strong></p>
+<p><strong>你好，我是广告。</strong></p>
+<p><strong>你好，我是广告。</strong></p>
+<hr>
+<p>我们接着品析上面的这段话。</p>
+<p>大家看，“你好”这个词象征着欢迎，而广告这个词则是表达了——</p>
+<p><del>对不起看错行了</del></p>
+<p>关键的部分来了！</p>
+<blockquote>
+<p>如果你没有在 $T_i$ 秒内收集到这个黑白熊雕像，那么这个雕像就会发出“唔噗噗噗”的声音然后爆炸。</p>
+</blockquote>
+<p>啊，我们看到我们想要的东西了。</p>
+<p>“唔噗噗噗”是一个地地道道的拟声词，它的发音为：</p>
+<script type="math/tex; mode=display">
+\text{wu}\!\sim\sim\quad \text{pupupu}\!\sim\sim</script><p>“黑白熊”也是一个关键，需要理解。想到黑白熊，我们立刻想起来一个非常有名以至于妇孺皆知的动物：<strong>熊猫</strong>。这就不难发现为什么要建造“黑白熊雕像”了！敬仰熊猫，为它立雕像，这不是人间大义、值得歌颂千古的伟大善事！来，我们肃立一分钟，为我们可爱的大熊猫敬礼！</p>
+<p>诶，那雕像为什么会爆炸呢？</p>
+<p>毁坏文物雕像，会遭到判刑；毁坏大熊猫雕像，却是不尊重国家的行为。再结合一个我们忽略的重要信息：</p>
+<blockquote>
+<p>现在 JOI 君在这个点……</p>
+</blockquote>
+<p>JOI，即日本国赛。</p>
+<p>小日子的阴谋浮上了水面！</p>
+<p>结合“唔噗噗噗”这个非常难崩又难以理解的词语，不难想到小日子们想用这样可爱的外表来进行一系列阴谋活动。这正是他们能干出来的事！</p>
+<hr>
+<p>这样我们就得到了结论：可爱的黑白熊猫雕像爆炸是一场早有预谋的攻击，其主谋为小日子国度，妄图使用最新研发的代号 $\text{ID-wppp}$ 炸弹炸毁这些雕像。</p>
+<p>这样我们证明了一件事：“唔噗噗噗”是可以推出雕像爆炸的，即</p>
+<script type="math/tex; mode=display">
+\text{“唔噗噗噗”}\Rightarrow\text{“雕像爆炸”}</script><h2 id="从右到左"><a href="#从右到左" class="headerlink" title="从右到左"></a>从右到左</h2><p>雕像爆炸怎么能推出“唔噗噗噗”呢？</p>
+<p>我们利用反证法。</p>
+<p>首先我们证明一个引理：<strong>计算等差数列的和的算法太快了，不够慢。</strong></p>
+<p>大家知道计算等差数列的和的公式吗？我们记项数为 $n$，首项与末项分别为 $a_1,a_n$，那么其和为</p>
+<script type="math/tex; mode=display">
+S=\dfrac{n(a_1+a_n)}{2}</script><p>为了看出我们是怎么<strong>劣化</strong>这个算法的，不妨设 $a_i=i$。</p>
+<p>我们来推一个式子：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}\sum_{i=1}^ni&=\sum_{i=1}^n\sum_{d|i}\varphi(d)\\&=\sum_{d=1}^n\varphi(d)\sum_{i=1}^{\lfloor\frac{n}{d}\rfloor}1\\&=\sum_{i=1}^n\left\lfloor\dfrac{n}{i}\right\rfloor\varphi(i)\end{aligned}</script><p>我们可以预处理出 $\varphi(n)$，利用数论分块即可达到 $O(n)$ 预处理、$O(\sqrt n)$ 计算的复杂度。</p>
+<p>能不能<strong>再慢点呢</strong>？可以！</p>
+<p>我们预处理出 $1\sim O(n^{\frac23})$ 内的 $\varphi$ 函数值，然后使用<strong>杜教筛</strong>来计算出 $\varphi$ 函数的前缀值、进而求出它的区间和。</p>
+<p>这样的时间复杂度是什么呢？一个 naive 的上界显然是 $O(n^\frac76)$ 的，但是这并不紧却，我们来看看究竟是什么。</p>
+<p>我们可以认为，整个计算过程分为 $3$ 部分：</p>
+<ol>
+<li>$1\sim\sqrt{n}$，此时数论分块的块长为 $1$，每次调用杜教筛的时间复杂度为 $O(1)$（预处理值域内），这一部分的时间复杂度为 $O(\sqrt n)$。</li>
+<li>$\sqrt n\sim n^\frac23$，此时数论分块的块长不再是 $1$，但是杜教筛的时间复杂度仍然是 $O(1)$，杜教筛调用的次数是 $O(\sqrt n-\sqrt[3]n)$ 的，因此这部分的时间复杂度是 $O(\sqrt n)$。</li>
+<li>$n^\frac23\sim n$，这部分杜教筛的耗时不再是 $O(1)$ 而是 $O(n^\frac23)$，而块数为 $O(\sqrt[3]n)$，因此此时间复杂度为 $O(n)$。</li>
+</ol>
+<p>综上，我们得到了这个算法的时间复杂度是线性时间查询、$O(n^\frac23)$ 时间预处理。</p>
+<hr>
+<p>回过头来，我们证明这个引理有什么用呢？</p>
+<p>我们仔细审视“唔噗噗噗”一词。第一个字“唔”可以被看做一个等差数列的首项，而后面的“噗”象征着对每一项增加 $1$。总而言之，“唔噗噗噗”可以被看做数列</p>
+<script type="math/tex; mode=display">a=\{1,2,3,\cdots,n\}</script><p>我们捡雕像，可以看做对这个数列求和，而经过上面的讨论，我们需要的时间是 $O(n)$ 的，<strong>十分巨大</strong>，以至于会让雕像爆炸。雕像爆炸起源于唔噗噗噗，也结束于唔噗噗噗。</p>
+<p>这样我们证明了一件事：“雕像爆炸”是可以推出唔噗噗噗的，即</p>
+<script type="math/tex; mode=display">
+\text{“雕像爆炸”}\Rightarrow\text{“唔噗噗噗”}</script><hr>
+<p>我们回顾一下我们的探索过程。</p>
+<p>证明部分生动具体地应用了“若 $A\subseteq B$，而 $B\subseteq A$，则 $A=B$”的证明思路。这为我们带来了一个警示：任何命题都有其背后的故事，任何命题也都有其背后的逻辑。</p>
+<p>在证明过程中，我们还介绍了一种由 @<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/user/536743">秦屎皇</a> 口胡的 $O(n^\frac23)$ 预处理、$O(n)$ 解决等差数列求和问题的算法，利用了数论算法中的“欧拉函数 $\varphi(n)$”以及“杜教筛”等高级算法，以<strong>劣化</strong>原有的算法。</p>
+<p>好了，今天的分享就到这里，我是 @<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/user/536743">秦屎皇</a>。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/04/26/%E6%96%9C%E7%8E%87%E4%BC%98%E5%8C%96dp/" rel="prev" title="斜率优化dp">
+      <i class="fa fa-chevron-left"></i> 斜率优化dp
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/04/26/%E6%9D%8E%E8%B6%85%E7%BA%BF%E6%AE%B5%E6%A0%91/" rel="next" title="李超线段树">
+      李超线段树 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%95%E5%83%8F%E7%88%86%E7%82%B8%E7%9A%84%E5%85%85%E8%A6%81%E6%9D%A1%E4%BB%B6%E6%98%AF%E2%80%9C%E5%94%94%E5%99%97%E5%99%97%E5%99%97%E2%80%9D%E3%80%82"><span class="nav-number">1.</span> <span class="nav-text">雕像爆炸的充要条件是“唔噗噗噗”。</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E5%B7%A6%E5%88%B0%E5%8F%B3"><span class="nav-number">1.1.</span> <span class="nav-text">从左到右</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B9%BF%E5%91%8A%E4%B9%8B%E5%90%8E%E9%A9%AC%E4%B8%8A%E5%9B%9E%E6%9D%A5%EF%BC%81"><span class="nav-number">2.</span> <span class="nav-text">广告之后马上回来！</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E5%8F%B3%E5%88%B0%E5%B7%A6"><span class="nav-number">2.1.</span> <span class="nav-text">从右到左</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Qinshihuang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Qinshihuang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

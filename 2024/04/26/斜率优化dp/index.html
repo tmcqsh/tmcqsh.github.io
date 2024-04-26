@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="斜率优化斜率优化，一种优化 1D&#x2F;1D 转移 dp 的方式，即将转移方程化为一次函数 $y&#x3D;kx+b$ 的形式，再利用建模转化，将转移变成在某些数据结构上，比如单调队列、单调栈、李超树的操作，以此来优化转移时间复杂度。 一般来说（我感觉）斜率优化的转移方程里常常见到 $s_is_j$ 的形式。 例子：AT_dp_z Frog 3容易写出 dp 方程  dp_i&#x3D;\min\{dp_j+(s_i-s_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="斜率优化dp">
+<meta property="og:url" content="http://example.com/2024/04/26/%E6%96%9C%E7%8E%87%E4%BC%98%E5%8C%96dp/index.html">
+<meta property="og:site_name" content="Qinshihuang&#39;s Blog">
+<meta property="og:description" content="斜率优化斜率优化，一种优化 1D&#x2F;1D 转移 dp 的方式，即将转移方程化为一次函数 $y&#x3D;kx+b$ 的形式，再利用建模转化，将转移变成在某些数据结构上，比如单调队列、单调栈、李超树的操作，以此来优化转移时间复杂度。 一般来说（我感觉）斜率优化的转移方程里常常见到 $s_is_j$ 的形式。 例子：AT_dp_z Frog 3容易写出 dp 方程  dp_i&#x3D;\min\{dp_j+(s_i-s_">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-26T13:32:42.000Z">
+<meta property="article:modified_time" content="2024-04-26T13:33:48.991Z">
+<meta property="article:author" content="Qinshihuang">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2024/04/26/%E6%96%9C%E7%8E%87%E4%BC%98%E5%8C%96dp/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>斜率优化dp | Qinshihuang's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Qinshihuang's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/26/%E6%96%9C%E7%8E%87%E4%BC%98%E5%8C%96dp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Qinshihuang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Qinshihuang's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          斜率优化dp
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-26 21:32:42 / 修改时间：21:33:48" itemprop="dateCreated datePublished" datetime="2024-04-26T21:32:42+08:00">2024-04-26</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="斜率优化"><a href="#斜率优化" class="headerlink" title="斜率优化"></a>斜率优化</h1><p>斜率优化，一种优化 1D/1D 转移 dp 的方式，即将转移方程化为一次函数 $y=kx+b$ 的形式，再利用建模转化，将转移变成在某些数据结构上，比如单调队列、单调栈、李超树的操作，以此来优化转移时间复杂度。</p>
+<p>一般来说（我感觉）斜率优化的转移方程里常常见到 $s_is_j$ 的形式。</p>
+<h2 id="例子：AT-dp-z-Frog-3"><a href="#例子：AT-dp-z-Frog-3" class="headerlink" title="例子：AT_dp_z Frog 3"></a>例子：AT_dp_z Frog 3</h2><p>容易写出 dp 方程</p>
+<script type="math/tex; mode=display">
+dp_i=\min\{dp_j+(s_i-s_j)^2+c\}</script><p>化简得到</p>
+<script type="math/tex; mode=display">
+dp_i-s_i^2-c=dp_j+s_j^2-2s_i\cdot s_j</script><p>发现 $s_i$ 单调递增，即作为斜率的 $2s_i$ 单调递增，利用单调队列维护凸包可以做到 $O(n)$。</p>
+<h2 id="例子：P2365-amp-P5785-任务安排两件套"><a href="#例子：P2365-amp-P5785-任务安排两件套" class="headerlink" title="例子：P2365&amp;P5785 任务安排两件套"></a>例子：P2365&amp;P5785 任务安排两件套</h2><p>P2365 可以用暴力过去。</p>
+<p>首先考虑到时间花费中的 $s$ 依赖于前面的决策段数，这不利于进行转移（暴力就无所谓了 XD），因此考虑把划分的时间额外开销进行贡献转化。考虑如果在这里划分，后面的所有部分都会有贡献，其贡献是 $s\cdot\sum\limits_{j=i}^nf_j$。</p>
+<p>然后可以写出转移方程了。这里 $t_i&gt;0$，因此前缀和是单增的，因此可以使用单调队列 $O(n)$。</p>
+<p>然而在 P5785 中，$|t_i|\le2^8$，这表明 $t_i$ 不保证是正的（<del>唐氏吗完成任务还倒贴时间了是吧</del>），此时斜率不保证单增（<del>但能得 60 分</del>），因此拿二分队列做就可以了，时间复杂度 $O(n\log n)$。</p>
+<h2 id="更加劲爆的例子：P1721-国王饮水记"><a href="#更加劲爆的例子：P1721-国王饮水记" class="headerlink" title="更加劲爆的例子：P1721 国王饮水记"></a>更加劲爆的例子：P1721 国王饮水记</h2><p>更详细的介绍可见<a target="_blank" rel="noopener" href="https://max.book118.com/html/2019/1011/8075031075002054.shtm">这个课件</a>。</p>
+<p><strong>Lemma 1</strong> 你发现如果一个水位 $h_i&lt;h_1$，那么这个水位一定不会造成任何贡献。直接删掉！</p>
+<p><strong>Lemma 2</strong> 每个水缸最多会和 $1$ 连接一次。因为连接一次后他俩就一样高了，不会再造成贡献了。</p>
+<p><strong>Lemma 3</strong> 每次联通的时候都会有 $1$。可以证明 <strong>Lemma 2</strong> 与 <strong>Lemma 3</strong> 是等价的。</p>
+<p><strong>Lemma 4</strong> 当 $k\rightarrow\infty$ 时最优操作为将 $h_i$ 从小到大排序后依次向上一个一个取平均。</p>
+<p>你发现一次操作可以被拆成若干次 $1$ 节点与单个节点的平衡，而有式子</p>
+<script type="math/tex; mode=display">
+\dfrac{h_1+h_2}{2}+h_3\ge\dfrac{h_1+h_3}{h_2}</script><p>此处 $h_1&lt;h_2&lt;h_3$。</p>
+<p>于是对于任意两个节点，一定是水量小的与 $1$ 先连接，再让水量大的连接。</p>
+<hr>
+<p>非常自然地想到要对 $h$ 排序并去掉比 $h_1$ 小的元素。</p>
+<p>有了这些性质可以敲出一个 $O(k3^n)$ 的状压 dp 来。</p>
+<p>同时根据 <strong>Lemma 2,4</strong> 可以知道有效操作数量不会超过 $O(n)$，直接取 $\min$ 是对的。</p>
+<blockquote>
+<p>写一个取最大 $K$ 个的贪心。等等，为什么我的得分比 $45$ 高这么多？——《NOI2016 国王饮水记 讲课ppt》</p>
+</blockquote>
+<hr>
+<p>然后又有 $3$ 个重要的定理：</p>
+<p><strong>Lemma 5</strong> 每次操作选择的城市的最小水量一定大于上一操作的最大水量。否则你交换两个逆序的城市按照 <strong>Lemma 4</strong> 会变得更优。</p>
+<p><strong>Lemma 6</strong> 每次操作选择的一定是个区间。<del>可以找规律对吧</del>如果不是区间，那么把选择的最小水量城市换成任意一个断点都会变优。</p>
+<p><strong>Lemma 7</strong> 每次操作选择的区间连续。否则把左边区间向右移一定更优。</p>
+<hr>
+<p>到这里转移变成区间了！</p>
+<p>设 $dp_{i,j}$ 表示考虑到第 $i$ 个城市并且进行了 $j$ 次操作的最大水位，则有转移方程</p>
+<script type="math/tex; mode=display">
+dp_{i,j}=\max_{0\le k<i}\left\{\dfrac{dp_{k,j-1}+s_i-s_k}{i-k+1}\right\}</script><p>其中 $s_i$ 表示水量前缀和。</p>
+<p>直接转移时间复杂度是 $O(n^2kp)$ 的。</p>
+<p>你重新审视一下这个方程，设最优决策点为 $k$，给他变形得到</p>
+<script type="math/tex; mode=display">
+\begin{aligned}dp_{i,j}&=\dfrac{dp_{k,j-1}+s_i-s_k}{i-k+1}\\&=\dfrac{s_i-(s_k-dp_{k,j-1})}{i-(k-1)}\end{aligned}</script><p>虽然这不是斜率优化常见的式子形式 $y=kx+b$，但是这个却是<strong>斜率的表达式</strong></p>
+<script type="math/tex; mode=display">
+k=\dfrac{y(i)-y(j)}{x(i)-x(j)}</script><p>因此也可以斜率优化，其中凸包上的点为 $(k-1,s_k-dp_{k,j-1})$。</p>
+<p>当前转移点就是过点 $(i,s_i)$ 的凸包上点的斜率最小值，可以用三分来求出，时间复杂度被优化到 $O(nkp\log n)$。</p>
+<hr>
+<p>但是这样只能过 $70$ 分，考虑继续优化。</p>
+<p><strong>Lemma 8</strong> 决策点有单调性。</p>
+<p>假设两个决策点为 $k&gt;l$ 且 $k$ 比 $l$ 优，按照定义有 $dp_{k,j-1}\ge dp_{l,j-1}$。然后你对不等式做一个变形</p>
+<script type="math/tex; mode=display">
+\begin{aligned}(k-l)(s_k-s_l+dp_{k,j-1})&\ge(i-l+1)h_k+(k-l)h_{i+1}\\&\ \ \ \ \ -(i-k-1)(dp_{k,j-1}-dp_{k-1,j-1})\\&\ge(i-l+1)[h_k-(dp_{k,j-1}-dp_{k-1,j-1})]\end{aligned}</script><p>得证。</p>
+<hr>
+<p>得到决策单调性之后利用单调队列可以少一个 $\log$。</p>
+<p>还可以优化？</p>
+<p>注意到水量高度互不相同，可以知道<strong>每一次操作的区间长度不会大于上一次的区间长度</strong>。感性的想就是越往后走高度越大，显然拿更少的位置来平分会更优。另一个奇妙的性质是：长度大于 $1$ 的决策区间很少，只有 $O(\log\frac{nk}{\Delta})$，其中 $\Delta=\min\{h_i-h_{i-1}\}$。</p>
+<p>为什么我也不会了。</p>
+<p>这样子就不用 dp $k$ 层了，只需要 dp 这么多层就可以了。</p>
+<p>时间复杂度是 $O(np\log nh)$。</p>
+<p>但是居然还有 $O(n(\log^3nh+p))$ 的做法在 ppt 里？太奆了不会。</p>
+<p>给个高精小数 Decimal 类还是很善良的！</p>
+<h1 id="一些很蠢的事情"><a href="#一些很蠢的事情" class="headerlink" title="一些很蠢的事情"></a>一些很蠢的事情</h1><h2 id="警钟爆破队长"><a href="#警钟爆破队长" class="headerlink" title="警钟爆破队长"></a>警钟爆破队长</h2><p>求斜率的常见计算方式是</p>
+<script type="math/tex; mode=display">
+k=\dfrac{y(i)-y(j)}{x(i)-x(j)}</script><p>但是这样是要用实数的，爆精度就似了。考虑移项之后用乘法保住精度。</p>
+<p>但是很重要的一个细节是 $x(i)-x(j)$ 不要写反，一定是大减小，不然移项的时候会导致不等式方向变化就似了。</p>
+<h2 id="警钟爆破队员-1-号"><a href="#警钟爆破队员-1-号" class="headerlink" title="警钟爆破队员 1 号"></a>警钟爆破队员 1 号</h2><p>@P2120。</p>
+<p>你发现这个题很简单对吧！</p>
+<p>考虑设 $dp_i$ 表示在第 $i$ 个工厂上建造仓库的最小开支。</p>
+<p>但是你发现转移的时候 $val(l,r)$ 不易计算，需要展开一下。</p>
+<p>具体的：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}\sum_{i=l}^rp_i\cdot dis(i,r)&=\sum_{i=l}^rp_i(x_r-x_i)\\&=x_r\sum_{i=l}^rp_i-\sum_{i=l}^rp_ix_i\end{aligned}</script><p>我们记 $s1_i=\sum\limits_{j=1}^ip_j$，$s2_i=\sum\limits_{j=1}^ip_jx_j$，那么上式化简为</p>
+<script type="math/tex; mode=display">
+x_r(s1_r-s1_{l-1})-(s2_r-s2_{l-1})</script><p>你写出 dp 方程：</p>
+<script type="math/tex; mode=display">
+dp_i=\min_{0\le j<i}\{dp_j+val(j-1,i)+c_i\}</script><p>设 $j$ 是转移最优决策点则有</p>
+<script type="math/tex; mode=display">
+dp_i=dp_j+x_i(s1_i-s1_j)-(s2_i-s2_j)+c_i</script><p>化简得</p>
+<script type="math/tex; mode=display">
+dp_i-x_is1_i-s2_i-c_i=dp_j+s2_j-x_i\cdot s1_j</script><p>这就是斜率优化的板子了，注意到 $x_i$ 单调递增于是直接 $O(n)$。</p>
+<p>于是你<a href="//" title="真的，我用了17分钟推完+写完了">迅速地敲完了</a>这个题，测试样例，通过了！</p>
+<p>然后你提交，诶，怎么 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/record/150583068">Unaccepted 100分</a>啊？你很生气。</p>
+<p>你百思不得其解，打开讨论区，全是诸如<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/discuss/783542">被hack力，求调（悲</a>此类的东西。你随便打开了一个，看到这样一句话：</p>
+<blockquote>
+<p>最后可能会有一长条 $p_i=0$ 的可（毒）爱（瘤）工厂，最后答案是尾巴上所有 $p_i=0$ 的工厂的 dp 值取 $\min$。</p>
+</blockquote>
+<p>你怀着愤恨的心情去骂 ZJOI2007 的出题人没有良心。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/04/26/%E5%90%8E%E7%BC%80%E6%95%B0%E7%BB%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="prev" title="后缀数组学习笔记">
+      <i class="fa fa-chevron-left"></i> 后缀数组学习笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/04/26/%E3%80%90%E9%B2%9C%E8%8A%B1%E3%80%91%E5%94%94%E5%99%97%E5%99%97%E5%99%97/" rel="next" title="【鲜花】唔噗噗噗">
+      【鲜花】唔噗噗噗 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%9C%E7%8E%87%E4%BC%98%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">斜率优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9AAT-dp-z-Frog-3"><span class="nav-number">1.1.</span> <span class="nav-text">例子：AT_dp_z Frog 3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9AP2365-amp-P5785-%E4%BB%BB%E5%8A%A1%E5%AE%89%E6%8E%92%E4%B8%A4%E4%BB%B6%E5%A5%97"><span class="nav-number">1.2.</span> <span class="nav-text">例子：P2365&amp;P5785 任务安排两件套</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E5%8A%A0%E5%8A%B2%E7%88%86%E7%9A%84%E4%BE%8B%E5%AD%90%EF%BC%9AP1721-%E5%9B%BD%E7%8E%8B%E9%A5%AE%E6%B0%B4%E8%AE%B0"><span class="nav-number">1.3.</span> <span class="nav-text">更加劲爆的例子：P1721 国王饮水记</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E5%BE%88%E8%A0%A2%E7%9A%84%E4%BA%8B%E6%83%85"><span class="nav-number">2.</span> <span class="nav-text">一些很蠢的事情</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AD%A6%E9%92%9F%E7%88%86%E7%A0%B4%E9%98%9F%E9%95%BF"><span class="nav-number">2.1.</span> <span class="nav-text">警钟爆破队长</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AD%A6%E9%92%9F%E7%88%86%E7%A0%B4%E9%98%9F%E5%91%98-1-%E5%8F%B7"><span class="nav-number">2.2.</span> <span class="nav-text">警钟爆破队员 1 号</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Qinshihuang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Qinshihuang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="对不起了 zrz 字符串我忘光了 字符串哈希万能的哈希，水过大量字符串题 DFA确定有限状态自动机，是一类可以识别文本内容的自动机。 它由五部分组成：  $\Sigma$，字符集。 $Q$，所有的状态集合。 $st$，一个特殊的状态 $st\in Q$ 表示起始状态。 $F$，接受状态集合，$F\subseteq Q$。 状态转移函数 $\delta(q,c)$，从一个状态通过接收一个字符实现的转">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字符串学习笔记">
+<meta property="og:url" content="http://example.com/2024/04/26/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Qinshihuang&#39;s Blog">
+<meta property="og:description" content="对不起了 zrz 字符串我忘光了 字符串哈希万能的哈希，水过大量字符串题 DFA确定有限状态自动机，是一类可以识别文本内容的自动机。 它由五部分组成：  $\Sigma$，字符集。 $Q$，所有的状态集合。 $st$，一个特殊的状态 $st\in Q$ 表示起始状态。 $F$，接受状态集合，$F\subseteq Q$。 状态转移函数 $\delta(q,c)$，从一个状态通过接收一个字符实现的转">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://oi-wiki.org/string/images/automaton2.png">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/r3p2sbge.png">
+<meta property="article:published_time" content="2024-04-26T13:21:43.000Z">
+<meta property="article:modified_time" content="2024-04-26T13:28:35.582Z">
+<meta property="article:author" content="Qinshihuang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://oi-wiki.org/string/images/automaton2.png">
+
+<link rel="canonical" href="http://example.com/2024/04/26/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>字符串学习笔记 | Qinshihuang's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Qinshihuang's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/26/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Qinshihuang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Qinshihuang's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          字符串学习笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-26 21:21:43 / 修改时间：21:28:35" itemprop="dateCreated datePublished" datetime="2024-04-26T21:21:43+08:00">2024-04-26</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><del>对不起了 zrz 字符串我忘光了</del></p>
+<h1 id="字符串哈希"><a href="#字符串哈希" class="headerlink" title="字符串哈希"></a>字符串哈希</h1><p><del>万能的哈希，水过大量字符串题</del></p>
+<h1 id="DFA"><a href="#DFA" class="headerlink" title="DFA"></a>DFA</h1><p>确定有限状态自动机，是一类可以识别文本内容的自动机。</p>
+<p>它由五部分组成：</p>
+<ol>
+<li>$\Sigma$，字符集。</li>
+<li>$Q$，所有的状态集合。</li>
+<li>$st$，一个特殊的状态 $st\in Q$ 表示起始状态。</li>
+<li>$F$，接受状态集合，$F\subseteq Q$。</li>
+<li>状态转移函数 $\delta(q,c)$，从一个状态通过接收一个字符实现的转移。</li>
+</ol>
+<p>如何识别字符串？一个 DFA 收到字符串后从 $st$ 出发按照转移函数一步步转移，如果最后状态 $q\in F$ 则此字符串可被接受，否则不可。</p>
+<p>DFA 是理解很多字符串算法的基础。</p>
+<p><strong>例子</strong>：判定一个二进制串是否为偶数的 DFA：</p>
+<p><img src="https://oi-wiki.org/string/images/automaton2.png" alt=""></p>
+<p>在这个自动机中有两个状态 $Q=\{0,1\}$，字符集为 $\Sigma=\{\texttt{0},\texttt{1}\}$，初始状态 $st=0$，可接受状态集合 $F=\{0\}$，转移函数为</p>
+<script type="math/tex; mode=display">
+\delta(q,c)=\begin{cases}0&c=\texttt0\\1&c=\texttt1\end{cases}</script><p>显然如果二进制的最后一位是 $0$，那么最终状态会停在 $0$ 上，即可被接受。</p>
+<h1 id="Trie-自动机"><a href="#Trie-自动机" class="headerlink" title="Trie 自动机"></a>Trie 自动机</h1><p><del>其实就是字典树啦</del></p>
+<p>思想很好理解。每当插入一个新字符串，就从根节点向下转移，进一个字符 $c$ 就跳到 $\delta(q,c)$，如果没有这个节点就新建一个，最后在此次插入的终止节点上打上可被接受标记。</p>
+<p>容易发现此结构形成了一棵树，而且其点数小于等于 $\sum|t_i|$，是一个经过空间压缩的存储字符串的结构。</p>
+<h2 id="一些应用"><a href="#一些应用" class="headerlink" title="一些应用"></a>一些应用</h2><h3 id="查询一个字符串是否在给定模式串里出现过"><a href="#查询一个字符串是否在给定模式串里出现过" class="headerlink" title="查询一个字符串是否在给定模式串里出现过"></a>查询一个字符串是否在给定模式串里出现过</h3><p>很简单，将给定模式串建出 Trie，遇到新的字符串就看能否被此 Trie 接受即可。</p>
+<p>其总时间复杂度为 $\sum|s_i|+\sum|t_i|$。</p>
+<h3 id="查询一些正数中两两异或的最大值-P4551"><a href="#查询一些正数中两两异或的最大值-P4551" class="headerlink" title="查询一些正数中两两异或的最大值 P4551"></a>查询一些正数中两两异或的最大值 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4551">P4551</a></h3><p>经典的 01-Trie 应用。</p>
+<p>考虑将每个整数从高位到低位写成二进制的形式（如果位数不同则补 $0$），容易贪心地发现两个数异或值想更大那么它们的高位要尽量不同。</p>
+<p>将每一个二进制表示当成一个字符串来建出 Trie 来，此时直接把每一个数当成字符串在 Trie 上走即可，注意要走相反的字符而不是相同的字符。</p>
+<p>总时间复杂度为 $O(n\log V)$。</p>
+<h3 id="AC-自动机"><a href="#AC-自动机" class="headerlink" title="AC 自动机"></a>AC 自动机</h3><p>Trie 是 AC 自动机的结构基础。</p>
+<h1 id="KMP-自动机"><a href="#KMP-自动机" class="headerlink" title="KMP 自动机"></a>KMP 自动机</h1><p>KMP 自动机解决单模式串匹配的问题。</p>
+<p>考虑一些暴力或者乱搞方式：</p>
+<ul>
+<li>哈希，先将模式串求出哈希值，再对文本串求子串哈希，然后枚举每个长度与模式串相同的子串看哈希值是否相等。时间复杂度为 $O(n+m)$，但是由于有大量取模运算常数较大，且有错误概率，一般并不常用。</li>
+<li>暴力，枚举每个起始点进行暴力匹配，跑得挺快，但是时间复杂度最大会被卡到 $O(nm)$，效率较低。<ul>
+<li>随便一搞就可以搞出来，如 $s=\texttt{aaa…aaa}$，$t=\texttt{aaa…aaa}$，且 $|s|=2|t|$。</li>
+</ul>
+</li>
+</ul>
+<p>这样效率都不好。考察暴力做法，发现没有使用以前求出的信息，导致以前的计算被浪费了。这很不好。</p>
+<h2 id="Fail"><a href="#Fail" class="headerlink" title="Fail"></a>Fail</h2><p>考虑一个新的匹配方式，利用以前匹配成功的信息减少运算次数。</p>
+<p>首先定义一个字符串 $s$ 的 border：$s$ 的一个非本身的子串 $t$，使得 $t$ 既是 $s$ 的前缀又是 $s$ 的后缀。</p>
+<p>不妨设 $s$ 的一个 border 是 $t$，border 的性质有这么几条：</p>
+<ol>
+<li>$|t|$ 比 $|s|$ 至少少 $1$。</li>
+<li>$t$ 的 border 同样还是 $s$ 的 border。</li>
+<li>一个字符串 $s$ 是重复字符串（即 $s$ 可以写成 $AAA\dots A$ 的形式）的充要条件是 $|t|\ge\dfrac{|s|}{2}$，且此时循环节的长度最大是 $|s|-|t|$。（这是为什么？）</li>
+</ol>
+<blockquote>
+<p>性质 3 的证明：一张图结束疑问。</p>
+</blockquote>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/r3p2sbge.png" alt=""></p>
+<p>那得到 border 之后有什么用呢？</p>
+<p>考虑我有两个字符串 $s_1,s_2$，如果当前我匹配到某一位时匹配失败了，我就不用再回到开头重新匹配，而是可以跳到当前成功匹配的最长 border 上继续匹配（因为两端是一样的）。</p>
+<p>假设我已经求出了 $s_2$ 的每个前缀的 border，那么这个过程的时间复杂度是多少？</p>
+<p>假设有一个指针 $p$ 指向当前 $s_2$ 匹配到的位置，考虑当 $s_1$ 向前匹配一位的时候，$p$ 最多加 $1$，而匹配失败时 $p$ 至少减 $1$，所以这个过程的时间复杂度是 $O(|s_1|+|s_2|)$，效率很好。</p>
+<p>那么如何求出 border？</p>
+<p>用相同的思路在 $s_2$ 上匹配自己一遍即可。时间复杂度为 $O(|s_2|)$。</p>
+<p>这就是 KMP 自动机的核心思想，其中 border（或者更好听的名字：$\text{Fail}$ 指针）就是自动机的转移函数的一部分（另一部分当然是匹配成功的指针啦），而可接受状态只有一个就是 $s_2$ 的末端。</p>
+<h2 id="例子-P4824"><a href="#例子-P4824" class="headerlink" title="例子 P4824"></a>例子 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4824">P4824</a></h2><p>首先不带删除的很简单对吧！直接 KMP 做即可。</p>
+<p>考虑有删除怎么办，还是一样 KMP，在 KMP 的过程中将路过的字符以及其对应的 $\text{Fail}$ 压到栈中（方便还原状态），一旦遇到匹配成功的字符串就直接将这个成功的字符串从栈里面弹出去，并且根据栈顶还原匹配状态。</p>
+<p>注意可能栈会被弹空了，这时候要还原状态为 $0$。</p>
+<h2 id="例子-P3426"><a href="#例子-P3426" class="headerlink" title="例子 P3426"></a>例子 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3426">P3426</a></h2><p>线性的 KMP+dp 做法？没听说过，还是来个 $O(n\log n)$ 的暴力做法吧。</p>
+<p>首先考虑一个印章合法的充要条件是什么？如果把印章字符串 $t$ 在欲印字符串 $s$ 上匹配，如果一次匹配的位置比上一次匹配的位置靠后超过 $|t|$ 个位置，那么就不可以。</p>
+<p>其次，合法的印章一定是 $s$ 的 border。这个很显然吧。</p>
+<p>然后一个暴力的做法呼之欲出：枚举每个 border 进行 KMP 匹配。</p>
+<p>快速打完，交上去，诶，<strong>怎么有 80 分？</strong></p>
+<p><del>（注意到我说的不是“怎么只有 80 分”）</del></p>
+<p>这样不优在哪里呢？一个关键是<strong>没有利用以前的信息。</strong></p>
+<p>考虑一个较短的 border，如果它能匹配一个较长的 border，那么较长的那个一定不优。</p>
+<p>然后你从小到大去枚举 border，进行匹配即可。如果失败则替换答案。</p>
+<p>可以证明这样的时间复杂度是 $O(n\log n)$。</p>
+<h1 id="AC-自动机-1"><a href="#AC-自动机-1" class="headerlink" title="AC 自动机"></a>AC 自动机</h1><p>AC 自动机是上面两个玩意的综合。</p>
+<p>考虑 KMP 的扩展，如果我有很多个模式串需要匹配，只使用 KMP 是不可行的（时间复杂度为 $O(n|s|+\sum|t_i|)$），需要一个更加高效的算法，而 AC 自动机就是这样一个东西。</p>
+<p>AC 自动机的核心思想和 KMP 相同，即使用公共前缀后缀来进行信息利用从而节约时间。但不同的是：</p>
+<ol>
+<li>AC 自动机使用 Trie 树来存储大量的模式串。</li>
+<li>AC 自动机里的 $\text{Fail}$ 指针不一定指向当前的字符串，也可能指向别的字符串的某一位置。</li>
+</ol>
+<p>所以这里构建 $\text{Fail}$ 就成了一个问题。</p>
+<h2 id="构建-text-Fail-的基础方法"><a href="#构建-text-Fail-的基础方法" class="headerlink" title="构建 $\text{Fail}$ 的基础方法"></a>构建 $\text{Fail}$ 的基础方法</h2><p>对于一个字典树上的点 $u$，假设比 $u$ 深度小的点的 $\text{Fail}$ 指针全部求出。考虑 $u$ 父亲节点 $f$ 的指针，它指向的是 $f$ 最长公共前后缀。注意到 $f$ 加上一个字符后变成 $u$，其后缀也同样增加一个字符，那么如果 $\text{Fail}_f$ 对应的节点有一个同样的字符转移，那么对应的节点就是 $\text{Fail}_u$。如果没有？继续跳。</p>
+<p>这样可以跳 $\text{Fail}$ 来进行处理。</p>
+<p>但是这样会被轻松卡掉，因为每次跳都要耗费大量时间，不划算。</p>
+<h2 id="Trie-图-AC-自动机完全体"><a href="#Trie-图-AC-自动机完全体" class="headerlink" title="Trie 图/AC 自动机完全体"></a>Trie 图/AC 自动机完全体</h2><p>考虑如何节省时间来跳 $\text{Fail}$，方式很神奇：让 Trie 从树变成图。</p>
+<p>具体的，先前的 Trie 上每个节点只能从其父亲由一个字符转移而来。现在，我们让 Trie 上的每个节点的<strong>每个字符</strong>都有其对应的转移点。</p>
+<p>那不存在对应字符转移的转移边意义是什么？<strong>是不断跳 $\text{Fail}$ 的最终结果</strong>。</p>
+<p>比如说我有一个点 $u$，其并没有 $c$ 这个字符的转移。如果我必须转移 $c$ 这个字符，那么暴力的做法是不断地跳其 $\text{Fail}$ 指针直到找到有 $c$ 转移的那个节点 $v$。而现在我强制令 $\delta(u,c)=v$，这样不就能一步到位了吗？</p>
+<p>那么如何构建 Trie 图呢？方法也很简单：广搜。</p>
+<p>从根节点开始进行广搜，假设现在搜到了 $u$ 节点，接下来枚举字符集中的元素，假设枚举到 $c$。那么此时分两种情况：</p>
+<ol>
+<li>$\delta(u,c)$ 本来就存在，则记它为 $v$，那么就令 $\text{Fail}_v=\delta(\text{Fail}_u,c)$。这是为什么？为什么上面需要不断跳 $\text{Fail}$ 而这里不用？这就是 Trie 图的妙用，因为 Trie 图的一条边其实隐形地进行了多次跳 $\text{Fail}$ 操作，于是这里只需要跳一步即可。</li>
+<li>$\delta(u,c)$ 不存在，那么补充这条边，令 $\delta(u,c)=\delta(\text{Fail}_u,c)$。原理是完全相同的。</li>
+</ol>
+<p>这样就将一棵 Trie 树变成了一个每个节点对每个字符都有一条转移边并且还有一个特殊的 $\text{Fail}$ 转移边的 AC 自动机，可以称之为 AC 自动机完全体了。</p>
+<p>这个过程的时间复杂度显然为 $O(|\Sigma|n)$，$n$ 为 Trie 树上的点数并且小于等于 $\sum |s_i|$。</p>
+<h2 id="在线的查询"><a href="#在线的查询" class="headerlink" title="在线的查询"></a>在线的查询</h2><p>就是把一个字符串丢进去并且按照 AC 自动机的转移状态进行转移并且根据打标记的节点进行统计答案即可。时间复杂度？目测是 $O(n)$ 的，但实际上是——</p>
+<script type="math/tex; mode=display">
+O(|s|\cdot |t|)</script><p>为什么？考虑在 AC 自动机的匹配过程中有一步需要在匹配到一个成功节点后不断跳 $\text{Fail}$ 以找到更多可被匹配的节点。这个过程的时间复杂度是 $O(|t|)$ 的，而且可以被以下的数据卡掉：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">aaa...abbb...bccc...cddd...d......</span><br><span class="line">a</span><br><span class="line">aa</span><br><span class="line">aaa</span><br><span class="line">...</span><br><span class="line">aa...ab</span><br><span class="line">aa...abb</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+<p>这样子每个模式串都是一堆模式串的后缀，在匹配成功后会不断跳 $\text{Fail}$。时间复杂度是 $O(n^2)$ 的（至少是 $O(n\sqrt n)$ 吧，因为模式串的总和是给定的）。</p>
+<h2 id="离线的查询"><a href="#离线的查询" class="headerlink" title="离线的查询"></a>离线的查询</h2><p>这里用到一个东西叫做<strong>拓扑排序优化</strong>。</p>
+<p>就是说，我在匹配到合法字符串时不往下跳了，直接在这上面打标记，最后在 $\text{Fail}$ 树上用拓扑排序的方式将答案收起来。</p>
+<h3 id="text-Fail-树是啥？"><a href="#text-Fail-树是啥？" class="headerlink" title="$\text{Fail}$ 树是啥？"></a>$\text{Fail}$ 树是啥？</h3><p>顾名思义，就是 $\text{Fail}$ 指针形成的树。</p>
+<p>为啥是树？很简单，$\text{Fail}$ 指针的高度一定降低，不会成环，因此为树。</p>
+<p>这东西有的时候有大用处，因为它描述了不同字符串之间的公共前后缀关系。</p>
+<h2 id="例子-P3121"><a href="#例子-P3121" class="headerlink" title="例子 P3121"></a>例子 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3121">P3121</a></h2><p>P3426 的加强，就是把一个字符串换成了多个。</p>
+<p>完全一样的做法，就是换在了 AC 自动机上。</p>
+<h2 id="例子-P2414"><a href="#例子-P2414" class="headerlink" title="例子 P2414"></a>例子 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2414">P2414</a></h2><p>一道很好的 $\text{Fail}$ 树题。</p>
+<p>首先按照题目给的方式把 Trie 树建出来并建立 AC 自动机的 $\text{Fail}$ 指针。接着将 $\text{Fail}$ 指针抽离出来成为 $\text{Fail}$ 树。</p>
+<p>如果 $x$ 号字符串在 $y$ 号字符串里出现在失配树上意味着什么？考虑从根节点到 $y$ 结尾路径上的点集合 $A$，如果 $x$ 是 $y$ 的子串，那么一定有一个元素 $s\in A$，使得 $\text{Fail}_u$ 指向的节点的一个前缀为 $x$。</p>
+<p>这个原理很简单，$\text{Fail}$ 指向的是后缀，再有个前缀就是子串。</p>
+<p>一个字符串的一个前缀是 $x$，那么这个字符串对应的节点一定在 Trie 上是 $x$ 的子树节点。</p>
+<p>考虑将询问离线下来，并在失配树上跑出 dfn 序，再 dfs 整棵 Trie 树（这俩树千万别搞混了），对其路径上的点打标记，最后每到一个有查询的节点就查询对应被查询节点的子树内标记之和。这个过程可用树状数组进行维护。</p>
+<p>总时间复杂度 $O(n\log n)$。</p>
+<h2 id="例子-P4052"><a href="#例子-P4052" class="headerlink" title="例子 P4052"></a>例子 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4052">P4052</a></h2><p>首先正难则反，考虑求出不能被阅读的文本串数量。</p>
+<p>即求出满足字符串内无法匹配到一些模式串的长度一定的字符串数量。看到匹配想到将模式串建立 AC 自动机。然后考虑 dp。</p>
+<blockquote>
+<p>学长说 AC 自动机上的 dp 都十分套路。——某篇题解</p>
+</blockquote>
+<p>说得好！考虑设 $dp_{i,q}$ 表示枚举到字符串的第 $i$ 位、且 AC 自动机上匹配到 $q$ 的可行方案数量。那么转移很简单。</p>
+<p>为了方便，这里的转移方程采用贡献形式而不是统计形式，因为一般来说 AC 自动机的转移边不好统计。</p>
+<p>假设现在从 $q$ 出发向下贡献。显然可以先枚举下一位字符 $c$ 是什么，并求出向下的状态 $q^\prime=\delta(q,c)$。考虑如果 $q^\prime\in F$，那么这个转移是不合法的（一旦转移就会出现可匹配的串），不可进行直接跳过，否则就累加上答案，$dp_{i,q}\rightarrow dp_{i+1,\delta(q,c)}$。</p>
+<p>初始化是长度为 $0$、状态为空字符串时答案是 $1$，因为空字符串无法匹配任何一个字符串。</p>
+<p>时间复杂度为 $O(|\Sigma|\cdot m\sum|s_i|)$。</p>
+<h2 id="例子-P3715"><a href="#例子-P3715" class="headerlink" title="例子 P3715"></a>例子 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3715">P3715</a></h2><p>还是一样的的 dp，设 $dp_{i,q}$，意义一样，转移方程除了需要多次跳转指针以外完全一样（因为换成了字符串）。时空复杂度是 $O(L\sum|s_i|)$。</p>
+<p>但是你发现这玩意爆了。考虑优化。</p>
+<p>设 $l=\max\{s_i\}$，考虑当固定 $i&gt;l$ 时是什么情况。显然在转移的时候枚举每个状态，将此状态的前面转移到这里。显然此状态是否为结尾状态是已知的。</p>
+<p>因此这个转移方程可以写成状态转移到状态的一个方程。</p>
+<p>这东西是个矩阵啊。</p>
+<p>利用矩阵转移加速，时间复杂度为 $O\left(\left(\sum |s_i|\right)^3\log L\right)$，就能过了。</p>
+<p>upd：实现细节好多啊！！！</p>
+<blockquote>
+<p>一个没有注意到但是致命的问题</p>
+<p>在一个大结构体里经常会使用重载 <code>=</code> 来方便编写程序。但是这会出现问题，因为在结构体内的 <code>=</code> 运算<strong>一定不要有返回类型，一定要是 <code>void</code>！</strong></p>
+<p>比如，以下这段代码就会 RE：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">matrix</span> &#123;</span><br><span class="line">   <span class="type">int</span> n,a[<span class="number">105</span>][<span class="number">105</span>];</span><br><span class="line">   matrix <span class="keyword">operator</span> =(matrix A) &#123;</span><br><span class="line">       n=A.n;</span><br><span class="line">       <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++) <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)</span><br><span class="line">           a[i][j]=A.a[i][j];</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而这段代码就没事：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">matrix</span> &#123;</span><br><span class="line">   <span class="type">int</span> n,a[<span class="number">105</span>][<span class="number">105</span>];</span><br><span class="line">   <span class="type">void</span> <span class="keyword">operator</span> =(matrix A) &#123;		<span class="comment">//换成了 void</span></span><br><span class="line">       n=A.n;</span><br><span class="line">       <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++) <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)</span><br><span class="line">           a[i][j]=A.a[i][j];</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="例子-P2603"><a href="#例子-P2603" class="headerlink" title="例子 P2603"></a>例子 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2603">P2603</a></h2><p>初看这道题：什么鬼东西这东西真的可做吗？</p>
+<p>再看一下，似乎是类似于匹配的问题，但是这个匹配函数也太牛马了吧。</p>
+<p>考虑判定两个点列是否可以匹配。</p>
+<p>实际上，一个点列在平面内就是一条折线，其中相邻的每两条线段之间都有两个关键值：夹角 $\theta$ 与比值 $p$。显然如果两个长度相同为 $n$ 的点列，从第二条线段开始，第 $i$ 与第 $i-1$ 条线段的夹角与长度比值均相同，那么可以肯定，这两个点列可以匹配成功。</p>
+<p>注意这里的角是有方向的。</p>
+<p>接下来，发现 $(\theta,p)$ 就可以完成一个转移了。所以把这个鬼东西看成转移边，将欲匹配的点列建成 AC 自动机（一定记得要将原点列与翻转后的点列一起丢进去），并且将母串求进去进行匹配即可。</p>
+<p>难点其实在于求线段比值与线段夹角。其实也不难，线段比值可以直接将其平方后记录比值的最简分数，夹角则可以用内外积进行比较。都可以转化成整数与整数进行比较，就没有精度丢失的风险了。</p>
+<p>没写，周六再调试吧。<del>这东西肯定一写3个小时没了</del></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/04/26/%E8%80%81%E5%BA%84%E5%93%B2%E5%AD%A6%E8%AF%BE%C2%B7%E6%94%B9/" rel="prev" title="老庄哲学课·改">
+      <i class="fa fa-chevron-left"></i> 老庄哲学课·改
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/04/26/%E5%90%8E%E7%BC%80%E6%95%B0%E7%BB%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="next" title="后缀数组学习笔记">
+      后缀数组学习笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%93%88%E5%B8%8C"><span class="nav-number">1.</span> <span class="nav-text">字符串哈希</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DFA"><span class="nav-number">2.</span> <span class="nav-text">DFA</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Trie-%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="nav-number">3.</span> <span class="nav-text">Trie 自动机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E5%BA%94%E7%94%A8"><span class="nav-number">3.1.</span> <span class="nav-text">一些应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E4%B8%80%E4%B8%AA%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%9C%A8%E7%BB%99%E5%AE%9A%E6%A8%A1%E5%BC%8F%E4%B8%B2%E9%87%8C%E5%87%BA%E7%8E%B0%E8%BF%87"><span class="nav-number">3.1.1.</span> <span class="nav-text">查询一个字符串是否在给定模式串里出现过</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E4%B8%80%E4%BA%9B%E6%AD%A3%E6%95%B0%E4%B8%AD%E4%B8%A4%E4%B8%A4%E5%BC%82%E6%88%96%E7%9A%84%E6%9C%80%E5%A4%A7%E5%80%BC-P4551"><span class="nav-number">3.1.2.</span> <span class="nav-text">查询一些正数中两两异或的最大值 P4551</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AC-%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="nav-number">3.1.3.</span> <span class="nav-text">AC 自动机</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#KMP-%E8%87%AA%E5%8A%A8%E6%9C%BA"><span class="nav-number">4.</span> <span class="nav-text">KMP 自动机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Fail"><span class="nav-number">4.1.</span> <span class="nav-text">Fail</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90-P4824"><span class="nav-number">4.2.</span> <span class="nav-text">例子 P4824</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90-P3426"><span class="nav-number">4.3.</span> <span class="nav-text">例子 P3426</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AC-%E8%87%AA%E5%8A%A8%E6%9C%BA-1"><span class="nav-number">5.</span> <span class="nav-text">AC 自动机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA-text-Fail-%E7%9A%84%E5%9F%BA%E7%A1%80%E6%96%B9%E6%B3%95"><span class="nav-number">5.1.</span> <span class="nav-text">构建 $\text{Fail}$ 的基础方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Trie-%E5%9B%BE-AC-%E8%87%AA%E5%8A%A8%E6%9C%BA%E5%AE%8C%E5%85%A8%E4%BD%93"><span class="nav-number">5.2.</span> <span class="nav-text">Trie 图&#x2F;AC 自动机完全体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E7%BA%BF%E7%9A%84%E6%9F%A5%E8%AF%A2"><span class="nav-number">5.3.</span> <span class="nav-text">在线的查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A6%BB%E7%BA%BF%E7%9A%84%E6%9F%A5%E8%AF%A2"><span class="nav-number">5.4.</span> <span class="nav-text">离线的查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#text-Fail-%E6%A0%91%E6%98%AF%E5%95%A5%EF%BC%9F"><span class="nav-number">5.4.1.</span> <span class="nav-text">$\text{Fail}$ 树是啥？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90-P3121"><span class="nav-number">5.5.</span> <span class="nav-text">例子 P3121</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90-P2414"><span class="nav-number">5.6.</span> <span class="nav-text">例子 P2414</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90-P4052"><span class="nav-number">5.7.</span> <span class="nav-text">例子 P4052</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90-P3715"><span class="nav-number">5.8.</span> <span class="nav-text">例子 P3715</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90-P2603"><span class="nav-number">5.9.</span> <span class="nav-text">例子 P2603</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Qinshihuang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Qinshihuang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
