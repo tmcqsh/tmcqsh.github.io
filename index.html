@@ -149,6 +149,603 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/09/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Qinshihuang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Qinshihuang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/09/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" class="post-title-link" itemprop="url">线性代数</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-05-09 21:07:30 / 修改时间：21:13:11" itemprop="dateCreated datePublished" datetime="2024-05-09T21:07:30+08:00">2024-05-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="线性代数"><a href="#线性代数" class="headerlink" title="线性代数"></a>线性代数</h1><p>Uh-oh.</p>
+<blockquote>
+<p>也就是说，只要多写写公式你的水平自然会提升。——离散小波变换°</p>
+</blockquote>
+<h2 id="矩阵和线性方程组"><a href="#矩阵和线性方程组" class="headerlink" title="矩阵和线性方程组"></a>矩阵和线性方程组</h2><p>矩阵是什么。嘴巴嘴巴嘴巴</p>
+<p>一个线性方程组可以被描述成 $A\boldsymbol x=\boldsymbol b$ 的形式。</p>
+<p>可以利用高斯约旦消元法解，时间复杂度是 $O(n^3)$。</p>
+<h2 id="线性空间"><a href="#线性空间" class="headerlink" title="线性空间"></a>线性空间</h2><p>定义线性空间 $V$ 是域 $F$ 上的一个子空间，元素 $\alpha$ 和 $\beta$ 满足：</p>
+<ul>
+<li>$\alpha+\beta\in V$，有 $e$，$\mathrm{inv}$，交换律，结合律。</li>
+<li>乘法：<ul>
+<li>$1\cdot \alpha=\alpha$。</li>
+<li>$c_1\cdot c_2\alpha=(c_1c_2)\alpha,c(\alpha+\beta)=c\alpha+c\beta,(c_1+c_2)\alpha=c_1\alpha+c_2\alpha$</li>
+<li>为什么没写交换律。因为可能没有交换律。</li>
+</ul>
+</li>
+</ul>
+<p>线性组合：若存在一组 $c_1,c_2,\dots,c_n$ 满足 $\beta=\sum\limits_{i=1}^nc_i\alpha_i$，则称 $\beta$ 是 $\alpha_i$ 的线性组合。</p>
+<p>线性不相关：一组元素 $\alpha_1,\alpha_2,\dots,\alpha_n$ 每个元素都不能表示成其他元素的线性组合。或者另一个定义是方程 $\boldsymbol c\boldsymbol {\alpha}=\boldsymbol 0$ 的唯一解是 $\boldsymbol c=\boldsymbol 0$。</p>
+<p>基：张成 $V$ 的一组线性不相关向量 $(\alpha_1,\alpha_2,\dots,\alpha_n)$。并且记 $\dim(V)=n$。</p>
+<blockquote>
+<p>“张成” $V$ 的定义：要求 $\forall\boldsymbol\beta\in V$，都有一组 $\boldsymbol c=(c_1,c_2,\dots,c_n)$ 使得 $\boldsymbol c\boldsymbol {\alpha}=\boldsymbol \beta$。</p>
+</blockquote>
+<h2 id="线性变换"><a href="#线性变换" class="headerlink" title="线性变换"></a>线性变换</h2><h3 id="标准定义"><a href="#标准定义" class="headerlink" title="标准定义"></a>标准定义</h3><p>称一个函数 $T:V\rightarrow W$ 为 $V$ 到 $W$ 的<strong>线性变换</strong>当且仅当这东西有线性性。</p>
+<blockquote>
+<p>即，$c\cdot T(\boldsymbol\alpha)+\boldsymbol \beta=T(c\boldsymbol\alpha+\boldsymbol\beta)$。</p>
+</blockquote>
+<p>事实上这个映射可以写成矩阵的形式，就是说 $n$ 维空间到 $m$ 维空间就乘上一个 $n\times m$ 的矩阵。</p>
+<p>设 $\mathcal B_1=(\boldsymbol\alpha_1,\boldsymbol\alpha_2,\dots,\boldsymbol\alpha_n)$ 为 $V$ 的一组基，$\mathcal B_2=(\boldsymbol\beta_1,\boldsymbol\beta_2,\dots,\boldsymbol\beta_m)$ 为 $W$ 的一组基。</p>
+<p>那么 $T$ 的结果可以完全被 $(T\boldsymbol\alpha_i),i\in[1,n]$ 表示，而每个 $T\boldsymbol\alpha_i$ 又可以被 $\mathcal B_2$ 唯一表示。不妨设</p>
+<script type="math/tex; mode=display">
+T\boldsymbol\alpha_i=\sum_{j=1}^mA_{ij}\boldsymbol\beta_j</script><p>那么就称 $A_{ij}$ 为 $T$ 的矩阵表示。容易发现 $A$ 是 $n\times m$ 的矩阵。</p>
+<p>线性变换是可以复合的，就像函数复合一样。而对于同一组基，复合的结果就是将两个矩阵乘起来。</p>
+<h3 id="行列式"><a href="#行列式" class="headerlink" title="行列式"></a>行列式</h3><p>针对矩阵的运算，称 $\det(A)$ 为矩阵 $A$ 的行列式。记作：</p>
+<script type="math/tex; mode=display">
+\det(A)=
+\begin{vmatrix}
+a_{11}&a_{12}&\cdots&a_{1n}\\
+a_{21}&a_{22}&\cdots&a_{2n}\\
+\vdots&\vdots&\ddots&\vdots\\
+a_{n1}&a_{n2}&\cdots&a_{nn}
+\end{vmatrix}
+=\sum_{\substack{p_1,p_2,\cdots,p_n\\\{p_i\}\text{ is a permutation}}}(-1)^{\pi(p_1,p_2,\cdots,p_n)}\prod_{i=1}^na_{ip_i}</script><p><del>（后面这是什么鬼？）</del></p>
+<p>定义 $\pi(p_1,p_2,\dots,p_n)$ 为 $(p_1,p_2,\dots,p_n)$ 的逆序对数。</p>
+<p>特别的：</p>
+<script type="math/tex; mode=display">
+\begin{vmatrix}
+a&b\\
+c&d
+\end{vmatrix}
+=ad-bc,\\
+\begin{vmatrix}
+a_1&a_2&a_3\\
+b_1&b_2&b_3\\
+c_1&c_2&c_3
+\end{vmatrix}
+=(a_1b_2c_3+a_2b_3c_1+a_3b_1c_2)-(a_1b_3c_2+a_2b_1c_3+a_3b_2c_1)</script><p>（这两个比较小，可以记住）</p>
+<h3 id="范德蒙矩阵行列式和循环矩阵行列式"><a href="#范德蒙矩阵行列式和循环矩阵行列式" class="headerlink" title="范德蒙矩阵行列式和循环矩阵行列式"></a>范德蒙矩阵行列式和循环矩阵行列式</h3><script type="math/tex; mode=display">
+\begin{vmatrix}
+1&1&\cdots&1\\
+x_1&x_2&\cdots&x_n\\
+x_1^2&x_2^2&\cdots&x_n^2\\
+\vdots&\vdots&\ddots&\vdots\\
+x_1^n&x_2^n&\cdots&x_n^n
+\end{vmatrix}
+=\prod_{1\le j<i\le n}(x_i-x_j)</script><script type="math/tex; mode=display">
+\begin{vmatrix}
+a_1&a_2&\cdots&a_n\\
+a_n&a_{1}&\cdots&a_{n-1}\\
+a_{n-1}&a_{n}&\cdots&a_{n-2}\\
+\vdots&\vdots&\ddots&\vdots\\
+a_2&a_3&\cdots&a_1
+\end{vmatrix}
+=\prod_{i=1}^nf(\omega_i)</script><p>其中 $f(x)=\sum\limits_{i=0}^{n-1}a_{i+1}x^i$，$\omega_i^n=1,\omega_i\in\mathbf C$。</p>
+<h2 id="特征值、特征向量、特征多项式"><a href="#特征值、特征向量、特征多项式" class="headerlink" title="特征值、特征向量、特征多项式"></a>特征值、特征向量、特征多项式</h2><p>这里只考虑方阵的情况，即 $A$ 是 $n$ 个向量向 $n$ 个向量的线性变换。</p>
+<p>如果向量 $\boldsymbol x$ 满足 $A\boldsymbol x=\lambda\boldsymbol x$，则称 $\boldsymbol x$ 为 $A$ 的特征向量而 $\lambda$ 为 $A$ 的特征值。</p>
+<p>注意到 $\lambda$ 实际上描述了一个方程 $(A-\lambda I)\boldsymbol x=\boldsymbol 0$，这样的方程的解 $\boldsymbol x$ 构成了一个线性空间，称这个空间为 $\lambda$ 对应的特征向量空间。</p>
+<p>同时当 $\lambda=0$ 时这个空间为零空间（其实就是 $A\boldsymbol x=\boldsymbol b$ 的解向量空间），其维度记作 $\operatorname{null}(A)$。有性质</p>
+<script type="math/tex; mode=display">
+\operatorname{null}(A)+\operatorname{rank}(A)=\dim(A)</script><p>其中 $\operatorname{rank}(A)$ 称为矩阵的<strong>秩</strong>。</p>
+<p>（大概就是矩阵对应的那个方程组有多少个线性不相关的方程）</p>
+<h3 id="如何解特征值"><a href="#如何解特征值" class="headerlink" title="如何解特征值"></a>如何解特征值</h3><p>我们发现 $\det(A-\lambda I)=0$。因此我们将 $\det(A-\lambda I)$ 看做关于 $\lambda$ 的 $n$ 次多项式，这个多项式的根就是全体特征值。这个多项式也被称为特征多项式。</p>
+<h2 id="Matrix-Tree-定理"><a href="#Matrix-Tree-定理" class="headerlink" title="Matrix-Tree 定理"></a>Matrix-Tree 定理</h2><p>定义一个图的基尔霍夫矩阵为 $K=D-A$，其中 $D$ 是度数矩阵，$A$ 是邻接矩阵。</p>
+<p>任意去掉 $i$ 行 $j$ 列，剩余矩阵的 $\det$ 就是生成树的个数。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/09/%E8%99%9A%E6%A0%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Qinshihuang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Qinshihuang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/09/%E8%99%9A%E6%A0%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">虚树学习笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-05-09 21:07:23 / 修改时间：21:07:40" itemprop="dateCreated datePublished" datetime="2024-05-09T21:07:23+08:00">2024-05-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>虚树是一种减少冗余、优化时间复杂度的树上问题优化。</p>
+<p>在解决某些树上问题时，如果在多次询问中点数总体很大，但是解决问题的“关键点”数量很少，就可以利用虚树来将无用的点“剔除”，从而减少时间浪费。</p>
+<h1 id="构造虚树的方法"><a href="#构造虚树的方法" class="headerlink" title="构造虚树的方法"></a>构造虚树的方法</h1><p>一般来说令关键点集合为 $V$，那么虚树包含着所有关键点和它们的 $\mathrm{LCA}$。虚树的边<strong>直接连接</strong> $\mathrm{LCA}$ 和下面的点，而不再关心中间经过的点。</p>
+<p>而构造虚树的一种常用做法就是<strong>利用单调栈维护虚树上的一条链</strong>。</p>
+<p>记 $st_1$ 为栈顶元素，$st_2$ 为栈中第二个元素，以此类推。</p>
+<ul>
+<li>首先我们发现虚树中的点只要祖先顺序不发生变化就可以任意地放点。所以为了方便我们先将根节点 $1$ 放入栈。</li>
+<li>接下来，我们将 $V$ 中的元素按照 $\mathrm{dfn}$ 序排序。并依次插入单调栈。</li>
+<li>第 $i$ 次插入中，我们记 $l=\operatorname{LCA}(p_i,st_1)$。<ul>
+<li>如果 $l=st_1$，说明 $p_i$ 接在 $st_1$ 下面，那么说明还没有更换链，直接将 $p_i$ 压入栈中。</li>
+<li>如果 $l\neq st_1$，说明更换了链，那么就判断 $st_2$ 的 $\mathrm{dfn}$ 和 $l$ 的 $\mathrm{dfn}$ 的大小关系（不用担心只有一个元素，因为 $1$ 一直在栈中）。如果 $\mathrm{dfn}_l&lt;\mathrm{dfn}_{st_2}$，就说明这个新链的起始点仍然在 $st_2$ 之上，那么可以直接弹出 $st_1$ 并建边。如果 $\mathrm{dfn}_l\ge\mathrm{dfn}_{st_2}$，就说明 $st_2$ 已经比新链高了。这时候如果 $\mathrm{dfn}_l=\mathrm{dfn}_{st_2}$，则说明 $st_2$ 恰好是新链的起始点，就可以直接压栈了；否则还需将 $st_1$ 弹出后将 $l$ 压入栈中。</li>
+</ul>
+</li>
+<li>最后在栈中还会剩下一条链，此时直接建边即可。</li>
+</ul>
+<p>容易发现，这个过程的时间复杂度是 $O(n\log n)$ 的（$n$ 为<strong>关键点总数</strong>）。</p>
+<h1 id="例题：P2495-消耗战"><a href="#例题：P2495-消耗战" class="headerlink" title="例题：P2495 消耗战"></a>例题：P2495 消耗战</h1><p>首先想一下朴素 dp 怎么做。</p>
+<p>不妨设 $dp_u$ 为使 $u$ 与子树中能源节点分离所需的最少代价，并设 $E$ 为能源节点集合。那么可得转移方程为</p>
+<script type="math/tex; mode=display">dp_u=\sum_{v\in\text{son }u}\begin{cases}\min\{dp_v,w(u,v)\},&v\not\in E\\w(u,v),&v\in E\end{cases}</script><p>其中 $w(u,v)$ 为连接 $u,v$ 的边权。</p>
+<p>这样子 dp 一次的时间复杂度是 $O(n)$ 的，总时间复杂度 $O(nq)$ 肯定过不了。</p>
+<p>我们发现 $\sum|E|$ 比较小，所以考虑对每次询问，对 $E$ 中的节点建出虚树来，并在虚树上跑 dp。此时虚树的边权应为原树中两点路径上边权的最小值。</p>
+<p>这样就过了，时间复杂度。。。$O(\sum|E|\log n)$。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/09/%E5%A4%9A%E9%A1%B9%E5%BC%8F%E4%B8%8E%E7%94%9F%E6%88%90%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Qinshihuang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Qinshihuang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/09/%E5%A4%9A%E9%A1%B9%E5%BC%8F%E4%B8%8E%E7%94%9F%E6%88%90%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">多项式与生成函数</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-05-09 21:06:41 / 修改时间：21:11:58" itemprop="dateCreated datePublished" datetime="2024-05-09T21:06:41+08:00">2024-05-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><del>咍咍。</del></p>
+<h1 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h1><ul>
+<li>复数。</li>
+<li>微积分。</li>
+<li>泰勒展开。</li>
+<li>牛顿迭代。</li>
+<li><del>多项式加法</del>。</li>
+</ul>
+<h1 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a>乘法</h1><p>定义 $n$ 阶单位根为 $\mathbf C$ 内 $x^n=1$ 的根，记作 $\omega_1,\omega_2,\dots,\omega_n$，其中 $\omega_n=1$。</p>
+<p>不难发现如果按照辐角主值排序那么 $\omega_2=\omega_1^2,\omega_3=\omega_1^3\dots$，同时还可以得到计算 $\omega$ 的公式：</p>
+<script type="math/tex; mode=display">
+\omega_k=\cos\dfrac{2\pi}{k}+\mathrm i\sin\dfrac{2\pi}{k}</script><p>原因很简单，$1=\omega_1^n=\angle2\pi$，因此 $\arg(\omega_1)=\dfrac{2\pi}{n}$，进而推得其他单位根。</p>
+<p>以下记 $n$ 阶本源单位根 $\omega_n=\cos\dfrac{2\pi}{n}+\mathrm i\sin\dfrac{2\pi}{n}$。</p>
+<p>注意到多项式乘法的定义说明了由点值表示到点值表示的乘法是 $O(n)$ 的。因此我们考虑快速实现一般多项式表示与点值表示的转换。</p>
+<p>我们考虑</p>
+<script type="math/tex; mode=display">
+f(x)=\sum_{k=0}^{n-1}a_kx^k</script><p>那么</p>
+<script type="math/tex; mode=display">
+f(\omega_n)=\sum_{k=0}^{n-1}a_k\omega_n^k\\
+f(\omega_n^2)=\sum_{k=0}^{n-1}a_k\omega_n^{2k}\\
+f(\omega_n^3)=\sum_{k=0}^{n-1}a_k\omega_n^{3k}\\
+\cdots\\
+f(\omega_n^n)=\sum_{k=0}^{n-1}a_k\omega_n^{nk}=\sum_{i=0}^{n-1}a_i</script><p>我们不妨令 $b_k=f(\omega_n^k)$，并且构造一个新的多项式 $g(x)=\sum\limits_{k=0}^{n-1}b_kx^k$，那么将单位根的共轭复数带入得到：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+g(\omega_n^{-1})&=\sum_{k=0}^{n-1}\omega_{n}^{-k}\sum_{l=0}^{n-1}a_l\omega_n^{kl}\\
+&=\sum\begin{pmatrix}a_0&a_0\omega_n^{-1}&a_0\omega_n^{-2}&\cdots&a_0\omega_n^{-(n-1)}\\
+a_1&a_1&a_1&\cdots&a_1\\
+a_2&a_2\omega_n&a_2\omega_n^2&\cdots&a_2\omega_n^{n-1}\\
+\vdots&\vdots&\vdots&&\vdots\\
+a_n&a_n\omega_n^{n-1}&a_n\omega_n^{n-2}&\cdots&a_n\omega_n
+\end{pmatrix}\\
+&=\sum_{k=0}^{n-1}[k=1]na_k=na_1
+\end{aligned}</script><p>这里用到了单位根</p>
+<script type="math/tex; mode=display">\sum_{k=0}^{n-1}\omega_n^{ck}=0</script><p>的性质。利用向量等知识证明不难。</p>
+<p>（那个 $\sum(\text{bla})$ 就是表示对那些东西求和，因为我感觉写成矩阵形式更加直观。）</p>
+<p>类似的，我们可以得到 $g(\omega_n^{-2})=na_2,\cdots,g(\omega_n^{-k})=na_k$。这样，将单位根作为点值表示有天然的优势：它天生支持逆变换。</p>
+<p>而 <strong>FFT 算法</strong>正是利用了单位根的这一性质，又增加上了分治优化而允许我们在 $O(n2^n)$ 的时间复杂度内完成度数为 $2^n$ 的多项式的点值/一般多项式表示相互转化。</p>
+<p>具体的，设多项式 $A(x)=\sum\limits_{k=0}^{n-1}a_kx^k$。我们将 $A(x)$ 分成两部分：</p>
+<script type="math/tex; mode=display">
+A(x)=\sum_{i=0}^{\frac n2-1}a_{2i}x^{2i}+x\sum_{i=0}^{\frac n2-1}a_{2i+1}x^{2i}</script><p>并记这两部分分别为 $A_1(x^2),A_2(x^2)$，也就是说 $A(x)=A_1(x^2)+xA_2(x^2)$。</p>
+<p>现在让我们看看如果把 $\omega_n^i$ 带入会发生什么。</p>
+<script type="math/tex; mode=display">
+A(\omega_n^i)=A_1(\omega_{n/2}^i)+\omega_{n}^iA_2(\omega_{n/2}^i)</script><p>好了，$A$ 被分成了两个结构相同的子问题，这就可以使用分治/迭代实现，从而做到 $O(n\log n)$ 的时间复杂度。</p>
+<p>核心代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">il <span class="type">void</span> <span class="title">fft</span><span class="params">(cp *a,<span class="type">int</span> inv)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;lim;i++) <span class="keyword">if</span>(i&lt;r[i]) <span class="built_in">swap</span>(a[i],a[r[i]]);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> mid=<span class="number">1</span>;mid&lt;lim;mid&lt;&lt;=<span class="number">1</span>) &#123;</span><br><span class="line">		cp wn=<span class="built_in">cp</span>(<span class="built_in">cos</span>(pi/mid),inv*<span class="built_in">sin</span>(pi/mid));</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> R=mid&lt;&lt;<span class="number">1</span>,j=<span class="number">0</span>;j&lt;lim;j+=R) &#123;	<span class="comment">//迭代减常数</span></span><br><span class="line">			cp w=<span class="built_in">cp</span>(<span class="number">1</span>,<span class="number">0</span>);</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> k=<span class="number">0</span>;k&lt;mid;k++,w=w*wn) &#123;</span><br><span class="line">				cp x=a[j+k],y=w*a[j+mid+k];	<span class="comment">//蝴蝶变换减常数。其实就是减少计算次数啦（</span></span><br><span class="line">				a[j+k]=x+y;</span><br><span class="line">				a[j+mid+k]=x-y;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="NTT"><a href="#NTT" class="headerlink" title="NTT"></a>NTT</h2><p>一般的多项式题里都会有取模。而 FFT 在取模下一无是处，因此要使用在模意义下的算法 NTT。</p>
+<p>其实 NTT 就是把单位根 $\omega_n$ 换成了原根的幂 $g_n=g^{\frac{p-1}{n}}$。</p>
+<p>我们需要使得这个新的替代品在模意义下与单位根的性质相同。</p>
+<p>首先</p>
+<script type="math/tex; mode=display">
+g_n^n\equiv g^{p-1}\equiv 1\pmod p</script><p>这是原根的性质之一。</p>
+<p>其次</p>
+<script type="math/tex; mode=display">
+g_n^{\frac{n}{2}}\equiv g^{\frac{p-1}{2}}\pmod p</script><p>而 $\left(g^{\frac{p-1}{2}}\right)^2\equiv g^{p-1}\equiv1\pmod p$，但 $g,g^2,\dots,g^{p-1}$ 模 $p$ 两两不同余，因此 $g_n^{\frac{n}{2}}\equiv-1\pmod p$。</p>
+<p>最后</p>
+<script type="math/tex; mode=display">
+\left(g_n^{k+\frac{n}{2}}\right)^2\equiv g_n^{2k+n}\equiv g_n^{2k}\pmod p</script><p>因此我们发现 $g_n$ 在模意义下与 $\omega_n$ 是等价的，可以直接替代。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">il <span class="type">void</span> <span class="title">ntt</span><span class="params">(ll *A,ll inv)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;lim;i++) <span class="keyword">if</span>(i&lt;r[i]) <span class="built_in">swap</span>(A[i],A[r[i]]);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> mid=<span class="number">1</span>;mid&lt;lim;mid&lt;&lt;=<span class="number">1</span>) &#123;</span><br><span class="line">		ll gn=<span class="built_in">qpow</span>(inv==<span class="number">1</span>?g:invg,(mod<span class="number">-1</span>)/(mid&lt;&lt;<span class="number">1</span>));</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> R=mid&lt;&lt;<span class="number">1</span>,j=<span class="number">0</span>;j&lt;lim;j+=R) &#123;</span><br><span class="line">			ll G=<span class="number">1</span>;</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> k=<span class="number">0</span>;k&lt;mid;k++,G=(G*gn)%mod) &#123;</span><br><span class="line">				ll x=A[j+k]%mod,y=G*A[j+mid+k]%mod;</span><br><span class="line">				A[j+k]=(x+y)%mod;</span><br><span class="line">				A[j+mid+k]=(x-y+mod)%mod;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>附：常用分治模数及其最小原根。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">模数</th>
+<th style="text-align:center">分解</th>
+<th style="text-align:center">$g$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">$65537$</td>
+<td style="text-align:center">$2^{16}+1$</td>
+<td style="text-align:center">$3$</td>
+</tr>
+<tr>
+<td style="text-align:center">$469762049$</td>
+<td style="text-align:center">$2^{26}\times7$</td>
+<td style="text-align:center">$3$</td>
+</tr>
+<tr>
+<td style="text-align:center">$998244353$</td>
+<td style="text-align:center">$2^{23}\times 7\times 17+1$</td>
+<td style="text-align:center">$3$</td>
+</tr>
+<tr>
+<td style="text-align:center">$1004535809$</td>
+<td style="text-align:center">$2^{21}\times479+1$</td>
+<td style="text-align:center">$3$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="多项式求逆"><a href="#多项式求逆" class="headerlink" title="多项式求逆"></a>多项式求逆</h1><p>定义：多项式 $f(x)$ 的逆为另一个多项式 $g(x)$ 满足</p>
+<script type="math/tex; mode=display">
+f(x)g(x)=1</script><p>求满足条件的多项式 $f(x)g(x)\equiv 1\pmod{x^n}$，系数对 $998244353$ 取模。</p>
+<p>我们考虑递归求解。</p>
+<p>不妨设我们知道了一个多项式 $G(x)$ 使得 $f(x)G(x)\equiv1\pmod{x^{\frac{n}{2}}}$。</p>
+<p>那么考虑做差</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+f(x)[g(x)-G(x)]&\equiv 0\pmod{x^{\frac{n}{2}}}\\
+g(x)-G(x)&\equiv 0\pmod{x^{\frac{n}{2}}}\\
+[g(x)-G(x)]^2&\equiv 0\pmod{x^n}\\
+g^2(x)-2g(x)G(x)+G^2(x)&\equiv 0\pmod{x^n}
+\end{aligned}</script><p>两边同时乘上 $f(x)$，根据定义有</p>
+<script type="math/tex; mode=display">
+g(x)-2G(x)+f(x)G^2(x)\equiv0\pmod{x^n}\\</script><p>化简得</p>
+<script type="math/tex; mode=display">
+g(x)\equiv G(x)[2-f(x)G(x)]\pmod{x^n}</script><p>可用 NTT 求解。递归单层时间复杂度是 $O(n\log n)$，可知总时间复杂度仍为 $O(n\log n)$。</p>
+<p>核心代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">il <span class="type">void</span> <span class="title">solve</span><span class="params">(ll len,ll *a,ll *b)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(len==<span class="number">1</span>) &#123;</span><br><span class="line">		b[<span class="number">0</span>]=<span class="built_in">qpow</span>(a[<span class="number">0</span>],mod<span class="number">-2</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">solve</span>((len+<span class="number">1</span>)&gt;&gt;<span class="number">1</span>,a,b);</span><br><span class="line">	lim=<span class="number">1</span>,cnt=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>(lim&lt;(len&lt;&lt;<span class="number">1</span>)) &#123;</span><br><span class="line">		lim&lt;&lt;=<span class="number">1</span>;</span><br><span class="line">		cnt++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;lim;i++) r[i]=(r[i&gt;&gt;<span class="number">1</span>]&gt;&gt;<span class="number">1</span>)|((i&amp;<span class="number">1</span>)&lt;&lt;(cnt<span class="number">-1</span>));</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;i++) c[i]=a[i];</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=len;i&lt;=lim;i++) c[i]=<span class="number">0</span>;</span><br><span class="line">	<span class="built_in">NTT</span>(c,<span class="number">1</span>);</span><br><span class="line">	<span class="built_in">NTT</span>(b,<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;lim;i++) b[i]=<span class="number">1ll</span>*(<span class="number">2ll</span>-b[i]*c[i]%mod+mod)%mod*b[i]%mod;</span><br><span class="line">	<span class="built_in">NTT</span>(b,<span class="number">-1</span>);</span><br><span class="line">	<span class="type">int</span> invl=<span class="built_in">qpow</span>(lim,mod<span class="number">-2</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;i++) b[i]=<span class="number">1ll</span>*b[i]*invl%mod;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=len;i&lt;lim;i++) b[i]=<span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="多项式对数函数"><a href="#多项式对数函数" class="headerlink" title="多项式对数函数"></a>多项式对数函数</h1><blockquote>
+<p>在模 $x^n$ 意义下求一个多项式 $g(x)$ 使得</p>
+<script type="math/tex; mode=display">
+g(x)\equiv\ln f(x)</script><p>系数对 $9998244353$ 取模。</p>
+</blockquote>
+<p>对这个式子做些变换：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+g(x)&\equiv \ln f(x)\\
+\dfrac{\mathrm d}{\mathrm dx}g(x)&\equiv\dfrac{\mathrm{d}}{\mathrm dx}[\ln f(x)]\\
+\dfrac{\mathrm d}{\mathrm dx}g(x)&\equiv \dfrac{f^\prime(x)}{f(x)}\\
+g(x)&\equiv\int\dfrac{f^\prime(x)}{f(x)}\mathrm dx
+\end{aligned}</script><p>直接求导、求逆、乘起来再积回去就可以了，时间复杂度仍然是 $O(n\log n)$。</p>
+<p>核心代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">getInv</span>(n,a,inva);</span><br><span class="line">ll lim=<span class="number">1</span>,cnt=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(lim&lt;(n&lt;&lt;<span class="number">1</span>)) &#123;</span><br><span class="line">	lim&lt;&lt;=<span class="number">1</span>;</span><br><span class="line">	cnt++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;lim;i++) r[i]=(r[i&gt;&gt;<span class="number">1</span>]&gt;&gt;<span class="number">1</span>)|((i&amp;<span class="number">1</span>)&lt;&lt;(cnt<span class="number">-1</span>));</span><br><span class="line"><span class="built_in">NTT</span>(da,lim,<span class="number">1</span>);</span><br><span class="line"><span class="built_in">NTT</span>(inva,lim,<span class="number">1</span>);</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;lim;i++) ans[i]=da[i]*inva[i]%mod;</span><br><span class="line"><span class="built_in">NTT</span>(ans,lim,<span class="number">-1</span>);</span><br><span class="line">ll invl=<span class="built_in">qpow</span>(lim,mod<span class="number">-2</span>);</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;n;i++) ans[i]=ans[i]*invl%mod;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=n<span class="number">-1</span>;i&gt;<span class="number">0</span>;i--) ans[i]=ans[i<span class="number">-1</span>]*<span class="built_in">qpow</span>(i,mod<span class="number">-2</span>)%mod;</span><br><span class="line">ans[<span class="number">0</span>]=<span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="多项式指数"><a href="#多项式指数" class="headerlink" title="多项式指数"></a>多项式指数</h1><blockquote>
+<p>给定多项式 $f(x)$，在模 $x^n$ 意义下求 $g(x)$ 使得</p>
+<script type="math/tex; mode=display">
+g(x)\equiv\mathrm e^{f(x)}\pmod{x^n}</script></blockquote>
+<h2 id="牛顿迭代"><a href="#牛顿迭代" class="headerlink" title="牛顿迭代"></a>牛顿迭代</h2><p>前置一个知识：什么是牛顿迭代。</p>
+<p>假设你要求 $\sqrt n$，一个简单的方法是二分，这样需要计算 $\log n$ 次。</p>
+<p>另一个思路就是使用牛顿迭代。这个问题的本质是求解 $f(x)=x^2-n$ 的零点。我们不妨假设一个初始值 $x_0$，并求出 $f(x)$ 在 $x=x_0$ 处的切线</p>
+<script type="math/tex; mode=display">
+l:f^\prime(x)(x-x_0)+f(x)</script><p>与 $x$ 轴的坐标 $x_1$，最后将初始值设为 $x_1$ 继续迭代。这样做每次精度会翻倍。</p>
+<p>应用在多项式也是如此。不妨设我们要求一个函数 $G(x)$ 使得对于给定的函数 $F(x)$ 有 $F(G(x))\equiv 0\pmod {x^n}$。我们假设已经知道了 $G_0(x)$ 使得 $F(G_0(x))\equiv 0\pmod{x^{\frac{n}{2}}}$，此时我们在 $G_0(x)$ 处将 $F(G(x))$ 泰勒展开：</p>
+<script type="math/tex; mode=display">
+F(G(x))=\sum_{k=0}^\infty\dfrac{F^{(n)}(G_0(x))\cdot(G(x)-G_0(x))^n}{n!}\equiv 0</script><p>由于 $G_0(x)\equiv G(x)\pmod{x^{\frac{n}{2}}}$，所以 $G_0^2(x)\equiv G^2(x)\pmod {x^n}$。</p>
+<p>而根据二项式展开定理，</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+(a-b)^n&\equiv\sum_{k=0}^n(-1)^k\dbinom nka^kb^{n-k}\\
+&\equiv a^n-b^n\pmod n
+\end{aligned}</script><p>于是得到泰勒展开式第三项往后都为 $0$，因此得到</p>
+<script type="math/tex; mode=display">
+F(G_0(x))+F^\prime(G_0(x))(G(x)-G_0(x))\equiv 0\pmod{x^n}</script><p>最后得到了牛顿迭代公式</p>
+<script type="math/tex; mode=display">
+G(x)\equiv G_0(x)-\dfrac{F(G_0(x))}{F^\prime(G_0(x))}\pmod{x^n}</script><hr>
+<p>有了这个公式之后我们就可以解决我们的问题啦！</p>
+<p>本题中 $g(x)\equiv \mathrm e^{f(x)}$ 等价于 $f(x)\equiv\ln g(x)$，即 $\ln g(x)-f(x)\equiv 0$。</p>
+<p>因此构造函数 $A(g(x))=\ln g(x)-f(x)$，套用牛顿迭代公式可知</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+g(x)&\equiv g_0(x)-\dfrac{A(g_0(x))}{A^\prime(g_0(x))}\\
+&\equiv g_0(x)-g_0(x)[\ln g_0(x)-f(x)]\\
+&\equiv g_0(x)[1-\ln g_0(x)+f(x)]\pmod {x^n}
+\end{aligned}</script><p>然后就会了，一次迭代时间复杂度 $O(n\log n)$，总时间复杂度还是 $O(n\log n)$。</p>
+<p>边界条件是 $n=1$，此时由于 $f_0=0$，所以 $\ln g(x)=0$，$g(0)=1$，直接返回即可。</p>
+<p>核心代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">il <span class="type">void</span> <span class="title">getExp</span><span class="params">(ll len,ll *a,ll *expa,ll *lna,ll *inva)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(len==<span class="number">1</span>) &#123;</span><br><span class="line">		expa[<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">getExp</span>((len+<span class="number">1</span>)&gt;&gt;<span class="number">1</span>,a,expa,lna,inva);</span><br><span class="line">	<span class="built_in">getLn</span>(len,expa,lna,inva);</span><br><span class="line">	ll lim=<span class="number">1</span>,cnt=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>(lim&lt;(len&lt;&lt;<span class="number">1</span>)) &#123;</span><br><span class="line">		lim&lt;&lt;=<span class="number">1</span>;</span><br><span class="line">		cnt++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;i++) r[i]=(r[i&gt;&gt;<span class="number">1</span>]&gt;&gt;<span class="number">1</span>)|((i&amp;<span class="number">1</span>)&lt;&lt;(cnt<span class="number">-1</span>));</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;i++) a1[i]=a[i];</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=len;i&lt;lim;i++) lna[i]=a1[i]=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;lim;i++) a1[i]=((a1[i]-lna[i])%mod+mod)%mod;</span><br><span class="line">	a1[<span class="number">0</span>]=(a1[<span class="number">0</span>]+<span class="number">1</span>)%mod;</span><br><span class="line">	<span class="built_in">NTT</span>(a1,lim,<span class="number">1</span>);<span class="built_in">NTT</span>(expa,lim,<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;lim;i++) expa[i]=expa[i]*a1[i]%mod;</span><br><span class="line">	<span class="built_in">NTT</span>(expa,lim,<span class="number">-1</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=len;i&lt;lim;i++) expa[i]=<span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="应用：多项式快速幂"><a href="#应用：多项式快速幂" class="headerlink" title="应用：多项式快速幂"></a>应用：多项式快速幂</h2><blockquote>
+<p>给定一个多项式 $f(x)$，求模 $x^n$ 意义下 $f^k(x)$ 的值。</p>
+</blockquote>
+<p>暴力做法是做 $k$ 次 NTT 乘法，时间复杂度是 $O(nk\log n)$。</p>
+<p>次暴力做法是快速幂上套 NTT，时间复杂度是 $O(n\log n\log k)$，但是 $k\le10^{10^5}$ 的量级让这玩意也过不去。</p>
+<p>我们想一下能不能加速一下这个过程。</p>
+<p>有一个公式：</p>
+<script type="math/tex; mode=display">
+a^b=\mathrm e^{b\ln a}</script><p>带入到多项式中也是一样的，即</p>
+<script type="math/tex; mode=display">
+f^k(x)=\mathrm e^{k\ln f(x)}</script><p>注意到这题 $f_0=1$，因此直接 $\ln,\exp$ 即可。</p>
+<p>对于 $k$ 要在读入的时候取模的事情，因为</p>
+<script type="math/tex; mode=display">
+\mathrm e^x=\sum_{k=0}^{\infty}\dfrac{x^k}{k!}</script><p>直接把 $k\ln f(x)$ 带入得到</p>
+<script type="math/tex; mode=display">
+\mathrm e^{k\ln x}=\sum_{i=0}^\infty \dfrac{k^i\ln^ix}{i!}</script><p>这东西显然可以取模。</p>
+<p>然而加强版把这个限制去掉了，怎么办呢？</p>
+<p>很简单，让整个多项式的系数除以 $f_0$，这样 $f_0$ 就是 $1$ 了。</p>
+<p>你说得对，但是数据里有 $f_0=0$ 的点。那就整体除以 $f_1x$。你说得对，但是数据里有 $f_0=f_1=0$ 的点。那就整体除以 $f_2x^2$……</p>
+<p>直到得到一个常数项为 $1$ 的多项式之后直接做就可以了。时间复杂度是 $O(n\log n)$。</p>
+<h1 id="生成函数"><a href="#生成函数" class="headerlink" title="生成函数"></a>生成函数</h1><p>前置知识：</p>
+<ul>
+<li>多项式。</li>
+<li>组合数学。</li>
+<li>推式子。</li>
+</ul>
+<h2 id="什么是生成函数"><a href="#什么是生成函数" class="headerlink" title="什么是生成函数"></a>什么是生成函数</h2><p>考虑如下的一个数列</p>
+<script type="math/tex; mode=display">
+a=\left<a_0,a_1,a_2\dots\right></script><p>当然可以写成这样的形式，但是另一种方式是将其写成<strong>生成函数</strong>的形式（普通生成函数），即</p>
+<script type="math/tex; mode=display">
+A(z)=\sum_{k=0}^{\infty}a_kz^k</script><p>这里 $z$ 起到了一个占位符的作用，与一般意义上函数自变量不同。<del>当然也可以当函数自变量理解啦</del></p>
+<p>对于一个生成函数 $A(z)$，取其 $z^n$ 项上的系数 $a_n$，记作 $[z^n]A(z)$。</p>
+<p>生成函数相加是可行的，即</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\left<a_0,a_1,\dots\right>+\left<b_0,b_1,\dots\right>\\
+=&A(z)+B(z)=\sum_{k=0}^\infty(a_k+b_k)z^k\\
+=&\left<a_0+b_0,a_1+b_1,\dots\right>
+\end{aligned}</script><p>但是这种形式幂级数不方便计算，一般来说我们要将其写成<strong>封闭形式</strong>。</p>
+<p>例如，对于序列 $a=\left<1,1,1,\dots\right>$ 的生成函数 $A(z)=\sum\limits_{k=0}^\infty z^i$，我们可以发现</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+1+z\cdot A(z)&=z+\sum_{k=1}^\infty z^k\\
+&=\sum_{k=0}^\infty z^k=A(z)
+\end{aligned}</script><p>因此 $(1-z)A(z)=1$，得到 $A(z)$ 的封闭形式</p>
+<script type="math/tex; mode=display">
+A(z)=\dfrac 1{1-z}</script><p>类似的，我们可以得到如下公式：</p>
+<script type="math/tex; mode=display">
+\dfrac{1}{1-az}=\sum_{k=0}^\infty a^kz^{k}</script><hr>
+<p>事实上 $A(z)$ 的意义不止于此。考虑另一个生成函数 $B(z)=\sum\limits_{k=0}^\infty b_kz^k$，如果将这两个函数乘起来，可以得到一个新的函数 $C(z)$。看看这个 $C(z)$ 是什么：</p>
+<script type="math/tex; mode=display">
+[z^n]C(z)=\sum_{k=0}^nb_k\cdot a_{n-k}=\sum_{k=0}^nb_k</script><p>所以说 $C(z)$ 的系数是 $B(z)$ 的系数前缀和。这是相当有用的。</p>
+<blockquote>
+<p>另外我们也可以发现 $A(z)$ 的乘法逆 $A^{-1}(z)=1-z$ 就是差分运算。</p>
+</blockquote>
+<p>根据这个例子，我们发现生成函数的卷积就是将 $A$ 中的 $z^0,z^1,\dots,z^n$ 项与 $B$ 中的 $z^n,z^{n-1},\dots,z^0$ 项相搭配得到新的系数。</p>
+<h2 id="生成函数能干什么"><a href="#生成函数能干什么" class="headerlink" title="生成函数能干什么"></a>生成函数能干什么</h2><h3 id="推数列通项"><a href="#推数列通项" class="headerlink" title="推数列通项"></a>推数列通项</h3><p>不妨拿斐波那契数列举例子。</p>
+<p>众所周知，$f_1=f_2=1,f_n=f_{n-1}+f_{n-2}\ (n\ge3)$ 这个数列就是斐波那契数列。现在我们想要它的通项公式。</p>
+<p>如果你背过了，就知道</p>
+<script type="math/tex; mode=display">
+f_n=\dfrac{1}{\sqrt5}\left[\left(\dfrac{1+\sqrt5}2\right)^n-\left(\dfrac{1-\sqrt5}2\right)^n\right]</script><p>但这是怎么推出来的呢？</p>
+<p>不妨把斐波那契数列的生成函数写出来：</p>
+<script type="math/tex; mode=display">
+F(z)=\sum_{k=1}^\infty f_kz^k</script><p>我们希望先找到它的封闭形式。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+z^2\cdot F(z)&=\sum_{k=3}^\infty f_{k-2}z^k\\
+z\cdot F(z)&=\sum_{k=2}^\infty f_{k-1}z^k\\
+(z^2+z)F(z)&=f_1z^2+\sum_{k=3}^\infty f_kz^k\\
+(z^2+z)F(z)+f_1z&=F(z)\\
+F(z)&=\dfrac{z}{1-z-z^2}
+\end{aligned}</script><p>然后考虑取 $[z^n]F(z)$。我们考虑使用以前知道的公式进行求解。</p>
+<p>我们不妨设 $F(z)=\dfrac{c}{1-az}+\dfrac{d}{1-bz}$。</p>
+<p>开始推式子：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\dfrac{c}{1-az}+\dfrac{d}{1-bz}=\dfrac{-(ad+bc)z+c+d}{abz^2-(a+b)z+1}
+\end{aligned}</script><p>对照系数可知：</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+a+b=1\\
+ab=-1\\
+c+d=0\\
+ad+bc=-1
+\end{cases}</script><p>解得</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+a=\dfrac{\sqrt5+1}{2}\\
+b=\dfrac{1-\sqrt5}{2}\\
+c=\dfrac{1}{a-b}\\
+d=-\dfrac{1}{a-b}
+\end{cases}</script><p>这里不把 $c,d$ 写出来，一部分是因为<del>难算</del>，还有一部分原因是后面会消去。</p>
+<p>将结果代入得到：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+F(z)&=\dfrac{1}{a-b}\dfrac{1}{1-az}-\dfrac{1}{a-b}\dfrac{1}{1-bz}\\
+&=\dfrac{1}{a-b}\sum_{k=0}^\infty(a^k-b^k)z^k
+\end{aligned}</script><p>因此</p>
+<script type="math/tex; mode=display">
+[z^n]F(z)=\dfrac{a^n-b^n}{a-b}</script><p>最后把 $a,b$ 代入就得到了大名鼎鼎的公式：</p>
+<script type="math/tex; mode=display">
+f_n=\dfrac{1}{\sqrt5}\left[\left(\dfrac{1+\sqrt5}2\right)^n-\left(\dfrac{1-\sqrt5}2\right)^n\right]</script><hr>
+<p>有意思的是，一道计算题也可以用 $F(z)$ 做。</p>
+<blockquote>
+<p>求证：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&0.1\\
++&0.01\\
++&0.002\\
++&0.0003\\
++&0.00005\\
++&0.000008\\
+\vdots
+\end{aligned}</script><p>的结果是有理数，并求出这个结果。</p>
+</blockquote>
+<p>其实题目就是让求</p>
+<script type="math/tex; mode=display">
+\sum_{k=1}^\infty\dfrac{1}{10^k}f_k=F\left(\dfrac{1}{10}\right)</script><p>代入公式得到 $F\left(\dfrac{1}{10}\right)=\dfrac{10}{89}$。答案确实是这个：</p>
+<blockquote>
+<p>$\dfrac{10}{89}\approx0.11235955056179775280898876404494\dots$</p>
+</blockquote>
+<h3 id="数数"><a href="#数数" class="headerlink" title="数数"></a>数数</h3><p>比如说你有 $3$ 种水果。苹果最多吃 $3$ 个，香蕉最多吃 $1$ 个，橘子必须吃 $4$ 的倍数个，问吃 $8943477323$ 个水果有多少种方法。怎么做？</p>
+<blockquote>
+<p>不是老弟，吃 $n$ 个水果的话 $n$ 要和苹果香蕉总个数模 $4$ 同余，除了吃 $0$ 个以外都只有 $2$ 种情况啊？</p>
+</blockquote>
+<p>额。</p>
+<hr>
+<p>我们写出三种水果的数量生成函数：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\mathsf{apple}(z)&=1+z+z^2+z^3=\dfrac{z^4-1}{z-1}\\
+\mathsf{banana}(z)&=1+z\\
+\mathsf{orange}(z)&=\sum_{k=0}^\infty z^{4k}=\dfrac{1}{1-z^4}
+\end{aligned}</script><p>直接卷起来，得到答案生成函数：</p>
+<script type="math/tex; mode=display">
+\mathsf{ans}(z)=\dfrac{1+z}{1-z}</script><p>展开得到：</p>
+<script type="math/tex; mode=display">
+\mathsf{ans}=\left<1,2,2,2,\dots\right></script><p>bruh.</p>
+<p>什么考场上生成函数太大了没法得到封闭形式？</p>
+<p>这时候多项式算法就派上用场了。你直接写出形式幂级数，对 $z^n$ 取模就可以得到 $z^0,z^1,\dots,z^{n-1}$ 的系数。而这东西拿多项式写是 $O(n\log n)$ 的。也就是说你可以直接操纵生成函数了！</p>
+<h3 id="例题：P4389"><a href="#例题：P4389" class="headerlink" title="例题：P4389"></a>例题：P4389</h3><blockquote>
+<p>完全背包，但是 $n,m,v_i\le10^5$，对每个 $1\le s\le m$ 求装到 $s$ 体积的方案数。模 $998244353$。</p>
+</blockquote>
+<p>首先跑个 dp $O(nm)$。</p>
+<p>注意到对于一个体积为 $v$ 的物品它的生成函数是</p>
+<script type="math/tex; mode=display">
+f_v(z)=1+z^v+z^{2v}+\cdots=\sum_{k=0}^\infty z^{kv}=\dfrac{1}{1-z^v}</script><p>因此我们可以简单地将 $1-z^{v_i}$ 卷积起来再求个逆，时间复杂度是……$O(nm\log m)$。: (</p>
+<p>直接卷积不可行，考虑先求 $\ln$，系数加起来，再 $\exp$ 回去。这样的时间复杂度是……$O(nm\log m)$。:&lt;</p>
+<p>我们看看能不能直接求出 $\ln(1-z^c)$。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+f(x)&=\ln(1-z^c)\\
+\dfrac{\mathrm d}{\mathrm dx}f(x)&=-\dfrac{cz^{c-1}}{1-z^c}=-\sum_{k=0}^\infty z^{(k+1)c-1}\\
+f(x)&=-\sum_{k=0}^\infty \dfrac{1}{k+1}z^{(k+1)c}
+\end{aligned}</script><p>发现这个东西模 $x^{m+1}$ 意义下只有 $O\left(\dfrac{m}{c}\right)$ 个点有值，就做完了，直接预处理出 $\ln ans$，时间复杂度 $O(m\ln m)$。最后 $\exp$ 回去即可得到答案。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/26/%E6%9D%8E%E8%B6%85%E7%BA%BF%E6%AE%B5%E6%A0%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1031,7 +1628,7 @@ O(|s|\cdot |t|)</script><p>为什么？考虑在 AC 自动机的匹配过程中�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
