@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN-diy">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -26,10 +26,11 @@
 <meta property="og:url" content="http://example.com/2024/04/26/%E6%96%9C%E7%8E%87%E4%BC%98%E5%8C%96dp/index.html">
 <meta property="og:site_name" content="Qinshihuang&#39;s Blog">
 <meta property="og:description" content="斜率优化斜率优化，一种优化 1D&#x2F;1D 转移 dp 的方式，即将转移方程化为一次函数 $y&#x3D;kx+b$ 的形式，再利用建模转化，将转移变成在某些数据结构上，比如单调队列、单调栈、李超树的操作，以此来优化转移时间复杂度。 一般来说（我感觉）斜率优化的转移方程里常常见到 $s_is_j$ 的形式。 例子：AT_dp_z Frog 3容易写出 dp 方程  dp_i&#x3D;\min\{dp_j+(s_i-s_">
-<meta property="og:locale" content="zh_CN">
+<meta property="og:locale">
 <meta property="article:published_time" content="2024-04-26T13:32:42.000Z">
-<meta property="article:modified_time" content="2024-04-26T13:33:48.991Z">
+<meta property="article:modified_time" content="2024-05-09T13:47:00.686Z">
 <meta property="article:author" content="Qinshihuang">
+<meta property="article:tag" content="动态规划">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://example.com/2024/04/26/%E6%96%9C%E7%8E%87%E4%BC%98%E5%8C%96dp/">
@@ -41,7 +42,7 @@
     sidebar: "",
     isHome : false,
     isPost : true,
-    lang   : 'zh-CN'
+    lang   : 'zh-CN-diy'
   };
 </script>
 
@@ -103,6 +104,7 @@
       <h1 class="site-title">Qinshihuang's Blog</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
+      <p class="site-subtitle" itemprop="description">秦屎皇的小窝</p>
   </div>
 
   <div class="site-nav-right">
@@ -123,7 +125,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>目录</a>
 
   </li>
   </ul>
@@ -153,7 +155,7 @@
     
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/26/%E6%96%9C%E7%8E%87%E4%BC%98%E5%8C%96dp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -176,10 +178,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-04-26 21:32:42 / 修改时间：21:33:48" itemprop="dateCreated datePublished" datetime="2024-04-26T21:32:42+08:00">2024-04-26</time>
+              <time title="创建时间：2024-04-26 21:32:42" itemprop="dateCreated datePublished" datetime="2024-04-26T21:32:42+08:00">2024-04-26</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-05-09 21:47:00" itemprop="dateModified" datetime="2024-05-09T21:47:00+08:00">2024-05-09</time>
+              </span>
 
           
 
@@ -285,6 +293,10 @@ dp_i-x_is1_i-s2_i-c_i=dp_j+s2_j-x_i\cdot s1_j</script><p>这就是斜率优化�
     
 
       <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag"><i class="fa fa-tag"></i> 动态规划</a>
+          </div>
 
         
 
@@ -374,6 +386,10 @@ dp_i-x_is1_i-s2_i-c_i=dp_j+s2_j-x_i\cdot s1_j</script><p>这就是斜率优化�
           <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>
