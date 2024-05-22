@@ -150,6 +150,142 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/22/%E6%A0%91%E4%B8%8A%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Qinshihuang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Qinshihuang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/22/%E6%A0%91%E4%B8%8A%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">树上问题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-05-22 21:30:37 / 修改时间：22:32:54" itemprop="dateCreated datePublished" datetime="2024-05-22T21:30:37+08:00">2024-05-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="树的定义"><a href="#树的定义" class="headerlink" title="树的定义"></a>树的定义</h1><p>图论定义：无向无环连通图。</p>
+<blockquote>
+<p>等价定义：无相连通图，$n$ 个点和 $n-1$ 条边；$n$ 个点和 $n-1$ 条边的图，任意两个点之间有且仅有一条简单路径可以到达……</p>
+</blockquote>
+<p>更具体的来说，树是一张无向图 $\mathcal T=(V,E)$，其中 $|E|=|V|-1$ 且任意两个点都联通。同时定义有根树和无根树的概念：有根树在 $V$ 中有一个特殊元素 $root$ 作为整棵树的根，而无根树没有。对于有根树，定义点 $u$ 的深度 $dep_u=\operatorname{dis}(u,root)$。</p>
+<h1 id="直径、半径等问题"><a href="#直径、半径等问题" class="headerlink" title="直径、半径等问题"></a>直径、半径等问题</h1><p>直径的定义：树上长度最大的路径长度。</p>
+<p>半径的定义：随意定节点为根时整棵树的深度最小值。</p>
+<p>解决直径半径等问题的主要方法是树形 dp。</p>
+<h2 id="直径"><a href="#直径" class="headerlink" title="直径"></a>直径</h2><h3 id="树形-dp-求解"><a href="#树形-dp-求解" class="headerlink" title="树形 dp 求解"></a>树形 dp 求解</h3><p>首先我们钦定 $1$ 为根。</p>
+<p>我们考虑设 $f_u$ 表示从点 $u$ 向下走的最大深度。显然有</p>
+<script type="math/tex; mode=display">
+f_u=\max\{f_v+w(u,v)\}</script><p>我们再设 $g_u$ 为 $u$ 子树中直径长度。显然路径可以分成两种：穿过 $u$ 的和不穿过 $u$ 的。我们考虑求出所有 $u$ 儿子 $v$ 的 $f_v$ 第一第二大 $\mathrm{first},\mathrm{second}$，那么答案可以记作</p>
+<script type="math/tex; mode=display">
+g_u=\max(\max\{g_v\},f_\mathrm{first}+w(u,\mathrm{first})+f_\mathrm{second}+w(u,\mathrm{second}))</script><h3 id="两次-dfs-求解"><a href="#两次-dfs-求解" class="headerlink" title="两次 dfs 求解"></a>两次 dfs 求解</h3><blockquote>
+<p>引理：对于一棵树上的点 $u$，距离 $u$ 最远的点一定是树上某条直径的端点之一。</p>
+<p><strong>证明</strong> 考虑反证法。设距离 $u$ 最远的点是 $v$。考虑一条直径 $(l,r)$，不妨设 $l$ 距离 $u$ 比 $r$ 更远。那么</p>
+<script type="math/tex; mode=display">
+\operatorname{dis}(u,v)>\operatorname{dis}(u,l)</script><p>因此</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\operatorname{dis}(v,r)&=\operatorname{dis}(u,v)+\operatorname{dis}(u,r)\\
+&>\operatorname{dis}(u,l)+\operatorname{dis}(u,r)=\operatorname{dis}(l,r)
+\end{aligned}</script><p>这与 $(l,r)$ 是直径矛盾。因此引理成立。</p>
+</blockquote>
+<p>因此我们不妨钦定 $1$ 为根来对整棵树求出深度。因为深度就是点到根的距离，因此深度最大的点一定是直径端点之一。记这个点为 $u$，以它为根进行第二次 dfs 来求出深度，记深度最大的点为 $v$，那么 $(u,v)$ 一定是一条直径。（注意到直径不一定唯一）</p>
+<h2 id="半径"><a href="#半径" class="headerlink" title="半径"></a>半径</h2><p>考虑换根 dp 求解。在上面 dp 求直径的 $f_u$ 基础上设 $h_u$ 为 $u$ 向上走的最长距离（可以去到兄弟）。</p>
+<p>那么显然有 dp 方程</p>
+<script type="math/tex; mode=display">
+h_u=w(u,\mathrm{father})+\max(h_{\mathrm{father}},\max_{v\in\mathrm{brother}\ u}\{f_v+\operatorname{dis}(\mathrm{father},v)\})</script><p>那么以 $u$ 为根的时候树的深度就是 $f_u+h_u$，那么树的半径就是</p>
+<script type="math/tex; mode=display">
+\min\{f_u+h_u\}</script><h2 id="例题：SDOI2024-第二轮省级-D6T3-粉兔的154"><a href="#例题：SDOI2024-第二轮省级-D6T3-粉兔的154" class="headerlink" title="例题：SDOI2024 第二轮省级 D6T3 粉兔的154"></a>例题：SDOI2024 第二轮省级 D6T3 粉兔的154</h2><blockquote>
+<p>这是一道构造题。</p>
+<p>给定一个数组 $a_1,a_2,\dots,a_n$，其中 $a_i=-1$ 或 $a_i\in[1,n]$，你需要构造一棵有 $n$ 个点的无根树，每条边权都为 $1$，满足对于点 $u$：</p>
+<ul>
+<li>若 $a_u=-1$，则存在至少两个树上的点 $v_1,v_2$ 使得 $\operatorname{dis}(u,v_1)=\operatorname{dis}(u,v_2)&gt;\operatorname{dis}(u,v)$，其中 $v\neq v_1$ 且 $v\neq v_2$。</li>
+<li>否则一定满足 $\operatorname{dis}(u,a_u)&gt;\operatorname{dis}(u,v)$，其中 $v\neq a_u$。</li>
+</ul>
+<p>给出构造或者判定不可能。</p>
+<p>$n\le10^6$。记 $S$ 为 $a_i$ 组成的集合，则分 subtask：</p>
+<p>$n\le10$，$|S|=1\sim 4$，无限制。</p>
+</blockquote>
+<p>子任务很神奇，先看子任务。</p>
+<h3 id="n-le-10"><a href="#n-le-10" class="headerlink" title="$n\le 10$"></a>$n\le 10$</h3><p>写个爆搜枚举父亲即可，时间复杂度 $O(n\times n!)$。</p>
+<p>为啥要写暴力。因为暴力能完美规避大量 corner。</p>
+<h3 id="S-的限制"><a href="#S-的限制" class="headerlink" title="$|S|$ 的限制"></a>$|S|$ 的限制</h3><p>以下默认 $n&gt;10$。</p>
+<p>当 $a_i$ 全部相同的时候，显然 $a_i=-1$ 有解，否则无解。$a_i=-1$ 的时候菊花图满足条件。</p>
+<p>$|S|=2$ 时候，我们先不考虑 corner case。当 $-1\in S$ 的时候，通过玩我们可以找到这样一个符合条件的结构：</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/sf3ljvt3.png" style="zoom:67%;" /></p>
+<p>其中 $tar$ 是唯一非 $-1$ 的 $a_i$ 的值，$a_x=a_y=a_{u_1}=a_{u_2}=\dots=a_{u_p}=-1$，$a_{v_1}=a_{v_2}=\dots=a_{v_q}=tar$。</p>
+<p>考虑这种情况下什么不行。容易发现 $q\le 2$ 不可以。</p>
+<p>在继续讨论之前，我们先证明一个引理：$S$ 中有 $3$ 个非 $-1$ 元素时一定无解。</p>
+<blockquote>
+<p><strong>证明</strong> 不妨设 $S$ 中三个非 $-1$ 元素为 $v_1,v_2,v_3$。考虑到 $(v_1,v_2)$ 以及 $(v_1,v_3)$ 都是直径，考察一个 $a_u=v_2$ 的 $u$，显然 $\operatorname{dis}(u,v_2)=\operatorname{dis}(u,v_3)$（无论大于还是小于都会破坏假设），因此 $a_u$ 应当等于 $-1$。矛盾。</p>
+</blockquote>
+<p>因此我们排除了很多情况。因此我们只剩下两种情况：$S=\{v_1,v_2\}$ 和 $S=\{v_1,v_2,-1\}$。</p>
+<h3 id="最后的讨论"><a href="#最后的讨论" class="headerlink" title="最后的讨论"></a>最后的讨论</h3><p>这两种情况是本质相同的：$(v_1,v_2)$ 是树上的唯一直径。</p>
+<p>考虑将 $a_u=v_1$ 的点挂在 $v_2$ 一侧，相反的挂在另一侧，$a_u=-1$ 的挂在中间，则最后会形成</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/b8pcjcyr.png" style="zoom: 67%;" /></p>
+<p>特殊情况就是（$s_l\le 2$ 或 $s_r\le 2$）且 $|s_l-s_r|\neq0$ 时无解。</p>
+<p><strong>小心 vector 爆炸导致 RE。</strong></p>
+<h3 id="反过头来"><a href="#反过头来" class="headerlink" title="反过头来"></a>反过头来</h3><p>大家可以仔细想想如果不打暴力会怎么样。</p>
+<ul>
+<li>$n=1$ 时需要特判若 $a_1\neq-1$ 无解否则有解。</li>
+<li>$n=2,3$ 时树结构确定，需要特判。</li>
+<li>……</li>
+</ul>
+<p>非常恶心。</p>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>小粉兔有了另一段坚毅无私的黑历史。</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/vgt0b586.png" style="zoom:50%;" /></p>
+<h1 id="虚树"><a href="#虚树" class="headerlink" title="虚树"></a>虚树</h1><p>见 <a target="_blank" rel="noopener" href="https://tmcqsh.github.io/2024/05/09/%E8%99%9A%E6%A0%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">虚树学习笔记</a>。</p>
+<h1 id="LCA"><a href="#LCA" class="headerlink" title="LCA"></a>LCA</h1><p>定义啥的不说了。</p>
+<h2 id="例题：CF519E-A-and-B-and-Lecture-Rooms"><a href="#例题：CF519E-A-and-B-and-Lecture-Rooms" class="headerlink" title="例题：CF519E A and B and Lecture Rooms"></a>例题：CF519E A and B and Lecture Rooms</h2><blockquote>
+<p>给定一个 $n$ 个点的树，边权为 $1$，你需要回答 $q$ 次询问，每次询问给定 $u,v$，你需要统计满足条件的点 $p$ 的数量使得 $\operatorname{dis}(u,p)=\operatorname{dis}(v,p)$。</p>
+<p>$n,q\le10^5$。</p>
+</blockquote>
+<p>不妨钦定 $1$ 为根，我们需要找到 $(u,v)$ 路径上的中点，接在那个点上的所有点都满足条件。</p>
+<p>怎么找点？首先求出 $\operatorname{dis}(u,v)$，再求出一半的长度。不妨令 $dep_u&gt;dep_v$，那么从 $u$ 向上跳即可找到中点 $mid$。最后求出挂在上面的点数量就可以了（其实就是减掉旁边的分支）。注意特判 $u=v$。</p>
+<p>时间复杂度 $O((n+q)\log n)$。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/10/%E8%87%AA%E7%84%B6%E6%95%B0%E6%B1%82%E5%92%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1660,101 +1796,11 @@ O(|s|\cdot |t|)</script><p>为什么？考虑在 AC 自动机的匹配过程中�
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/26/%E8%80%81%E5%BA%84%E5%93%B2%E5%AD%A6%E8%AF%BE%C2%B7%E6%94%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Qinshihuang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Qinshihuang's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/26/%E8%80%81%E5%BA%84%E5%93%B2%E5%AD%A6%E8%AF%BE%C2%B7%E6%94%B9/" class="post-title-link" itemprop="url">老庄哲学课·改</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-26 21:12:49" itemprop="dateCreated datePublished" datetime="2024-04-26T21:12:49+08:00">2024-04-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-05-09 21:46:37" itemprop="dateModified" datetime="2024-05-09T21:46:37+08:00">2024-05-09</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>老庄定律：做不对 $\Rightarrow$ 不会。——RailgunZzzz</p>
-</blockquote>
-<h1 id="想象一个生活场景"><a href="#想象一个生活场景" class="headerlink" title="想象一个生活场景"></a>想象一个生活场景</h1><p>上课。</p>
-<p>老庄：你这个题对了吗？</p>
-<p>我：没有。</p>
-<p>老庄：没对就是不会！</p>
-<hr>
-<p>小测。</p>
-<p>老庄：这个题满分 $12$，你得了多少分？</p>
-<p>我：我只扣了 $1$ 分。</p>
-<p>老庄：扣了一分就是不会！</p>
-<hr>
-<p>又小测了。</p>
-<p>老庄：这个题有二十分，你得了多少分？</p>
-<p>我：得到了 $19.5$ 分！</p>
-<p>老庄：扣 $0.5$ 分也是不会！！！</p>
-<hr>
-<p>还是小测。</p>
-<p>老庄：你！你这个题就扣了 $0.1$ 分！可不可惜！还是不会！！</p>
-<p>老庄：你！你这个题就扣了 $0.01$ 分！可不可惜！还是不会！！</p>
-<p>老庄：你！你这个题就扣了 $10^{-5}$ 分！可不可惜！还是不会！！</p>
-<p>老庄：你！你这个题就扣了 $\varepsilon$ 分！可不可惜！还是不会！！</p>
-<hr>
-<p>考试完。</p>
-<p>老庄：你得了多少分？</p>
-<p>我：我得的分数是：</p>
-<script type="math/tex; mode=display">
-\lim_{x\rightarrow 150}x</script><p>老庄：还是不会！！！</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -1819,7 +1865,7 @@ O(|s|\cdot |t|)</script><p>为什么？考虑在 AC 自动机的匹配过程中�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
