@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-CN-diy">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="01-trie 是一种特殊的 trie 树，是将整数作为二进制形式插入到 trie 中形成的字典树，其字符集为 $\{\mathtt0,\mathtt1\}$。01-trie 能够高效地维护许多关于异或的问题。 维护异或最大对 给定一个长度为 $n$ 的数组 $a_1,a_2,\dots,a_n$，你需要求出最大的异或对，即 $(i,j)$ 使得 $i\neq j$，$a_i\oplus a_j$">
+<meta property="og:type" content="article">
+<meta property="og:title" content="01trie学习笔记">
+<meta property="og:url" content="http://example.com/2024/05/23/01trie%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Qinshihuang&#39;s Blog">
+<meta property="og:description" content="01-trie 是一种特殊的 trie 树，是将整数作为二进制形式插入到 trie 中形成的字典树，其字符集为 $\{\mathtt0,\mathtt1\}$。01-trie 能够高效地维护许多关于异或的问题。 维护异或最大对 给定一个长度为 $n$ 的数组 $a_1,a_2,\dots,a_n$，你需要求出最大的异或对，即 $(i,j)$ 使得 $i\neq j$，$a_i\oplus a_j$">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-05-23T13:20:05.000Z">
+<meta property="article:modified_time" content="2024-05-23T13:20:31.952Z">
+<meta property="article:author" content="Qinshihuang">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2024/05/23/01trie%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN-diy'
+  };
+</script>
+
+  <title>01trie学习笔记 | Qinshihuang's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Qinshihuang's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">秦屎皇的小窝</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>目录</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/23/01trie%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Qinshihuang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Qinshihuang's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          01trie学习笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-05-23 21:20:05 / 修改时间：21:20:31" itemprop="dateCreated datePublished" datetime="2024-05-23T21:20:05+08:00">2024-05-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>01-trie 是一种特殊的 trie 树，是将整数作为二进制形式插入到 trie 中形成的字典树，其字符集为 $\{\mathtt0,\mathtt1\}$。01-trie 能够高效地维护许多关于异或的问题。</p>
+<h1 id="维护异或最大对"><a href="#维护异或最大对" class="headerlink" title="维护异或最大对"></a>维护异或最大对</h1><blockquote>
+<p>给定一个长度为 $n$ 的数组 $a_1,a_2,\dots,a_n$，你需要求出最大的异或对，即 $(i,j)$ 使得 $i\neq j$，$a_i\oplus a_j$ 最大。</p>
+</blockquote>
+<p>贪心的想，如果我们知道了所有数的二进制表示，当想求最大的 $a_i\oplus x$ 时，我们只需要让 $x$ 的高位与 $a_i$ 对应的位尽量不同就可以了。（一个高位可以抵得上剩下的所有低位。）</p>
+<p>因此我们枚举 $i$，并将 $a_1,a_2,\dots,a_{i-1}$ 全部从高位到低位地插入到 01-trie 中。接下来我们在 trie 中查找答案，从根节点向下跳，如果能走到与 $a_i$ 当前位不同的方向就一定走，否则只能走另一侧。最后走下来的路径异或上 $a_i$ 就是对于 $a_1,a_2,\dots,a_i$ 的最大异或对。</p>
+<p>这样做的时间复杂度显然是 $O(n\log V)$。</p>
+<h1 id="维护异或和"><a href="#维护异或和" class="headerlink" title="维护异或和"></a>维护异或和</h1><blockquote>
+<p>给定一个可重集 $\{a_1,a_2,\dots,a_n\}$，要求支持以下四种操作：</p>
+<ol>
+<li>求出集合中所有元素的异或和。</li>
+<li>向集合中添加一个新元素 $v$。</li>
+<li>从集合中删除 $v$。（有多个就只删一个）</li>
+<li>将集合中所有元素增加 $1$。</li>
+</ol>
+</blockquote>
+<p>首先我们考虑没有第四个操作怎么做。</p>
+<p>我们发现求异或和只需要考虑 01-trie 每一层上 $1$ 的奇偶性，而不必考虑 trie 中具体放入了哪些数。因此 trie 每个节点维护以下三个信息：</p>
+<ul>
+<li><code>ch[0/1]</code>，左右儿子。</li>
+<li><code>w</code>，该节点子树中存储的数的个数。</li>
+<li><code>xorsum</code>，该节点子树中所有数的异或和。</li>
+</ul>
+<p>我们发现本质上插入和删除是一样的：插入两次和删除都会使得这个数的贡献变成 $0$。</p>
+<p>因此我们想一下怎么插入：</p>
+<p>首先我们要决定以从高到低还是从低到高的顺序插入。<strong>为了方便第四种操作</strong>，这里采用从低到高的顺序。</p>
+<p>其次要考虑在插入的过程中如何维护以上信息。为了方便由下到上地合并信息，使用递归的方式来插入。</p>
+<p>一开始先建出 trie 结构，并在数结束的节点上让 <code>w</code> 值加 $1$，代表多了一个数。</p>
+<p>返回的时候我们要合并左右儿子的信息。因为儿子的位数高度比父亲高一位，因此首先要将儿子的 <code>xorsum</code> 均左移一位再异或起来。再考虑多余的贡献，显然由 $1$ 方向的儿子提供，而具体有多少个 $1$ 要额外增加要看 <code>w[ch[1]]</code>，如果是奇数就有贡献，否则没有。</p>
+<p>最后只需要将本节点的 <code>w</code> 设为儿子的 <code>w</code> 之和。</p>
+<hr>
+<p>有没有注意到一个问题？</p>
+<p>在刚才的过程中 <code>w</code> 的数值没有被关心，被关心的其实是 <code>w</code> 的奇偶性。</p>
+<p>所以我们完全可以将上面所有的加法<strong>全部变成异或</strong>。<del>也许这样能快点</del></p>
+<p>代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">il <span class="type">void</span> <span class="title">maintain</span><span class="params">(<span class="type">int</span> u)</span> </span>&#123;</span><br><span class="line">	trie[u].w=trie[u].xorsum=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">if</span>(trie[u].ch[<span class="number">0</span>]) &#123;</span><br><span class="line">		trie[u].w^=trie[trie[u].ch[<span class="number">0</span>]].w;</span><br><span class="line">		trie[u].xorsum^=(trie[trie[u].ch[<span class="number">0</span>]].xorsum)&lt;&lt;<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(trie[u].ch[<span class="number">1</span>]) &#123;</span><br><span class="line">		trie[u].w^=trie[trie[u].ch[<span class="number">1</span>]].w;</span><br><span class="line">		trie[u].xorsum^=(trie[trie[u].ch[<span class="number">1</span>]].xorsum&lt;&lt;<span class="number">1</span>)^(trie[trie[u].ch[<span class="number">1</span>]].w&amp;<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">il <span class="type">void</span> <span class="title">insert</span><span class="params">(<span class="type">int</span> &amp;u,<span class="type">int</span> x,<span class="type">int</span> dep)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!u) u=<span class="built_in">newnode</span>();</span><br><span class="line">	<span class="keyword">if</span>(dep&gt;MAXH) &#123;trie[u].w^=<span class="number">1</span>;<span class="keyword">return</span>;&#125;</span><br><span class="line">	<span class="built_in">insert</span>(trie[u].ch[x&amp;<span class="number">1</span>],x&gt;&gt;<span class="number">1</span>,dep+<span class="number">1</span>);</span><br><span class="line">	<span class="built_in">maintain</span>(u);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>MAXH</code> 的作用是限制每个数的长度，让每个数一样长。</p>
+<p>删除很简单，只需要再插入一遍。查询很简单，只需要查询 $root$ 节点的 <code>xorsum</code>。关键在于全局加 $1$。</p>
+<p>我们考虑一下在二进制时加 $1$ 是什么样的。</p>
+<p>$\color{000000}10101101000\color{ff0000}11111\color{000000}+1=1010110100\color{0000ff}1\color{ff0000}00000$。</p>
+<p>可以明显发现加 $1$ 就是把后缀 $1$ 全部变成 $0$，再在这个后缀的前面加一个 $1$。</p>
+<p>因此在 trie 上这个过程很好实现：首先交换左右子树，因为如果当前位是 $0$，那么它就应该变成 $1$，因为它标志着后缀 $1$ 的结束；如果当前位是 $1$，那么它也应该变成 $0$。其次我们要进入<strong>先前的</strong> $1$ 子树，也就是现在的 $0$ 子树继续修改。先前的 $0$ 子树已经不能继续修改了，因为后缀 $1$ 已经结束。</p>
+<p>到这里就不难发现由低到高顺序建树的好处：我们把相同的后缀压在了一起，这样修改后缀时能一起修改。</p>
+<p>代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">il <span class="type">void</span> <span class="title">add_1</span><span class="params">(<span class="type">int</span> u)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">swap</span>(trie[u].ch[<span class="number">0</span>],trie[u].ch[<span class="number">1</span>]);</span><br><span class="line">	<span class="keyword">if</span>(trie[u].ch[<span class="number">0</span>]) <span class="built_in">add_1</span>(trie[u].ch[<span class="number">0</span>]);</span><br><span class="line">	<span class="built_in">maintain</span>(u);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="例子：P6018-Fusion-tree"><a href="#例子：P6018-Fusion-tree" class="headerlink" title="例子：P6018 Fusion tree"></a>例子：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6018">P6018 Fusion tree</a></h2><blockquote>
+<p>给定一棵树，每个点有点权。你需要支持三种操作：</p>
+<ol>
+<li>将与一个点 $u$ 直接有边相邻的所有点权值都加 $1$。</li>
+<li>将一个点 $u$ 的权值减 $v$。</li>
+<li>查询与一个点 $u$ 直接有边相邻的所有点权值的异或和。</li>
+</ol>
+</blockquote>
+<p>首先常见的 trick 是在处理树上相邻的信息时常常将儿子与父亲分开考虑。这里也可以这样做。</p>
+<p>我们注意到这里有异或和、加 $1$，考虑使用 01-trie 维护。</p>
+<p>对每个节点开存储所有儿子的 01-trie，那么三种操作分别是这样的：</p>
+<ol>
+<li>首先对该节点的 trie 全局加，再暴力修改父亲的权值。注意要在改点权之前先在<strong>父亲的父亲</strong>的 trie 中将父亲的点权删除、再插入加一后的结果，最后再修改。</li>
+<li>直接暴力修改即可。也要修改父亲的 trie。</li>
+<li>直接查询即可，儿子异或上父亲。</li>
+</ol>
+<p>然而这样是过不了的，原因是什么呢？原因在于我们暴力修改的时候拿到的值 $a_u$ <strong>并不是真正的 $a_u$</strong>，因为父亲向儿子加 $1$ 的贡献只在父亲的 trie 中有体现，而并没有直接贡献到儿子上。</p>
+<p>因此我们需要对每个点再维护一个 $tag$，表示这个点被全局加 $1$ 的次数，这样查询 $a_u$ 的时候应该再加上父亲的 $tag$ 再说真正的值。</p>
+<p>总时间复杂度为 $O(n\log V)$。</p>
+<hr>
+<h1 id="01-trie-合并"><a href="#01-trie-合并" class="headerlink" title="01-trie 合并"></a>01-trie 合并</h1><p>很简单，类似 seg 合并。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">il <span class="type">int</span> <span class="title">merge</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> v)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!u) <span class="keyword">return</span> v;</span><br><span class="line">	<span class="keyword">if</span>(!v) <span class="keyword">return</span> u;</span><br><span class="line">	trie[u].w^=trie[v].w,trie[u].xorsum^=trie[v].xorsum;</span><br><span class="line">	trie[u].ch[<span class="number">0</span>]=<span class="built_in">merge</span>(trie[u].ch[<span class="number">0</span>],trie[v].ch[<span class="number">0</span>]);</span><br><span class="line">	trie[u].ch[<span class="number">1</span>]=<span class="built_in">merge</span>(trie[u].ch[<span class="number">1</span>],trie[v].ch[<span class="number">1</span>]);</span><br><span class="line">	<span class="keyword">return</span> u;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="例子：P6623-树"><a href="#例子：P6623-树" class="headerlink" title="例子：P6623 树"></a>例子：<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P6623">P6623 树</a></h2><blockquote>
+<p>给定一棵点有点权的有根树，$1$ 为根。定义一个点的价值 $val(u)$ 为</p>
+<script type="math/tex; mode=display">
+val(u)=\bigoplus_{v\in\text{subtree }u}(a_v+\operatorname{dis}(u,v))</script><p>求出 $\sum\limits_{i=1}^nval(i)$ 的值。</p>
+</blockquote>
+<p>小小简单题。考虑从下往上合并答案。</p>
+<p>对于每个点开一棵 trie 存储子树内所有点的权值加深度。</p>
+<p>对于点 $u$，我们先求出所有的儿子 $v$，并把其 trie 合并起来，然后再全局加 $1$，插入 $a_u$，再查询异或和累加起来。</p>
+<p>时间复杂度 $O(n\log V)$。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"><i class="fa fa-tag"></i> 数据结构</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/05/22/%E6%A0%91%E4%B8%8A%E9%97%AE%E9%A2%98/" rel="prev" title="树上问题">
+      <i class="fa fa-chevron-left"></i> 树上问题
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%B4%E6%8A%A4%E5%BC%82%E6%88%96%E6%9C%80%E5%A4%A7%E5%AF%B9"><span class="nav-number">1.</span> <span class="nav-text">维护异或最大对</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%B4%E6%8A%A4%E5%BC%82%E6%88%96%E5%92%8C"><span class="nav-number">2.</span> <span class="nav-text">维护异或和</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9AP6018-Fusion-tree"><span class="nav-number">2.1.</span> <span class="nav-text">例子：P6018 Fusion tree</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#01-trie-%E5%90%88%E5%B9%B6"><span class="nav-number">3.</span> <span class="nav-text">01-trie 合并</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9AP6623-%E6%A0%91"><span class="nav-number">3.1.</span> <span class="nav-text">例子：P6623 树</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Qinshihuang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Qinshihuang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
