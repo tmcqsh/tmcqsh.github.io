@@ -150,6 +150,155 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/26/%E6%96%9C%E7%8E%87%E4%BC%98%E5%8C%96dp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Qinshihuang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Qinshihuang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/26/%E6%96%9C%E7%8E%87%E4%BC%98%E5%8C%96dp/" class="post-title-link" itemprop="url">斜率优化dp</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-26 21:32:42" itemprop="dateCreated datePublished" datetime="2024-04-26T21:32:42+08:00">2024-04-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-05-09 21:47:00" itemprop="dateModified" datetime="2024-05-09T21:47:00+08:00">2024-05-09</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="斜率优化"><a href="#斜率优化" class="headerlink" title="斜率优化"></a>斜率优化</h1><p>斜率优化，一种优化 1D/1D 转移 dp 的方式，即将转移方程化为一次函数 $y=kx+b$ 的形式，再利用建模转化，将转移变成在某些数据结构上，比如单调队列、单调栈、李超树的操作，以此来优化转移时间复杂度。</p>
+<p>一般来说（我感觉）斜率优化的转移方程里常常见到 $s_is_j$ 的形式。</p>
+<h2 id="例子：AT-dp-z-Frog-3"><a href="#例子：AT-dp-z-Frog-3" class="headerlink" title="例子：AT_dp_z Frog 3"></a>例子：AT_dp_z Frog 3</h2><p>容易写出 dp 方程</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/26/%E6%96%9C%E7%8E%87%E4%BC%98%E5%8C%96dp/#more" rel="contents">
+                好奇了？点这里试试 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/26/%E5%90%8E%E7%BC%80%E6%95%B0%E7%BB%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Qinshihuang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Qinshihuang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/04/26/%E5%90%8E%E7%BC%80%E6%95%B0%E7%BB%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">后缀数组学习笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-04-26 21:29:22" itemprop="dateCreated datePublished" datetime="2024-04-26T21:29:22+08:00">2024-04-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-05-09 21:46:30" itemprop="dateModified" datetime="2024-05-09T21:46:30+08:00">2024-05-09</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="SA-数组"><a href="#SA-数组" class="headerlink" title="SA 数组"></a>SA 数组</h1><p>后缀数组维护了字符串每个后缀的大小关系。利用这个数组可以维护很多厉害的信息。</p>
+<p>但是首先要求出 $sa,rk$ 数组。</p>
+<p>$sa_i$ 表示 $s[i\dots n]$ 这个后缀的大小排名，而 $rk_i$ 代表排名为 $i$ 的开头位置。显然有 $sa_{rk_i}=rk_{sa_i}=i$。</p>
+<p>首先一个暴力算法是显然的：将所有后缀字符串排序。时间复杂度为 $O(n^2\log n)$。这个速度肯定不能被接受，需要优化，<strong>可以使用倍增算法来优化。</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/26/%E5%90%8E%E7%BC%80%E6%95%B0%E7%BB%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                好奇了？点这里试试 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/26/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -366,12 +515,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">博客</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>

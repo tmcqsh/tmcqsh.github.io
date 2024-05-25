@@ -150,7 +150,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/23/01trie%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/25/%E8%8E%AB%E9%98%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -164,7 +164,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/05/23/01trie%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">01trie学习笔记</a>
+            <a href="/2024/05/25/%E8%8E%AB%E9%98%9F/" class="post-title-link" itemprop="url">莫队</a>
         </h2>
 
         <div class="post-meta">
@@ -175,7 +175,76 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-05-23 21:20:05 / 修改时间：21:20:31" itemprop="dateCreated datePublished" datetime="2024-05-23T21:20:05+08:00">2024-05-23</time>
+              <time title="创建时间：2024-05-25 21:10:02 / 修改时间：21:51:48" itemprop="dateCreated datePublished" datetime="2024-05-25T21:10:02+08:00">2024-05-25</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>莫队算法是一种<strong>根号复杂度离线算法</strong>，也与分块、定期重构并称优雅的暴力。</p>
+<p>普通莫队的时间复杂度是 $O(m\sqrt n)$，此外还有许多变种。</p>
+<h1 id="普通莫队"><a href="#普通莫队" class="headerlink" title="普通莫队"></a>普通莫队</h1><p>当我们遇见一类没有修改的问题时如何处理？</p>
+<p>假设我们已经求出了在 $[l,r]$ 上的答案，我们想求出 $[l^\prime,r^\prime]$ 的答案，怎么办？</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/05/25/%E8%8E%AB%E9%98%9F/#more" rel="contents">
+                好奇了？点这里试试 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/25/01trie%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Qinshihuang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Qinshihuang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/25/01trie%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">01trie学习笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-05-25 21:08:49 / 修改时间：21:09:02" itemprop="dateCreated datePublished" datetime="2024-05-25T21:08:49+08:00">2024-05-25</time>
             </span>
 
           
@@ -197,7 +266,76 @@
 <p>因此我们枚举 $i$，并将 $a_1,a_2,\dots,a_{i-1}$ 全部从高位到低位地插入到 01-trie 中。接下来我们在 trie 中查找答案，从根节点向下跳，如果能走到与 $a_i$ 当前位不同的方向就一定走，否则只能走另一侧。最后走下来的路径异或上 $a_i$ 就是对于 $a_1,a_2,\dots,a_i$ 的最大异或对。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2024/05/23/01trie%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more" rel="contents">
+              <a class="btn" href="/2024/05/25/01trie%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                好奇了？点这里试试 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/25/%E7%BD%91%E7%BB%9C%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Qinshihuang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Qinshihuang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/25/%E7%BD%91%E7%BB%9C%E6%B5%81/" class="post-title-link" itemprop="url">网络流</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-05-25 21:06:41 / 修改时间：21:07:07" itemprop="dateCreated datePublished" datetime="2024-05-25T21:06:41+08:00">2024-05-25</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>解决的是一个类似于管道输送的问题。</p>
+<p>假设现在有一个管道网络，一共有 $n$ 个节点，其中 $1$ 号点是源头，能源源不断地提供输送物；$n$ 号是接收点，接收所有到达的输送物；中间的节点是中转点，可以将受到的输送物送入其他的管道；管道有容量。求出能到达 $n$ 的最多输送物量。</p>
+<p>求解网络最大流比较常用的算法是 Dinic，此外网络流常常利用建模思想来解决一些看似不好入手的题。<del>看似不是图论的题</del></p>
+<h1 id="最大流算法"><a href="#最大流算法" class="headerlink" title="最大流算法"></a>最大流算法</h1><h2 id="梦开始的地方：Ford-Fulkerson"><a href="#梦开始的地方：Ford-Fulkerson" class="headerlink" title="梦开始的地方：Ford-Fulkerson"></a>梦开始的地方：Ford-Fulkerson</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/05/25/%E7%BD%91%E7%BB%9C%E6%B5%81/#more" rel="contents">
                 好奇了？点这里试试 &raquo;
               </a>
             </div>
@@ -727,155 +865,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/26/%E6%96%9C%E7%8E%87%E4%BC%98%E5%8C%96dp/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Qinshihuang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Qinshihuang's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/26/%E6%96%9C%E7%8E%87%E4%BC%98%E5%8C%96dp/" class="post-title-link" itemprop="url">斜率优化dp</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-26 21:32:42" itemprop="dateCreated datePublished" datetime="2024-04-26T21:32:42+08:00">2024-04-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-05-09 21:47:00" itemprop="dateModified" datetime="2024-05-09T21:47:00+08:00">2024-05-09</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="斜率优化"><a href="#斜率优化" class="headerlink" title="斜率优化"></a>斜率优化</h1><p>斜率优化，一种优化 1D/1D 转移 dp 的方式，即将转移方程化为一次函数 $y=kx+b$ 的形式，再利用建模转化，将转移变成在某些数据结构上，比如单调队列、单调栈、李超树的操作，以此来优化转移时间复杂度。</p>
-<p>一般来说（我感觉）斜率优化的转移方程里常常见到 $s_is_j$ 的形式。</p>
-<h2 id="例子：AT-dp-z-Frog-3"><a href="#例子：AT-dp-z-Frog-3" class="headerlink" title="例子：AT_dp_z Frog 3"></a>例子：AT_dp_z Frog 3</h2><p>容易写出 dp 方程</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/04/26/%E6%96%9C%E7%8E%87%E4%BC%98%E5%8C%96dp/#more" rel="contents">
-                好奇了？点这里试试 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/26/%E5%90%8E%E7%BC%80%E6%95%B0%E7%BB%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Qinshihuang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Qinshihuang's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/04/26/%E5%90%8E%E7%BC%80%E6%95%B0%E7%BB%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">后缀数组学习笔记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-04-26 21:29:22" itemprop="dateCreated datePublished" datetime="2024-04-26T21:29:22+08:00">2024-04-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-05-09 21:46:30" itemprop="dateModified" datetime="2024-05-09T21:46:30+08:00">2024-05-09</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="SA-数组"><a href="#SA-数组" class="headerlink" title="SA 数组"></a>SA 数组</h1><p>后缀数组维护了字符串每个后缀的大小关系。利用这个数组可以维护很多厉害的信息。</p>
-<p>但是首先要求出 $sa,rk$ 数组。</p>
-<p>$sa_i$ 表示 $s[i\dots n]$ 这个后缀的大小排名，而 $rk_i$ 代表排名为 $i$ 的开头位置。显然有 $sa_{rk_i}=rk_{sa_i}=i$。</p>
-<p>首先一个暴力算法是显然的：将所有后缀字符串排序。时间复杂度为 $O(n^2\log n)$。这个速度肯定不能被接受，需要优化，<strong>可以使用倍增算法来优化。</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/04/26/%E5%90%8E%E7%BC%80%E6%95%B0%E7%BB%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more" rel="contents">
-                好奇了？点这里试试 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -945,12 +934,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">博客</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
