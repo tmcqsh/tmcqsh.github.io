@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN-diy">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="平衡树是一种比线段树更加强大的数据结构，它能维护很多线段树无法维护的操作和信息，比如插入、删除、反转。 我是 splay 批 splay维护的基本信息 $root\And tot$，根节点和节点个数。 $ch_{u,0&#x2F;1}$，左右儿子。 $val_u$，该节点维护的数值。 $fa_u$，父亲节点。 $cnt_u$，该节点重复的次数。（$val$ 一样就重叠在一起） $siz_u$，表示该节点子树">
+<meta property="og:type" content="article">
+<meta property="og:title" content="平衡树自学笔记">
+<meta property="og:url" content="http://example.com/2024/06/04/%E5%B9%B3%E8%A1%A1%E6%A0%91%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Qinshihuang&#39;s Blog">
+<meta property="og:description" content="平衡树是一种比线段树更加强大的数据结构，它能维护很多线段树无法维护的操作和信息，比如插入、删除、反转。 我是 splay 批 splay维护的基本信息 $root\And tot$，根节点和节点个数。 $ch_{u,0&#x2F;1}$，左右儿子。 $val_u$，该节点维护的数值。 $fa_u$，父亲节点。 $cnt_u$，该节点重复的次数。（$val$ 一样就重叠在一起） $siz_u$，表示该节点子树">
+<meta property="og:locale">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/mdpj4w0j.png">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/007nbik6.png">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/ymsrqeil.png">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/scmy8xv7.png">
+<meta property="article:published_time" content="2024-06-04T13:46:57.000Z">
+<meta property="article:modified_time" content="2024-06-04T13:50:58.005Z">
+<meta property="article:author" content="Qinshihuang">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.luogu.com.cn/upload/image_hosting/mdpj4w0j.png">
+
+<link rel="canonical" href="http://example.com/2024/06/04/%E5%B9%B3%E8%A1%A1%E6%A0%91%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN-diy'
+  };
+</script>
+
+  <title>平衡树自学笔记 | Qinshihuang's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Qinshihuang's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">tmc的小窝</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>目录</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/06/04/%E5%B9%B3%E8%A1%A1%E6%A0%91%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Qinshihuang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Qinshihuang's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          平衡树自学笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-06-04 21:46:57 / 修改时间：21:50:58" itemprop="dateCreated datePublished" datetime="2024-06-04T21:46:57+08:00">2024-06-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>平衡树是一种比线段树更加强大的数据结构，它能维护很多线段树无法维护的操作和信息，比如插入、删除、反转。</p>
+<p><del>我是 splay 批</del></p>
+<h1 id="splay"><a href="#splay" class="headerlink" title="splay"></a>splay</h1><h2 id="维护的基本信息"><a href="#维护的基本信息" class="headerlink" title="维护的基本信息"></a>维护的基本信息</h2><ul>
+<li>$root\And tot$，根节点和节点个数。</li>
+<li>$ch_{u,0/1}$，左右儿子。</li>
+<li>$val_u$，该节点维护的数值。</li>
+<li>$fa_u$，父亲节点。</li>
+<li>$cnt_u$，该节点重复的次数。（$val$ 一样就重叠在一起）</li>
+<li>$siz_u$，表示该节点子树内有多少个点（计算重点数量）</li>
+</ul>
+<h2 id="verb-push-up-，-verb-clear-和-verb-get"><a href="#verb-push-up-，-verb-clear-和-verb-get" class="headerlink" title="$\verb|push_up|$，$\verb|clear|$ 和 $\verb|get|$"></a>$\verb|push_up|$，$\verb|clear|$ 和 $\verb|get|$</h2><p>$\verb|push_up|$：更新该节点维护的信息。</p>
+<p>$\verb|clear|$：销毁节点，清除上面所有的信息。</p>
+<p>$\verb|get|$：判定节点 $u$ 是父亲的左/右儿子。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">get</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;<span class="keyword">return</span> x==ch[fa[x]][<span class="number">1</span>];&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="verb-rotate"><a href="#verb-rotate" class="headerlink" title="$\verb|rotate|$"></a>$\verb|rotate|$</h2><p>splay 的平衡性是由 $\verb|splay|$ 操作保证的，而 $\verb|splay|$ 操作是基于旋转操作实现的。</p>
+<p>旋转操作就是将一个节点 $u$ 移动到其父亲的位置，同时不改变 BST 的性质。</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/mdpj4w0j.png" alt=""></p>
+<p>如图就是一个旋转的例子，两边的树中序遍历均为 <code>bxcya</code>。</p>
+<p>不妨考虑右旋的情况，从这个图中就可以看出旋转的方式：</p>
+<ul>
+<li>为了交换 $x$ 与 $y$ 的位置，我们需要将 $x$ 挪到 $y$ 父亲的位置，为此需要将 $y$ 的父亲设为 $x$，并且将 $x$ 的右儿子设为 $y$。</li>
+<li>然而为了维持中序遍历，我们需要将 $c$ 从 $x$ 的右儿子改为 $y$ 的左儿子。这一步需要在上面那一步之前就完成。</li>
+<li>最后如果原来 $y$ 还有父亲 $z$ 那么就需要修改 $x$ 的父亲和 $z$ 的儿子。</li>
+</ul>
+<p>实现成代码也很简单：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">rotate</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;</span><br><span class="line">	<span class="type">int</span> y=fa[x],z=fa[y],chk=<span class="built_in">get</span>(x);</span><br><span class="line">  		<span class="comment">//chk确定x的方向，</span></span><br><span class="line">		<span class="comment">//将两种旋转统一为一种</span></span><br><span class="line">	ch[y][chk]=ch[x][chk^<span class="number">1</span>];</span><br><span class="line">	<span class="keyword">if</span>(ch[x][chk^<span class="number">1</span>]) fa[ch[x][chk^<span class="number">1</span>]]=y;</span><br><span class="line">	ch[x][chk^<span class="number">1</span>]=y;</span><br><span class="line">	fa[y]=x,fa[x]=z;</span><br><span class="line">	<span class="keyword">if</span>(z) ch[z][y==ch[z][<span class="number">1</span>]]=x;</span><br><span class="line">	<span class="built_in">push_up</span>(y),<span class="built_in">push_up</span>(x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="verb-splay"><a href="#verb-splay" class="headerlink" title="$\verb|splay|$"></a>$\verb|splay|$</h2><p>splay 树的核心操作，作用是利用 $\verb|splay|$ 操作将节点 $x$ 翻到根节点的位置。</p>
+<p>定义 $f$ 为 $x$ 的父亲节点。主要的旋转方式有三种：</p>
+<h3 id="zig"><a href="#zig" class="headerlink" title="zig"></a>zig</h3><p>只在 $f$ 为根节点时进行，只需要将 $x$ $\verb|rotate|$ 上去即可。</p>
+<h3 id="zig-zig"><a href="#zig-zig" class="headerlink" title="zig-zig"></a>zig-zig</h3><p>在 $\verb|get|(x)=\verb|get|(f)$ 时进行，操作是先旋转 $f$ 再旋转 $x$。</p>
+<h3 id="zig-zag"><a href="#zig-zag" class="headerlink" title="zig-zag"></a>zig-zag</h3><p>在 $\verb|get|(x)\neq\verb|get|(f)$ 时进行，操作是 $\verb|rotate|$ $x$ 点两次。</p>
+<blockquote>
+<p>其实可以发现对一个链的底部做 $\verb|splay|$，链的长度会除以 $2$。</p>
+</blockquote>
+<p>splay 树的复杂度保证在<strong>每当访问一个节点后都要将其 $\verb|splay|$ 到根节点位置。</strong></p>
+<p>当然还有旋转到某祖先的儿子的操作。</p>
+<p>可以证明，进行一次 $\verb|splay|$ 操作的均摊时间复杂度是 $O(\log n)$。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">il <span class="type">void</span> <span class="title">splay</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> tar)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!tar) root=x;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> f=fa[x];(f=fa[x])!=tar;<span class="built_in">rotate</span>(x)) &#123;</span><br><span class="line">		<span class="keyword">if</span>(fa[f]!=tar) <span class="built_in">rotate</span>(<span class="built_in">get</span>(x)==<span class="built_in">get</span>(f)?f:x);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="verb-insert-And-verb-delete"><a href="#verb-insert-And-verb-delete" class="headerlink" title="$\verb|insert|\And\verb|delete|$"></a>$\verb|insert|\And\verb|delete|$</h2><p>$\verb|insert|$ 的思路就是找到对应的位置，并建立新的节点。</p>
+<p>$\verb|delete|$ 的思路更加暴力，我们先找到对应的节点并且旋转到根节点，然后判断子树是否为空，如果有一个是空的就将另一个的根设为整个子树的根，否则就<strong>直接将右子树挂在左子树下面</strong>。这样时间复杂度是对的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">il <span class="type">void</span> <span class="title">insert</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!root) &#123;</span><br><span class="line">		val[++tot]=x;</span><br><span class="line">		cnt[tot]++,root=tot;</span><br><span class="line">		<span class="built_in">maintain</span>(root);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> cur=root,f=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span>(val[cur]==x) &#123;</span><br><span class="line">			cnt[cur]++;</span><br><span class="line">			<span class="built_in">maintain</span>(cur),<span class="built_in">maintain</span>(f);</span><br><span class="line">			<span class="built_in">splay</span>(cur);</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			f=cur;</span><br><span class="line">			cur=ch[cur][val[cur]&lt;x];</span><br><span class="line">			<span class="keyword">if</span>(!cur) &#123;</span><br><span class="line">				tot++;</span><br><span class="line">				val[tot]=x,cnt[tot]++;</span><br><span class="line">				fa[tot]=f,ch[f][val[f]&lt;x]=tot;</span><br><span class="line">				<span class="built_in">maintain</span>(tot),<span class="built_in">maintain</span>(f);</span><br><span class="line">				<span class="built_in">splay</span>(tot);</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">il <span class="type">void</span> <span class="title">del</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">getrank</span>(x);</span><br><span class="line">	<span class="keyword">if</span>(cnt[root]&gt;<span class="number">1</span>) &#123;</span><br><span class="line">		cnt[root]--;</span><br><span class="line">		<span class="built_in">maintain</span>(root);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(!ch[root][<span class="number">0</span>]&amp;&amp;!ch[root][<span class="number">1</span>]) &#123;</span><br><span class="line">		<span class="built_in">clear</span>(root);</span><br><span class="line">		root=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(!ch[root][<span class="number">0</span>]) &#123;</span><br><span class="line">		<span class="type">int</span> cur=root;</span><br><span class="line">		root=ch[root][<span class="number">1</span>];</span><br><span class="line">		fa[root]=<span class="number">0</span>;</span><br><span class="line">		<span class="built_in">clear</span>(cur);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(!ch[root][<span class="number">1</span>]) &#123;</span><br><span class="line">		<span class="type">int</span> cur=root;</span><br><span class="line">		root=ch[root][<span class="number">0</span>];</span><br><span class="line">		fa[root]=<span class="number">0</span>;</span><br><span class="line">		<span class="built_in">clear</span>(cur);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> cur=root;</span><br><span class="line">	<span class="type">int</span> tmp=<span class="built_in">pre</span>();</span><br><span class="line">	fa[ch[cur][<span class="number">1</span>]]=tmp;</span><br><span class="line">	ch[tmp][<span class="number">1</span>]=ch[cur][<span class="number">1</span>];</span><br><span class="line">	<span class="built_in">clear</span>(cur);</span><br><span class="line">	<span class="built_in">maintain</span>(root);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="verb-getrank-And-verb-kth"><a href="#verb-getrank-And-verb-kth" class="headerlink" title="$\verb|getrank|\And \verb|kth|$"></a>$\verb|getrank|\And \verb|kth|$</h2><p>思路类似，即在 splay 树上二分找答案。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">il <span class="type">int</span> <span class="title">getrank</span><span class="params">(<span class="type">int</span> x)</span> </span>&#123;</span><br><span class="line">	<span class="type">int</span> res=<span class="number">0</span>,cur=root;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span>(x&lt;val[cur]) cur=ch[cur][<span class="number">0</span>];</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			res+=siz[ch[cur][<span class="number">0</span>]];</span><br><span class="line">			<span class="keyword">if</span>(x==val[cur]) &#123;</span><br><span class="line">				<span class="built_in">splay</span>(cur);</span><br><span class="line">				<span class="keyword">return</span> res+<span class="number">1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			res+=cnt[cur];</span><br><span class="line">			cur=ch[cur][<span class="number">1</span>];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">il <span class="type">int</span> <span class="title">getkth</span><span class="params">(<span class="type">int</span> k)</span> </span>&#123;</span><br><span class="line">	<span class="type">int</span> cur=root;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span>(ch[cur][<span class="number">0</span>]&amp;&amp;k&lt;=siz[ch[cur][<span class="number">0</span>]]) cur=ch[cur][<span class="number">0</span>];</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			k-=cnt[cur]+siz[ch[cur][<span class="number">0</span>]];</span><br><span class="line">			<span class="keyword">if</span>(k&lt;=<span class="number">0</span>) &#123;</span><br><span class="line">				<span class="built_in">splay</span>(cur);</span><br><span class="line">				<span class="keyword">return</span> val[cur];</span><br><span class="line">			&#125;</span><br><span class="line">			cur=ch[cur][<span class="number">1</span>];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="verb-pre-And-verb-nxt"><a href="#verb-pre-And-verb-nxt" class="headerlink" title="$\verb|pre|\And\verb|nxt|$"></a>$\verb|pre|\And\verb|nxt|$</h2><p>前驱后继，也很简单。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">il <span class="type">int</span> <span class="title">pre</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="type">int</span> cur=ch[root][<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">if</span>(!cur) <span class="keyword">return</span> cur;</span><br><span class="line">	<span class="keyword">while</span>(ch[cur][<span class="number">1</span>]) cur=ch[cur][<span class="number">1</span>];</span><br><span class="line">	<span class="built_in">splay</span>(cur);</span><br><span class="line">	<span class="keyword">return</span> cur;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">il <span class="type">int</span> <span class="title">nxt</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="type">int</span> cur=ch[root][<span class="number">1</span>];</span><br><span class="line">	<span class="keyword">if</span>(!cur) <span class="keyword">return</span> cur;</span><br><span class="line">	<span class="keyword">while</span>(ch[cur][<span class="number">0</span>]) cur=ch[cur][<span class="number">0</span>];</span><br><span class="line">	<span class="built_in">splay</span>(cur);</span><br><span class="line">	<span class="keyword">return</span> cur;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后你就<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/record/160764778">通过了</a>普通平衡树和它的加强版。</p>
+<h1 id="维护区间的平衡树及其下放标记问题"><a href="#维护区间的平衡树及其下放标记问题" class="headerlink" title="维护区间的平衡树及其下放标记问题"></a>维护区间的平衡树及其下放标记问题</h1><h2 id="什么是维护区间的平衡树"><a href="#什么是维护区间的平衡树" class="headerlink" title="什么是维护区间的平衡树"></a>什么是维护区间的平衡树</h2><p>就是可以维护数列了。</p>
+<p>在维护区间时，splay 树的优先级按照下标排序，而 $val$ 上存储着对应下标的元素。</p>
+<p>唯一特殊的就是取区间操作，不妨我们要取 $[l,r]$，那么我们发现如果我们把 $l-1$ 旋到根，那么右子树的所有点都 $\ge l$；把 $r+1$ 旋到根，那么左子树所有点都 $\le l$。因此我们先将 $l-1$ 旋到根，再将 $r+1$ 旋到<strong>点 $l-1$ 的右儿子</strong>。这样它们中间的就夹着 $[l,r]$。</p>
+<p>为了方便取区间 $[1,n]$（其实也就是方便取节点 $0,n+1$），我们再在平衡树中预插入两个<strong>哨兵节点充当 $0$ 号和 $n+1$ 号节点</strong>。</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/007nbik6.png" alt=""></p>
+<h2 id="怎么进行区间修改"><a href="#怎么进行区间修改" class="headerlink" title="怎么进行区间修改"></a>怎么进行区间修改</h2><p>维护区间的平衡树在做区间修改的时候也需要用到懒标记思想，即将操作合并后下传。</p>
+<p>但是怎么下传、以及下传的时机问题成了一个坑与细节的点。</p>
+<h3 id="下传标记"><a href="#下传标记" class="headerlink" title="下传标记"></a>下传标记</h3><p>类比线段树的下传方式。在线段树中，我们在 modify 函数中一旦进入到修改区间就：</p>
+<ol>
+<li>首先修改代表此区间的节点的信息使得该节点所维护的信息仍然正确。</li>
+<li>修改此节点的懒标记，记录它向儿子节点的标记。</li>
+</ol>
+<p>线段树的 push_down 是这样的：</p>
+<ul>
+<li>对于两个儿子分别处理：<ol>
+<li>首先修改代表此区间的节点的信息使得该节点所维护的信息仍然正确。</li>
+<li>修改此节点的懒标记，记录它向儿子节点的标记。</li>
+</ol>
+</li>
+<li>然后再将当前节点的标记初始化，取消上面的标记。</li>
+</ul>
+<p>我们考虑推演到平衡树中。唯一不同的点是，线段树在访问到一个节点时就会下放标记，而平衡树中下放标记有一个特殊的时机，也就是在 kth 函数中下放。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">il <span class="type">int</span> <span class="title">kth</span><span class="params">(<span class="type">int</span> k)</span> </span>&#123;		<span class="comment">//区间平衡树中kth是基础操作之一，目的是寻找当前序列上下标为i的节点编号。</span></span><br><span class="line">	<span class="type">int</span> cur=root;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">		<span class="built_in">push_down</span>(cur);		<span class="comment">//注意下放标记的时机。访问一个节点先下放标记。</span></span><br><span class="line">		<span class="keyword">if</span>(ch[cur][<span class="number">0</span>]&amp;&amp;k&lt;=siz[ch[cur][<span class="number">0</span>]]) cur=ch[cur][<span class="number">0</span>];</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			k-=cnt[cur]+siz[ch[cur][<span class="number">0</span>]];</span><br><span class="line">			<span class="keyword">if</span>(k&lt;=<span class="number">0</span>) &#123;</span><br><span class="line">				<span class="built_in">splay</span>(cur,<span class="number">0</span>);</span><br><span class="line">				<span class="keyword">return</span> cur;</span><br><span class="line">			&#125;</span><br><span class="line">			cur=ch[cur][<span class="number">1</span>];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除此之外，<strong>所有其他操作</strong>都不需要下放标记，因为根据上面懒标记的操作过程我们知道下放标记不会对当前节点维护的信息造成任何影响，因为在 push_down 前该节点的信息已经正确。</p>
+<p>然而保证一个节点打标记时此节点维护信息的正确性是一件细致活，需要考虑周全。</p>
+<hr>
+<p>我们不妨考虑一个支持<strong>反转区间、查询区间最大子段和</strong>的平衡树。一个节点需要维护 $5$ 个有关于这些操作的信息（不包含 kth、splay 等其他功能）：</p>
+<ul>
+<li>$\mathrm{val}$，该节点对应的序列元素。</li>
+<li>$\mathrm{lsum}$，此节点子树对应的区间前缀和最大值。</li>
+<li>$\mathrm{rsum}$，该区间后缀和最大值。</li>
+<li>$\mathrm{fsum}$，该区间最大子段和。</li>
+<li>$\mathrm{tag}$，该区间是否要反转的懒标记。</li>
+</ul>
+<p>这些 tag 和线段树维护区间最大子段和的标记很类似（是不是因为维护可合并 tag 的方式只能维护半群信息？），但是线段树可没有维护区间反转的道理。</p>
+<p>假设我们要进行一次 reverse 操作，设 $u$ 是对应操作区间的根节点，那么我们肯定需要给这个点打上 $\mathrm{tag}$。但是它维护的信息如何变化呢？</p>
+<p>不妨举一个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">原序列：1 2 -10 4</span><br><span class="line">lsum=3,rsum=4,fsum=4.</span><br><span class="line">反转序列：4 -10 2 1</span><br><span class="line">lsum=4,rsum=3,fsum=4.</span><br></pre></td></tr></table></figure>
+<p>不难发现反转后 $\mathrm{lsum},\mathrm{rsum}$ 交换，而 $\mathrm{fsum}$ 不变。</p>
+<p>因此我们在给这个点打标记后要进行 <code>swap(lsum[u],rsum[u])</code> 操作，以维护该节点信息的正确性。当然了交换儿子节点和维护儿子信息不用多说。</p>
+<p>代码是这样的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">il <span class="type">void</span> <span class="title">modify_rev</span><span class="params">(<span class="type">int</span> u)</span> </span>&#123;</span><br><span class="line">	<span class="built_in">swap</span>(ch[u][<span class="number">0</span>],ch[u][<span class="number">1</span>]);</span><br><span class="line">	<span class="built_in">swap</span>(lsum[ch[u][<span class="number">0</span>]],rsum[ch[u][<span class="number">0</span>]]);</span><br><span class="line">	<span class="built_in">swap</span>(lsum[ch[u][<span class="number">1</span>]],rsum[ch[u][<span class="number">1</span>]]);</span><br><span class="line">	tag_rev[u]^=<span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">il <span class="type">void</span> <span class="title">rev</span><span class="params">(<span class="type">int</span> pos,<span class="type">int</span> to)</span> </span>&#123;</span><br><span class="line">	pos++;</span><br><span class="line">	<span class="type">int</span> l=<span class="built_in">kth</span>(pos<span class="number">-1</span>),r=<span class="built_in">kth</span>(pos+to);</span><br><span class="line">	<span class="built_in">splay</span>(l,<span class="number">0</span>),<span class="built_in">splay</span>(r,l);</span><br><span class="line">	<span class="type">int</span> u=ch[r][<span class="number">0</span>];</span><br><span class="line">    <span class="built_in">modify_rev</span>(u);</span><br><span class="line">    <span class="built_in">swap</span>(lsum[u],rsum[u]);</span><br><span class="line">    <span class="built_in">push_up</span>(r),<span class="built_in">push_up</span>(l);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="FHQ-Treap"><a href="#FHQ-Treap" class="headerlink" title="FHQ-Treap"></a>FHQ-Treap</h1><p>普通的 treap 是带旋转的，而 FHQ-Treap 是不通过旋转来维护 BST 和 heap 性质的，它通过<strong>分裂与合并</strong>来维护以上信息。这也使得它天生具有了维护区间的能力。而且很重要的一点是它代码长度非常小。</p>
+<h2 id="verb-split"><a href="#verb-split" class="headerlink" title="$\verb|split|$"></a>$\verb|split|$</h2><p>核心操作之一，将一棵 treap 分裂为两棵。</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/ymsrqeil.png" alt=""></p>
+<p>如图，点内数字是权值，按照权值 $116$ 将原来的平衡树分裂成了新的两棵树，其中第一棵树的权值全部小于等于 $116$，另一棵树则全部大于 $116$。</p>
+<p>如何分裂呢？其实很简单。我们记录两棵子树的根节点 $l,r$。在分裂的时候，如果当前节点 $u$ 的权值小于等于 $v$，说明当前节点应被归为左树；同时，由 BST 性质可得 $u$ 左子树所有点权值一定小于等于 $v$，因此整棵左子树一定归属于左树，无需递归分裂。接下来应该去右边递归，同时在右子树中，新划到左边的节点应该接在 $u$ 的右儿子上（因为 $u$ 是当前权值最大的节点），所以递归下传即可。$u$ 权值大于 $v$ 的情况类似。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">il <span class="type">void</span> <span class="title">split</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> v,<span class="type">int</span> &amp;l,<span class="type">int</span> &amp;r)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!u) &#123;l=r=<span class="number">0</span>;<span class="keyword">return</span>;&#125;</span><br><span class="line">	<span class="keyword">if</span>(val[u]&lt;=v) l=u,<span class="built_in">split</span>(ch[u][<span class="number">1</span>],v,ch[u][<span class="number">1</span>],r);</span><br><span class="line">	<span class="keyword">else</span> r=u,<span class="built_in">split</span>(ch[u][<span class="number">0</span>],v,l,ch[u][<span class="number">0</span>]);</span><br><span class="line">	<span class="built_in">push_up</span>(u);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="verb-merge"><a href="#verb-merge" class="headerlink" title="$\verb|merge|$"></a>$\verb|merge|$</h2><p>将两棵树合并成一棵树，同时维护 BST 和 heap 的性质，要求左树权值必须全部小于右树的权值。</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/scmy8xv7.png" alt=""></p>
+<p>如图点内数值为堆性质键值，将两棵树合并成了一棵新树。</p>
+<p>维护方式很简单，类似线段树合并。只需要判定键值的大小关系以确定新的父亲和儿子分别是谁即可。由于右树的权值大于左树，因此可以直接确定左右节点的大小顺序关系。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">il <span class="type">int</span> <span class="title">merge</span><span class="params">(<span class="type">int</span> l,<span class="type">int</span> r)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(l==<span class="number">0</span>||r==<span class="number">0</span>) <span class="keyword">return</span> l+r;</span><br><span class="line">	<span class="keyword">if</span>(rnd[l]&lt;rnd[r]) &#123;</span><br><span class="line">		ch[l][<span class="number">1</span>]=<span class="built_in">merge</span>(ch[l][<span class="number">1</span>],r);</span><br><span class="line">		<span class="built_in">push_up</span>(l);</span><br><span class="line">		<span class="keyword">return</span> l;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		ch[r][<span class="number">0</span>]=<span class="built_in">merge</span>(l,ch[r][<span class="number">0</span>]);</span><br><span class="line">		<span class="built_in">push_up</span>(r);</span><br><span class="line">		<span class="keyword">return</span> r;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其他操作就非常好写了。</p>
+<h2 id="verb-insert-，-verb-delete-等其他操作的精巧实现"><a href="#verb-insert-，-verb-delete-等其他操作的精巧实现" class="headerlink" title="$\verb|insert|$，$\verb|delete|$ 等其他操作的精巧实现"></a>$\verb|insert|$，$\verb|delete|$ 等其他操作的精巧实现</h2><p>首先 $\verb|kth|$ 操作没有变，仍然是类似二分的方式。</p>
+<p>$\verb|insert|$：将树拆成 $\le v$ 和 $&gt;v$ 两部分，新建一个 $=v$ 的节点，再把三部分按顺序粘起来。</p>
+<p>$\verb|delete|$：拆成 $<v$，$=v$ 和 $>v$ 三部分，合并中间那棵树的根节点左右儿子（相当于是把根节点舍掉了），再按顺序粘起来。</p>
+<p>$\verb|getrnk|$：拆成 $&lt;v$ 和 $\ge v$ 两部分，输出左半边的大小，再粘回去。</p>
+<p>$\verb|pre|$：拆成 $&lt;v$ 和 $\ge v$ 两部分，输出左半边最大值，再粘回去。</p>
+<p>$\verb|nxt|$：拆成 $\le v$ 和 $&gt;v$ 两部分，输出右半边最小值，再粘回去。</p>
+<p>实测码量极小，大约是 splay 的 $60\%\sim70\%$。</p>
+<h1 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h1><h2 id="文艺平衡树"><a href="#文艺平衡树" class="headerlink" title="文艺平衡树"></a>文艺平衡树</h2><blockquote>
+<p>给定一个长度为 $n$ 的序列 $a_1,a_2,\dots,a_n$，其中 $a_i=i$。</p>
+<p>你需要进行 $m$ 次操作，每次操作给定一个区间，你需要将这个区间反转。最后输出最终序列上每个元素的值。</p>
+</blockquote>
+<p>利用平衡树维护，时间复杂度 $O(n\log n)$。</p>
+<h2 id="维护数列"><a href="#维护数列" class="headerlink" title="维护数列"></a>维护数列</h2><blockquote>
+<p>你需要维护一个数列，支持以下 $6$ 种操作：</p>
+<ul>
+<li>在一个元素后面插入若干个元素。</li>
+<li>删除一段区间。</li>
+<li>将一段区间内的元素赋为同一个值。</li>
+<li>反转一段区间。</li>
+<li>求区间和。</li>
+<li>查询全局最大子段和。</li>
+</ul>
+</blockquote>
+<p>就是刚才的题。时间复杂度 $O(n\log n)$。</p>
+<p><strong>要写一坨东西？</strong></p>
+<h2 id="火星人"><a href="#火星人" class="headerlink" title="火星人"></a>火星人</h2><blockquote>
+<p>维护一个字符串 $s$，支持以下 $3$ 种操作：</p>
+<ul>
+<li>修改第 $i$ 个字符。</li>
+<li>在一个字符后面插入一个新字符。</li>
+<li>定义 $s_l$ 表示以第 $l$ 个字符开头的后缀，给定两个下标 $x,y$，求出 $\operatorname{lcp}(s_l,s_r)$，其中 $\mathrm{lcp}$ 是最长公共前缀的长度。</li>
+</ul>
+</blockquote>
+<p>首先假装没有第二个操作，考虑只有修改和查询的时候怎么做。</p>
+<p>首先肯定不能动态地维护后缀数组。考虑使用字符串哈希和二分来求解，并且用线段树来维护区间哈希值，时间复杂度 $O(n\log n)$。</p>
+<p>由于有插入操作，因此我们用 splay 维护这个东西，时间复杂度不变。</p>
+<h2 id="郁闷的出纳员"><a href="#郁闷的出纳员" class="headerlink" title="郁闷的出纳员"></a>郁闷的出纳员</h2><blockquote>
+<p>给定一个常量 $c$，维护一个可重集合，初始为空，支持以下四种操作：</p>
+<ul>
+<li>给定一个值 $k$，如果 $k\ge c$ 那么将 $k$ 加入到集合中。</li>
+<li>将所有元素的值增加 $k$；</li>
+<li>将所有元素的值减少 $k$；</li>
+<li>输出集合中第 $k$ 大元素。</li>
+</ul>
+<p>每进行一次操作，你都需要将集合中所有小于 $c$ 的元素都删除并统计删除的个数。</p>
+</blockquote>
+<p>我们维护一个变量 $\Delta$ 表示当前所有元素的增加量，那么新加入元素的时候应当加入 $k-\Delta$，同时此时 $c^\prime=c+\Delta$。</p>
+<p>那么四种操作分别如下：</p>
+<ul>
+<li>插入，判定 $k-\Delta$ 和 $c$ 的大小关系，并插入进平衡树。</li>
+<li>增加，让 $\Delta$ 增加 $k$ 并且让 $c$ 减少 $k$。</li>
+<li>减少，让 $\Delta$ 增加 $k$ 并且让 $c$ 减少 $k$。紧接着将最小的大于等于 $c$ 的元素旋转到根节点，并且删除左子树。</li>
+<li>查询，直接寻找第 $k$ 大并加上 $\Delta$。注意判不存在。</li>
+</ul>
+<p>由于一次插入只会插入一个元素，一个元素又最多会被删除一次，所以总时间复杂度是 $O(n\log n)$。</p>
+<h2 id="文本编辑器"><a href="#文本编辑器" class="headerlink" title="文本编辑器"></a>文本编辑器</h2><blockquote>
+<p>基本是区间平衡树板子题。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"><i class="fa fa-tag"></i> 数据结构</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/05/25/%E8%8E%AB%E9%98%9F/" rel="prev" title="莫队">
+      <i class="fa fa-chevron-left"></i> 莫队
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#splay"><span class="nav-number">1.</span> <span class="nav-text">splay</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%B4%E6%8A%A4%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="nav-number">1.1.</span> <span class="nav-text">维护的基本信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#verb-push-up-%EF%BC%8C-verb-clear-%E5%92%8C-verb-get"><span class="nav-number">1.2.</span> <span class="nav-text">$\verb|push_up|$，$\verb|clear|$ 和 $\verb|get|$</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#verb-rotate"><span class="nav-number">1.3.</span> <span class="nav-text">$\verb|rotate|$</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#verb-splay"><span class="nav-number">1.4.</span> <span class="nav-text">$\verb|splay|$</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#zig"><span class="nav-number">1.4.1.</span> <span class="nav-text">zig</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zig-zig"><span class="nav-number">1.4.2.</span> <span class="nav-text">zig-zig</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zig-zag"><span class="nav-number">1.4.3.</span> <span class="nav-text">zig-zag</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#verb-insert-And-verb-delete"><span class="nav-number">1.5.</span> <span class="nav-text">$\verb|insert|\And\verb|delete|$</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#verb-getrank-And-verb-kth"><span class="nav-number">1.6.</span> <span class="nav-text">$\verb|getrank|\And \verb|kth|$</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#verb-pre-And-verb-nxt"><span class="nav-number">1.7.</span> <span class="nav-text">$\verb|pre|\And\verb|nxt|$</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%B4%E6%8A%A4%E5%8C%BA%E9%97%B4%E7%9A%84%E5%B9%B3%E8%A1%A1%E6%A0%91%E5%8F%8A%E5%85%B6%E4%B8%8B%E6%94%BE%E6%A0%87%E8%AE%B0%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">维护区间的平衡树及其下放标记问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%BB%B4%E6%8A%A4%E5%8C%BA%E9%97%B4%E7%9A%84%E5%B9%B3%E8%A1%A1%E6%A0%91"><span class="nav-number">2.1.</span> <span class="nav-text">什么是维护区间的平衡树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%8E%E4%B9%88%E8%BF%9B%E8%A1%8C%E5%8C%BA%E9%97%B4%E4%BF%AE%E6%94%B9"><span class="nav-number">2.2.</span> <span class="nav-text">怎么进行区间修改</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E4%BC%A0%E6%A0%87%E8%AE%B0"><span class="nav-number">2.2.1.</span> <span class="nav-text">下传标记</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FHQ-Treap"><span class="nav-number">3.</span> <span class="nav-text">FHQ-Treap</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#verb-split"><span class="nav-number">3.1.</span> <span class="nav-text">$\verb|split|$</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#verb-merge"><span class="nav-number">3.2.</span> <span class="nav-text">$\verb|merge|$</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#verb-insert-%EF%BC%8C-verb-delete-%E7%AD%89%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C%E7%9A%84%E7%B2%BE%E5%B7%A7%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.3.</span> <span class="nav-text">$\verb|insert|$，$\verb|delete|$ 等其他操作的精巧实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">例题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E8%89%BA%E5%B9%B3%E8%A1%A1%E6%A0%91"><span class="nav-number">4.1.</span> <span class="nav-text">文艺平衡树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%B4%E6%8A%A4%E6%95%B0%E5%88%97"><span class="nav-number">4.2.</span> <span class="nav-text">维护数列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%81%AB%E6%98%9F%E4%BA%BA"><span class="nav-number">4.3.</span> <span class="nav-text">火星人</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%83%81%E9%97%B7%E7%9A%84%E5%87%BA%E7%BA%B3%E5%91%98"><span class="nav-number">4.4.</span> <span class="nav-text">郁闷的出纳员</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8"><span class="nav-number">4.5.</span> <span class="nav-text">文本编辑器</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Qinshihuang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">博客</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Qinshihuang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
