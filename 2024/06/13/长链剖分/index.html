@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN-diy">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="长链剖分是另一种树的剖分方式。其主要用途之一是加速以深度为下标的 dp 到 $O(n)$。 长链剖分过程类比重链剖分，我们定义树上一个节点的向下深度 $d_u$ 为从这个点出发向下走最大的距离。可以用树形 dp 理解，即 $d_{\mathrm{leaf}}&#x3D;1$，$d_u&#x3D;\max\{d_v+1\}$。 同时如果一个点有儿子，我们就定义一个点的长儿子为 $v$ 中 $d_v$ 最大的点，相应的剩">
+<meta property="og:type" content="article">
+<meta property="og:title" content="长链剖分">
+<meta property="og:url" content="http://example.com/2024/06/13/%E9%95%BF%E9%93%BE%E5%89%96%E5%88%86/index.html">
+<meta property="og:site_name" content="Qinshihuang&#39;s Blog">
+<meta property="og:description" content="长链剖分是另一种树的剖分方式。其主要用途之一是加速以深度为下标的 dp 到 $O(n)$。 长链剖分过程类比重链剖分，我们定义树上一个节点的向下深度 $d_u$ 为从这个点出发向下走最大的距离。可以用树形 dp 理解，即 $d_{\mathrm{leaf}}&#x3D;1$，$d_u&#x3D;\max\{d_v+1\}$。 同时如果一个点有儿子，我们就定义一个点的长儿子为 $v$ 中 $d_v$ 最大的点，相应的剩">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-06-13T14:01:44.000Z">
+<meta property="article:modified_time" content="2024-06-13T14:03:09.390Z">
+<meta property="article:author" content="Qinshihuang">
+<meta property="article:tag" content="动态规划">
+<meta property="article:tag" content="树上问题">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2024/06/13/%E9%95%BF%E9%93%BE%E5%89%96%E5%88%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN-diy'
+  };
+</script>
+
+  <title>长链剖分 | Qinshihuang's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Qinshihuang's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">tmc的小窝</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>目录</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/06/13/%E9%95%BF%E9%93%BE%E5%89%96%E5%88%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Qinshihuang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Qinshihuang's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          长链剖分
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-06-13 22:01:44 / 修改时间：22:03:09" itemprop="dateCreated datePublished" datetime="2024-06-13T22:01:44+08:00">2024-06-13</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>长链剖分是另一种树的剖分方式。其主要用途之一是加速以深度为下标的 dp 到 $O(n)$。</p>
+<h1 id="长链剖分过程"><a href="#长链剖分过程" class="headerlink" title="长链剖分过程"></a>长链剖分过程</h1><p>类比重链剖分，我们定义树上一个节点的<strong>向下深度</strong> $d_u$ 为从这个点出发向下走最大的距离。可以用树形 dp 理解，即 $d_{\mathrm{leaf}}=1$，$d_u=\max\{d_v+1\}$。</p>
+<p>同时如果一个点有儿子，我们就定义一个点的<strong>长儿子</strong>为 $v$ 中 $d_v$ 最大的点，相应的剩余的儿子就是短儿子。定义<strong>长链</strong>就是一个短点和它的长儿子链成的从上往下的链。</p>
+<p>从这个定义中不难发现长链的一些性质：</p>
+<ul>
+<li>所有长链的长度和为 $O(n)$。</li>
+<li>任意一个节点 $u$ 的 $k$ 级祖先 $f$ 所在长链的长度不小于 $k$。如果小于 $k$，那么显然 $f-u$ 这条链比原长链更长，又因为长链是从一个节点向下的最长链，因此矛盾。</li>
+<li>从一个节点出发，不断从跳到当前长链所在链顶的父亲，一直跳到根节点，跳链次数为 $O(\sqrt n)$。如果一个节点 $u$ 从一条长链跳到了另外一条长链上，那么跳跃到的这条长链的长度不会小于之前的长链长度。最坏情况下，链长分别为 $1,2,⋯,n$，也就是最多跳跃 $\sqrt n$ 次。</li>
+</ul>
+<blockquote>
+<p><strong>如何构造数据卡满跳链次数</strong></p>
+<p>我们可以构造这么一棵二叉树 $\mathcal T$：</p>
+<p>假设构造的二叉树参数为 $d$。若 $d\neq 0$, 则在左儿子构造一颗参数为 $d-1$ 的二叉树，在右儿子构造一个长度为 $2d-1$ 的链；若 $d=0$, 则我们可以直接构造一个单独叶节点，并且结束调用。</p>
+<p>这样子构造一定可以将单独叶节点到根的路径全部为轻边且需要 $d^2$ 级别的节点数。</p>
+<p>取 $d=\sqrt n$ 即可。</p>
+</blockquote>
+<p>这样的性质说明在处理重链剖分处理的需要跳链的问题上，长链剖分复杂度一般劣于重链剖分。但是，在处理与深度相关的问题时，长链剖分有时却能取得优秀的复杂度。</p>
+<h2 id="例子：树上-k-级祖先"><a href="#例子：树上-k-级祖先" class="headerlink" title="例子：树上 $k$ 级祖先"></a>例子：树上 $k$ 级祖先</h2><blockquote>
+<p>给定一棵树和 $m$ 次询问，每次询问给出一个点 $u$ 和一个参数 $k$，你需要求出 $u$ 的 $k$ 级祖先。$n\le5\times10^5$，$m\le5\times10^6$。</p>
+</blockquote>
+<h3 id="算法-1"><a href="#算法-1" class="headerlink" title="算法 $1$"></a>算法 $1$</h3><p>利用倍增算法暴力向上跳即可，复杂度 $O((n+m)\log n)$。</p>
+<h3 id="算法-2"><a href="#算法-2" class="headerlink" title="算法 $2$"></a>算法 $2$</h3><p>利用长链剖分，向上跳，复杂度 $O(n+m\sqrt n)$。</p>
+<h3 id="算法-3"><a href="#算法-3" class="headerlink" title="算法 $3$"></a>算法 $3$</h3><p>我们考虑将上面两种算法结合起来。</p>
+<p>首先我们记 $t=\lfloor\log_2k\rfloor$，并且直接让 $u$ 向上跳 $2^t$ 级。记 $f$ 为 $u$ 的 $2^t$ 级祖先，那么由上面的性质可知 $f$ 所在长链长度 $d$ 一定大于等于 $2^t$。由不等式知 $k-2^t&lt;2^t\le d$。因此如果我们处理出 $f$ 所在链头 $T$ 向上向下走 $1\sim d$ 次的祖先儿子，我们就可以通过先跳到 $T$ 再查表跳点的方式跳到 $u$ 的第 $k$ 级祖先。</p>
+<p>预处理的时候需要处理每个链头的 $2d$ 的信息，这样的时间复杂度是 $O(\sum2d)=O(n)$，因为长链总长度为 $O(n)$。</p>
+<p>因此总时间复杂度是 $O(n\log n+m)$，可以通过。</p>
+<h1 id="长链剖分优化-dp"><a href="#长链剖分优化-dp" class="headerlink" title="长链剖分优化 dp"></a>长链剖分优化 dp</h1><p>一些 dp 方程中，常常会出现与深度相关的复杂度，一般来说复杂度常常是 $O(\sum i\cdot dep_i)=O(n^2)$ 的，而利用长链剖分来优化复杂度就可以少掉一个 $n$。</p>
+<p>长链剖分优化的思想与<strong>树上启发式合并</strong>非常相似。树上启发式合并善于解决与子树大小相关的问题，可以将 $O(n^2)$ 的算法优化到 $O(n\log n)$。</p>
+<p>这里的思想也是类似的。我们先计算出 $u$ 的长儿子的 dp 数组，然后不清空、直接将其贡献合并到 $u$ 上；然后枚举短儿子并求出答案，并直接加起来。</p>
+<p>这样的时间复杂度怎么求？注意到暴力合并短儿子的时间复杂度是所有短儿子长链的长度和，也就是 $O(n)$ 的。</p>
+<p>一般来说实现上要使用指针以方便地实现合并贡献这一步（其实就是直接拿走长儿子的 dp 数组）。</p>
+<h2 id="CF1009F"><a href="#CF1009F" class="headerlink" title="CF1009F"></a>CF1009F</h2><blockquote>
+<p>给定一棵以 $1$ 为根的树，生成一个 $n\times n$ 的矩阵 $D$，其中 $D_{i,j}$ 表示 $i$ 子树中距离 $i$ 为 $j$ 的点数。对于所有 $i$ 求 $j$ 使得 $D_{i,j}=\max\limits_{0\le k&lt;n}D_{i,k}$ 且 $j$ 最小。$n\le10^6$。</p>
+</blockquote>
+<p>考虑暴力 dp，设 $dp_{u,i}$ 表示从 $u$ 向下的深度累计数组，那么</p>
+<script type="math/tex; mode=display">
+dp_{u,0}=1,dp_{u,i}=\sum_{v\in\mathrm{son}\ u}dp_{v,i-1}</script><p>发现这东西下标和深度有关，因此套上长链剖分优化的板子，就变成了 $O(n\log n)$。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> n,fa[N],ans[N],dep[N],son[N];</span><br><span class="line"><span class="type">int</span> dfn[N],tim;</span><br><span class="line"><span class="type">int</span> *f[N],g[N];		<span class="comment">//g是内存条</span></span><br><span class="line"><span class="function">il <span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> fa)</span> </span>&#123;</span><br><span class="line">	dep[u]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=head[u];i;i=edge[i].nxt) &#123;</span><br><span class="line">		<span class="type">int</span> v=edge[i].v;</span><br><span class="line">		<span class="keyword">if</span>(v==fa) <span class="keyword">continue</span>;</span><br><span class="line">		<span class="built_in">dfs</span>(v,u);</span><br><span class="line">		dep[u]=<span class="built_in">max</span>(dep[u],dep[v]+<span class="number">1</span>);</span><br><span class="line">		<span class="keyword">if</span>(dep[v]&gt;dep[son[u]]) son[u]=v;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">il <span class="type">void</span> <span class="title">dfs2</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> fa)</span> </span>&#123;</span><br><span class="line">	dfn[u]=++tim;</span><br><span class="line">	f[u]=g+dfn[u];</span><br><span class="line">	<span class="keyword">if</span>(son[u]) <span class="built_in">dfs2</span>(son[u],u);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=head[u];i;i=edge[i].nxt) &#123;</span><br><span class="line">		<span class="type">int</span> v=edge[i].v;</span><br><span class="line">		<span class="keyword">if</span>(v==fa||v==son[u]) <span class="keyword">continue</span>;</span><br><span class="line">		<span class="built_in">dfs2</span>(v,u);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">il <span class="type">void</span> <span class="title">DP</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> fa)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(son[u]) &#123;</span><br><span class="line">		<span class="built_in">DP</span>(son[u],u);</span><br><span class="line">		ans[u]=ans[son[u]]+<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	f[u][<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span>(f[u][ans[u]]&lt;=<span class="number">1</span>) ans[u]=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=head[u];i;i=edge[i].nxt) &#123;</span><br><span class="line">		<span class="type">int</span> v=edge[i].v;</span><br><span class="line">		<span class="keyword">if</span>(v==fa||v==son[u]) <span class="keyword">continue</span>;</span><br><span class="line">		<span class="built_in">DP</span>(v,u);</span><br><span class="line">		<span class="type">int</span> len=dep[v];</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;len;j++) &#123;</span><br><span class="line">			f[u][j+<span class="number">1</span>]+=f[v][j];</span><br><span class="line">			<span class="keyword">if</span>(f[u][j+<span class="number">1</span>]&gt;f[u][ans[u]]) ans[u]=j+<span class="number">1</span>;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span>(f[u][j+<span class="number">1</span>]==f[u][ans[u]]&amp;&amp;j+<span class="number">1</span>&lt;ans[u]) ans[u]=j+<span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="P5904"><a href="#P5904" class="headerlink" title="P5904"></a>P5904</h2><blockquote>
+<p>给定一棵树，边长为 $1$，统计满足以下条件的无序数对 $(x,y,z)$ 的组数：</p>
+<ul>
+<li>$1\le x,y,z\le n$；</li>
+<li>$\operatorname{dis}(x,y)=\operatorname{dis}(x,z)=\operatorname{dis}(y,z)$。</li>
+</ul>
+</blockquote>
+<p>非常抽象的 dp。令 $f_{u,i}$ 表示从 $u$ 向下走 $i$ 步的节点数量，$g_{u,i}$ 表示</p>
+<script type="math/tex; mode=display">
+\sum_{\substack{x,y\in\mathrm{subtree}\ u\\x< y}}[\operatorname{dis}(x,\mathrm{lca})=\operatorname{dis}(y,\mathrm{lca})=\operatorname{dis}(u,\mathrm{lca})+i]</script><p>其中 $\mathrm{lca}$ 是 $x,y$ 的最近公共祖先。</p>
+<p>那么可以求解 dp 转移方程：</p>
+<script type="math/tex; mode=display">
+f_{u,i}=\sum_{v\in\mathrm{son}\ u}f_{v,i-1}</script><script type="math/tex; mode=display">
+g_{u,i}=\sum_{v\in\mathrm{son}\ u}g_{v,i+1}+\sum_{\substack{x,y\in\mathrm{son}\ u\\x\neq y}}f_{x,i-1}\times f_{y,i-1}</script><p>答案就是</p>
+<script type="math/tex; mode=display">
+ans=\sum_{u=1}^ng_{u,0}+\sum_{\substack{x,y\in\mathrm{son}\ u\\x\neq y}}\sum_if_{x,i-1}\times g_{y,i+1}</script><p>很显然可以通过前缀和优化、或者通过点按照顺序合并到父亲上的方式将其优化到 $O(dep)$ 转移、$O(n)$ 求解答案。</p>
+<p>注意到转移方程和下标有关，因此上长链剖分即可。注意空间要开大约 $4$ 倍，因为 $g$ 的转移中下标一维是加而不是减，这要求我们向前分配空间，因此 $g_u$ 对应的指针前后都要留出 $d_u$ 的长度。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">ll *f[N],*g[N],p[N&lt;&lt;<span class="number">2</span>],*ptr=p,ans=<span class="number">0</span>;</span><br><span class="line"><span class="function">il <span class="type">void</span> <span class="title">dp</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> fa)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(son[u]) &#123;</span><br><span class="line">		f[son[u]]=f[u]+<span class="number">1</span>,g[son[u]]=g[u]<span class="number">-1</span>;</span><br><span class="line">		<span class="built_in">dp</span>(son[u],u);</span><br><span class="line">	&#125;</span><br><span class="line">	f[u][<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">	ans+=g[u][<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> v:G[u]) &#123;</span><br><span class="line">		<span class="keyword">if</span>(v==fa||v==son[u]) <span class="keyword">continue</span>;</span><br><span class="line">		f[v]=ptr,ptr+=(dep[v]&lt;&lt;<span class="number">1</span>);	<span class="comment">//分配空间</span></span><br><span class="line">		g[v]=ptr,ptr+=(dep[v]&lt;&lt;<span class="number">1</span>);</span><br><span class="line">		<span class="built_in">dp</span>(v,u);</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;=dep[v];i++) &#123;	<span class="comment">//按序合并答案、同时利用 f[i],g[i] 来前缀和求解</span></span><br><span class="line">			<span class="keyword">if</span>(i!=<span class="number">0</span>) ans+=f[u][i<span class="number">-1</span>]*g[v][i];</span><br><span class="line">			ans+=g[u][i+<span class="number">1</span>]*f[v][i];</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;=dep[v];i++) &#123;</span><br><span class="line">			g[u][i+<span class="number">1</span>]+=f[u][i+<span class="number">1</span>]*f[v][i];</span><br><span class="line">			<span class="keyword">if</span>(i!=<span class="number">0</span>) g[u][i<span class="number">-1</span>]+=g[v][i];</span><br><span class="line">			f[u][i+<span class="number">1</span>]+=f[v][i];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="P3899"><a href="#P3899" class="headerlink" title="P3899"></a>P3899</h2><blockquote>
+<p>定义一棵以 $1$ 为根的树上两个不同的点 $u,v$ 的两种关系：</p>
+<ul>
+<li>若 $u$ 是 $v$ 的祖先，称 $u$ 比 $v$ 厉害。</li>
+<li>若对于一个常数 $k$，$\operatorname{dis}(u,v)\le k$ 则称 $u,v$ 彼此彼此。</li>
+</ul>
+<p>给定一棵树和 $q$ 次询问，每次询问给出两个整数 $u,k$，要求统计对于 $k$，有多少对有序点对 $(a,b)$ 满足：</p>
+<ul>
+<li>$u,a,b$ 两两不同，且 $u,a$ 都比 $b$ 厉害；</li>
+<li>$u,a$ 彼此彼此。</li>
+</ul>
+</blockquote>
+<p>根据这个关系不难发现：$u,a,b$ 是树上一条直上直下的链且 $b$ 最深，$\operatorname{dis}(u,a)\le k$。</p>
+<p>定义根节点的深度为 $1$，如果 $dep_a<dep_u$，那么显然答案就是 $\min\{dep_u-1,k\}\times(siz_u-1)$。难点在于 $dep_a>dep_u$。</p>
+<p>我们不妨设 $dp_{u,i}$ 表示 $u$ 子树中、距离 $u$ 小于等于 $i$ 的点子树大小减 $1$ 的和，即</p>
+<script type="math/tex; mode=display">
+dp_{u,i}=\sum_{\substack{v\in\operatorname{subtree}u\\\operatorname{dis}(u,v)\le i}}(siz_v-1)</script><p>那么显然可得到转移方程</p>
+<script type="math/tex; mode=display">
+dp_{u,i}=\sum_{v\in\operatorname{son}u}dp_{v,i-1}+siz_v-1</script><p>这里下标也是深度，利用长链剖分优化。但是注意到所有的 $dp_{v,i}$ 都要加上一个统一的常数 $siz_v-1$，无法快速更新合并。因此使用懒标记，定义 $tag_u$ 为所有 $dp_{u,i}$ 应当统一加上的值，那么就无需处理常数，只需要在合并的时候让 $tag_u\leftarrow tag_v+siz_v-1$ 即可。时间复杂度 $O(n)$。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">il <span class="type">void</span> <span class="title">dfs2</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> fa)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(son[u]) &#123;</span><br><span class="line">		dp[son[u]]=dp[u]+<span class="number">1</span>;</span><br><span class="line">		<span class="built_in">dfs2</span>(son[u],u);</span><br><span class="line">		tag[u]=tag[son[u]]+siz[son[u]]<span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> v:g[u]) &#123;</span><br><span class="line">		<span class="keyword">if</span>(v==fa||v==son[u]) <span class="keyword">continue</span>;</span><br><span class="line">		dp[v]=ptr,ptr+=d[v];</span><br><span class="line">		<span class="built_in">dfs2</span>(v,u);</span><br><span class="line">		tag[u]+=tag[v]+siz[v]<span class="number">-1</span>;	<span class="comment">//合并标记</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;d[v];i++) dp[u][i+<span class="number">1</span>]+=dp[v][i];</span><br><span class="line">	&#125;</span><br><span class="line">	dp[u][<span class="number">0</span>]=-tag[u];	<span class="comment">//因为dp[u][0]应该是0，为了抵消tag[u]的影响要设为-tag[u]</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">auto</span> pp:que[u]) &#123;	<span class="comment">//离线处理</span></span><br><span class="line">		ll k=pp.first,id=pp.second;</span><br><span class="line">		ans[id]=dp[u][<span class="built_in">min</span>(k,d[u]<span class="number">-1</span>)]+tag[u];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag"><i class="fa fa-tag"></i> 动态规划</a>
+              <a href="/tags/%E6%A0%91%E4%B8%8A%E9%97%AE%E9%A2%98/" rel="tag"><i class="fa fa-tag"></i> 树上问题</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/06/07/%E7%82%B9%E5%88%86%E6%B2%BB/" rel="prev" title="点分治">
+      <i class="fa fa-chevron-left"></i> 点分治
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%95%BF%E9%93%BE%E5%89%96%E5%88%86%E8%BF%87%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">长链剖分过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%EF%BC%9A%E6%A0%91%E4%B8%8A-k-%E7%BA%A7%E7%A5%96%E5%85%88"><span class="nav-number">1.1.</span> <span class="nav-text">例子：树上 $k$ 级祖先</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95-1"><span class="nav-number">1.1.1.</span> <span class="nav-text">算法 $1$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95-2"><span class="nav-number">1.1.2.</span> <span class="nav-text">算法 $2$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95-3"><span class="nav-number">1.1.3.</span> <span class="nav-text">算法 $3$</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%95%BF%E9%93%BE%E5%89%96%E5%88%86%E4%BC%98%E5%8C%96-dp"><span class="nav-number">2.</span> <span class="nav-text">长链剖分优化 dp</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CF1009F"><span class="nav-number">2.1.</span> <span class="nav-text">CF1009F</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#P5904"><span class="nav-number">2.2.</span> <span class="nav-text">P5904</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#P3899"><span class="nav-number">2.3.</span> <span class="nav-text">P3899</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Qinshihuang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">博客</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Qinshihuang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
