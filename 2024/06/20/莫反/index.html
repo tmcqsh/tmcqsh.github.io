@@ -20,20 +20,19 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="老庄定律：做不对 $\Rightarrow$ 不会。——RailgunZzzz  想象一个生活场景上课。 老庄：你这个题对了吗？ 我：没有。">
+  <meta name="description" content="系统写一下莫反。 莫反公式 F(n)&#x3D;\sum_{d|n}f(d)\Leftrightarrow f(n)&#x3D;\sum_{d|n}\mu(d)F\left(\dfrac{n}{d}\right)其中 $\mu(n)$ 为莫比乌斯函数，  \mu(n)&#x3D; \begin{cases} 1,&amp;n&#x3D;1\\ (-1)^k,&amp;n&#x3D;p_1p_2\dots p_k\\ 0,&amp;\text{otherwise.} \e">
 <meta property="og:type" content="article">
-<meta property="og:title" content="老庄哲学课·改">
-<meta property="og:url" content="http://example.com/2024/04/26/%E8%80%81%E5%BA%84%E5%93%B2%E5%AD%A6%E8%AF%BE%C2%B7%E6%94%B9/index.html">
+<meta property="og:title" content="莫反">
+<meta property="og:url" content="http://example.com/2024/06/20/%E8%8E%AB%E5%8F%8D/index.html">
 <meta property="og:site_name" content="Qinshihuang&#39;s Blog">
-<meta property="og:description" content="老庄定律：做不对 $\Rightarrow$ 不会。——RailgunZzzz  想象一个生活场景上课。 老庄：你这个题对了吗？ 我：没有。">
+<meta property="og:description" content="系统写一下莫反。 莫反公式 F(n)&#x3D;\sum_{d|n}f(d)\Leftrightarrow f(n)&#x3D;\sum_{d|n}\mu(d)F\left(\dfrac{n}{d}\right)其中 $\mu(n)$ 为莫比乌斯函数，  \mu(n)&#x3D; \begin{cases} 1,&amp;n&#x3D;1\\ (-1)^k,&amp;n&#x3D;p_1p_2\dots p_k\\ 0,&amp;\text{otherwise.} \e">
 <meta property="og:locale">
-<meta property="article:published_time" content="2024-04-26T13:12:49.000Z">
-<meta property="article:modified_time" content="2024-05-09T13:46:37.534Z">
+<meta property="article:published_time" content="2024-06-20T13:48:39.000Z">
+<meta property="article:modified_time" content="2024-06-20T13:51:26.013Z">
 <meta property="article:author" content="Qinshihuang">
-<meta property="article:tag" content="闲话">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2024/04/26/%E8%80%81%E5%BA%84%E5%93%B2%E5%AD%A6%E8%AF%BE%C2%B7%E6%94%B9/">
+<link rel="canonical" href="http://example.com/2024/06/20/%E8%8E%AB%E5%8F%8D/">
 
 
 <script id="page-configurations">
@@ -46,7 +45,7 @@
   };
 </script>
 
-  <title>老庄哲学课·改 | Qinshihuang's Blog</title>
+  <title>莫反 | Qinshihuang's Blog</title>
   
 
 
@@ -156,7 +155,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/04/26/%E8%80%81%E5%BA%84%E5%93%B2%E5%AD%A6%E8%AF%BE%C2%B7%E6%94%B9/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/06/20/%E8%8E%AB%E5%8F%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -169,7 +168,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          老庄哲学课·改
+          莫反
         </h1>
 
         <div class="post-meta">
@@ -178,16 +177,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2024-04-26 21:12:49" itemprop="dateCreated datePublished" datetime="2024-04-26T21:12:49+08:00">2024-04-26</time>
+              <time title="创建时间：2024-06-20 21:48:39 / 修改时间：21:51:26" itemprop="dateCreated datePublished" datetime="2024-06-20T21:48:39+08:00">2024-06-20</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-05-09 21:46:37" itemprop="dateModified" datetime="2024-05-09T21:46:37+08:00">2024-05-09</time>
-              </span>
 
           
 
@@ -200,35 +193,85 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <blockquote>
-<p>老庄定律：做不对 $\Rightarrow$ 不会。——RailgunZzzz</p>
-</blockquote>
-<h1 id="想象一个生活场景"><a href="#想象一个生活场景" class="headerlink" title="想象一个生活场景"></a>想象一个生活场景</h1><p>上课。</p>
-<p>老庄：你这个题对了吗？</p>
-<p>我：没有。</p>
-<p>老庄：没对就是不会！</p>
-<hr>
-<p>小测。</p>
-<p>老庄：这个题满分 $12$，你得了多少分？</p>
-<p>我：我只扣了 $1$ 分。</p>
-<p>老庄：扣了一分就是不会！</p>
-<hr>
-<p>又小测了。</p>
-<p>老庄：这个题有二十分，你得了多少分？</p>
-<p>我：得到了 $19.5$ 分！</p>
-<p>老庄：扣 $0.5$ 分也是不会！！！</p>
-<hr>
-<p>还是小测。</p>
-<p>老庄：你！你这个题就扣了 $0.1$ 分！可不可惜！还是不会！！</p>
-<p>老庄：你！你这个题就扣了 $0.01$ 分！可不可惜！还是不会！！</p>
-<p>老庄：你！你这个题就扣了 $10^{-5}$ 分！可不可惜！还是不会！！</p>
-<p>老庄：你！你这个题就扣了 $\varepsilon$ 分！可不可惜！还是不会！！</p>
-<hr>
-<p>考试完。</p>
-<p>老庄：你得了多少分？</p>
-<p>我：我得的分数是：</p>
+        <p>系统写一下莫反。</p>
+<h1 id="莫反公式"><a href="#莫反公式" class="headerlink" title="莫反公式"></a>莫反公式</h1><script type="math/tex; mode=display">
+F(n)=\sum_{d|n}f(d)\Leftrightarrow f(n)=\sum_{d|n}\mu(d)F\left(\dfrac{n}{d}\right)</script><p>其中 $\mu(n)$ 为莫比乌斯函数，</p>
 <script type="math/tex; mode=display">
-\lim_{x\rightarrow 150}x</script><p>老庄：还是不会！！！</p>
+\mu(n)=
+\begin{cases}
+1,&n=1\\
+(-1)^k,&n=p_1p_2\dots p_k\\
+0,&\text{otherwise.}
+\end{cases}</script><p>且该函数为积性函数，即若 $n\perp m$ 则有 $\mu(nm)=\mu(n)\cdot \mu(m)$。证明是显然的。</p>
+<p>特别的，我们有</p>
+<script type="math/tex; mode=display">
+\sum_{d|n}\mu(d)=[n=1]</script><p>我们不妨设 $f(n)=\displaystyle\sum_{d|n}\mu(d)$，显然可得 $f(n)$ 也是积性函数，因此设 $n=p_1^{\alpha_1}p_2^{\alpha_2}\dots p_k^{\alpha_k}$，则有</p>
+<script type="math/tex; mode=display">
+f(1)=\mu(1)=1</script><script type="math/tex; mode=display">
+f(p^k)=\sum_{i=1}^k\mu(p^i)=1-1+0+\dots=0\quad(k\ge 1)</script><p>由于 $\forall n&gt;1$ 一定 $\exist 1\le i\le k$ 使得 $\alpha_i&gt;0$，所以 </p>
+<script type="math/tex; mode=display">
+\forall n>1,f(n)=\prod_{i=1}^kf(p_i^{\alpha_i})=0</script><hr>
+<p>上面的莫反公式其实等价于</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+f(n)&=\sum_{d|n}\mu(d)\cdot\sum_{k|\frac nd}f(k)\\
+&=\sum_{k|n}f(k)\sum_{d|\frac nk}\mu(d)\\
+&=\sum_{k|n}f(k)\left[\dfrac{n}{k}=1\right]\\
+&=f(n)\qquad\qquad\qquad\qquad\square
+\end{aligned}</script><h1 id="莫反常见套路"><a href="#莫反常见套路" class="headerlink" title="莫反常见套路"></a>莫反常见套路</h1><h2 id="使用反演公式"><a href="#使用反演公式" class="headerlink" title="使用反演公式"></a>使用反演公式</h2><script type="math/tex; mode=display">
+[n=1]=\sum_{d|n}\mu(d)</script><h2 id="更换求和顺序"><a href="#更换求和顺序" class="headerlink" title="更换求和顺序"></a>更换求和顺序</h2><script type="math/tex; mode=display">
+\sum_{i=1}^n\sum_{j=1}^n[\gcd(i,j)=1]=\sum_{i=1}^n\sum_{j=1}^n\sum_{d|\gcd(i,j)}\mu(d)</script><p>然后可以将 $d$ 放到开头去枚举，然而如何计算后面的？</p>
+<p>考虑 $d|\gcd(i,j)\Leftrightarrow d|i,d|j$。因此对于一个确定的 $d$，在原式子中有 $\mu(d)$ 项的 $(i,j)$ 一定都是 $d$ 的倍数。因此我们枚举 $d$ 的时候，后面的 $i,j$ 可以直接枚举 $d$ 倍数：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\sum_{i=1}^n\sum_{j=1}^n\sum_{d|\gcd(i,j)}\mu(d)&=\sum_{d=1}^n\mu(d)\cdot\sum_{i=1}^n\sum_{j=1}^n[d|i]\cdot[d|j]\\
+&=\sum_{d=1}^n\mu(d)\cdot\sum_{i=1}^n[d|i]\cdot\sum_{j=1}^n[d|j]\\
+&=\sum_{d=1}^n\mu(d)\cdot\sum_{i=1}^{\lfloor\frac nd\rfloor}1\sum_{j=1}^{\lfloor\frac nd\rfloor}1\\
+&=\sum_{d=1}^n\mu(d)\left\lfloor\dfrac nd\right\rfloor^2
+\end{aligned}</script><p>个人感觉本质上，假设原来的求和顺序是 $d\in P(i,j,\dots)$ 那么我们就要找一个 $d$ 推到 $i,j,\dots$ 的关系，并且以此写出新的求和式子。</p>
+<h2 id="合并枚举项"><a href="#合并枚举项" class="headerlink" title="合并枚举项"></a>合并枚举项</h2><p>假设现在有一个式子</p>
+<script type="math/tex; mode=display">
+\sum_{p=1}^n[\text{$p$ is prime}]\sum_{d=1}^{\lfloor\frac np\rfloor}\mu(d)\left\lfloor\dfrac n{pd}\right\rfloor\left\lfloor\dfrac m{pd}\right\rfloor</script><p>你发现可以暴力枚举 $p$ 后预处理出来后面的东西，时间复杂度 $O(n)$。但是你想更快怎么办？</p>
+<p>注意到这个式子中有两个变量：$p,d$，而且后面有 $pd$。因此可以想到令 $T=pd$ 然后直接枚举 $T$。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\sum_{p=1}^n[\text{$p$ is prime}]\sum_{d=1}^{\lfloor\frac np\rfloor}\mu(d)\left\lfloor\dfrac n{pd}\right\rfloor\left\lfloor\dfrac m{pd}\right\rfloor\\
+=\vphantom{+}&\sum_{T=1}^n\sum_{p|T}[\text{$p$ is prime}]\mu\left(\dfrac Tp\right)\left\lfloor\dfrac nT\right\rfloor\left\lfloor\dfrac mT\right\rfloor\\
+=\vphantom{+}&\sum_{T=1}^n\left\lfloor\dfrac nT\right\rfloor\left\lfloor\dfrac mT\right\rfloor\sum_{\substack{p|T\\p\text{ is prime}}}\mu\left(\dfrac Tp\right)
+\end{aligned}</script><p>注意到 $\displaystyle \sum_{\substack{p|T\\p\text{ is prime}}}\mu\left(\dfrac Tp\right)$ 可以被预处理，具体的对每个素数枚举倍数再加贡献，时间复杂度是 $n$ 乘素数倒数和，也就是 $O(n\ln\ln n)$。</p>
+<h1 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h1><p>板子题水，不写了</p>
+<h2 id="P3704"><a href="#P3704" class="headerlink" title="P3704"></a>P3704</h2><p>默认 $n\le m$。题目就是让求</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\prod_{i=1}^n\prod_{j=1}^m\mathrm{fib}_{\gcd(i,j)}
+&=\prod_{d=1}^n\prod_{i=1}^{\lfloor\frac nd\rfloor}\prod_{j=1}^{\lfloor\frac md\rfloor}[\gcd(i,j)=1]\mathrm{fib}_d\\
+&=\prod_{d=1}^n\mathrm{fib}_d^{\sum\limits_{i=1}^{n/d}\sum\limits_{j=1}^{m/d}\sum\limits_{k|\gcd(i,j)}\mu(k)}
+\end{aligned}</script><p>考察指数上的部分，是</p>
+<script type="math/tex; mode=display">
+\sum_{k=1}^{\lfloor\frac nd\rfloor}\mu(k)\left\lfloor\dfrac n{kd}\right\rfloor\left\lfloor\dfrac m{kd}\right\rfloor</script><p>套路地枚举 $T=kd$。那么式子变为</p>
+<script type="math/tex; mode=display">
+\prod_{T=1}^n\left(\prod_{d|T}\mathrm{fib}_d^{\mu(\frac{T}{d})}\right)^{\lfloor\frac nT\rfloor\lfloor\frac mT\rfloor}</script><p>里面这东西可以预处理，因此时间复杂度 $O(t\sqrt n\log n)$。</p>
+<blockquote>
+<p>为什么这个式子是对的。</p>
+<p>考虑一个 $\mathrm{fib}_d$ 会被计算几次，显然所有 $d$ 的倍数都会对它有贡献，对于一个倍数 $kd$，指数上的贡献就是 $\mu(k)\cdot\left\lfloor\dfrac n{kd}\right\rfloor\left\lfloor\dfrac m{kd}\right\rfloor$。由于 $k$ 的取值就是 $1\sim\left\lfloor\dfrac n{d}\right\rfloor$，因此 $\mathrm{fib}_d$ 的指数就是 $\displaystyle\sum_{k=1}^{\lfloor\frac nd\rfloor}\mu(k)\cdot\left\lfloor\dfrac n{kd}\right\rfloor\left\lfloor\dfrac m{kd}\right\rfloor$，和原式相同。</p>
+</blockquote>
+<h2 id="P1829"><a href="#P1829" class="headerlink" title="P1829"></a>P1829</h2><p>求</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^n\sum_{j=1}^m\operatorname{lcm}(i,j)</script><p>默认 $n\le m$，则将原式变换为</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\sum_{i=1}^n\sum_{j=1}^m\dfrac{ij}{\gcd(i,j)}&=\sum_{i=1}^n\sum_{j=1}^m\sum_{j=1}^n[\gcd(i,j)=d]\dfrac{ij}{d}\\
+&=\sum_{d=1}^nd\sum_{i=1}^{\lfloor\frac nd\rfloor}\sum_{j=1}^{\lfloor\frac md\rfloor}[\gcd(i,j)=1]ij
+\end{aligned}</script><p>我们把目光放在后半部分上，记 $\displaystyle s(n,m)=\sum_{i=1}^n\sum_{j=1}^m[\gcd(i,j)=1]ij$，则有</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\sum_{i=1}^n\sum_{j=1}^m[\gcd(i,j)=1]ij&=\sum_{i=1}^n\sum_{j=1}^mij\sum_{k|\gcd(i,j)}\mu(k)\\
+&=\sum_{k=1}^n\mu(k)k^2\sum_{i=1}^{\lfloor\frac nk\rfloor}\sum_{i=1}^{\lfloor\frac mk\rfloor}ij\\
+&=\sum_{k=1}^n\mu(k)k^2\cdot\sum_{i=1}^{\lfloor\frac nk\rfloor}i\cdot\sum_{i=1}^{\lfloor\frac mk\rfloor}j
+\end{aligned}</script><p>我们发现形如 $\displaystyle f(n)=\sum_{i=1}^ni=\dfrac{n(n+1)}{2}$，因此 $s(n,m)$ 可以通过数论分块在 $O(\sqrt n)$ 的时间复杂度内求出。</p>
+<p>回过头来，原式就是</p>
+<script type="math/tex; mode=display">
+\sum_{d=1}^nd\cdot s\left(\left\lfloor{\dfrac nd}\right\rfloor,\left\lfloor{\dfrac md}\right\rfloor\right)</script><p>再利用一次数论分块，总时间复杂度 $O(n)$。因此加上预处理后复杂度为 $O(n+m)$。</p>
 
     </div>
 
@@ -237,21 +280,17 @@
     
 
       <footer class="post-footer">
-          
-          <div class="post-tags">
-              <a href="/tags/%E9%97%B2%E8%AF%9D/" rel="tag"><i class="fa fa-tag"></i> 闲话</a>
-          </div>
 
         
 
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2024/04/26/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="next" title="字符串学习笔记">
-      字符串学习笔记 <i class="fa fa-chevron-right"></i>
+    <a href="/2024/06/13/%E9%95%BF%E9%93%BE%E5%89%96%E5%88%86/" rel="prev" title="长链剖分">
+      <i class="fa fa-chevron-left"></i> 长链剖分
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -310,7 +349,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%83%B3%E8%B1%A1%E4%B8%80%E4%B8%AA%E7%94%9F%E6%B4%BB%E5%9C%BA%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">想象一个生活场景</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%AB%E5%8F%8D%E5%85%AC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">莫反公式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%AB%E5%8F%8D%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">莫反常见套路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%8F%8D%E6%BC%94%E5%85%AC%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">使用反演公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%8D%A2%E6%B1%82%E5%92%8C%E9%A1%BA%E5%BA%8F"><span class="nav-number">2.2.</span> <span class="nav-text">更换求和顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E6%9E%9A%E4%B8%BE%E9%A1%B9"><span class="nav-number">2.3.</span> <span class="nav-text">合并枚举项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">例题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#P3704"><span class="nav-number">3.1.</span> <span class="nav-text">P3704</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#P1829"><span class="nav-number">3.2.</span> <span class="nav-text">P1829</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
