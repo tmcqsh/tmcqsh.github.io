@@ -28,7 +28,7 @@
 <meta property="og:description" content="系统写一下莫反。 莫反公式 F(n)&#x3D;\sum_{d|n}f(d)\Leftrightarrow f(n)&#x3D;\sum_{d|n}\mu(d)F\left(\dfrac{n}{d}\right)其中 $\mu(n)$ 为莫比乌斯函数，  \mu(n)&#x3D; \begin{cases} 1,&amp;n&#x3D;1\\ (-1)^k,&amp;n&#x3D;p_1p_2\dots p_k\\ 0,&amp;\text{otherwise.} \e">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-06-20T13:48:39.000Z">
-<meta property="article:modified_time" content="2024-06-20T13:52:31.012Z">
+<meta property="article:modified_time" content="2024-06-21T13:46:46.234Z">
 <meta property="article:author" content="Qinshihuang">
 <meta name="twitter:card" content="summary">
 
@@ -177,10 +177,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-06-20 21:48:39 / 修改时间：21:52:31" itemprop="dateCreated datePublished" datetime="2024-06-20T21:48:39+08:00">2024-06-20</time>
+              <time title="创建时间：2024-06-20 21:48:39" itemprop="dateCreated datePublished" datetime="2024-06-20T21:48:39+08:00">2024-06-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-06-21 21:46:46" itemprop="dateModified" datetime="2024-06-21T21:46:46+08:00">2024-06-21</time>
+              </span>
 
           
 
@@ -245,7 +251,7 @@ f(n)&=\sum_{d|n}\mu(d)\cdot\sum_{k|\frac nd}f(k)\\
 \begin{aligned}
 \prod_{i=1}^n\prod_{j=1}^m\mathrm{fib}_{\gcd(i,j)}
 &=\prod_{d=1}^n\prod_{i=1}^{\lfloor\frac nd\rfloor}\prod_{j=1}^{\lfloor\frac md\rfloor}[\gcd(i,j)=1]\mathrm{fib}_d\\
-&=\prod_{d=1}^n\mathrm{fib}_d^{\sum\limits_{i=1}^{n/d}\sum\limits_{j=1}^{m/d}\sum\limits_{k|\gcd(i,j)}\mu(k)}
+&=\prod_{d=1}^n\mathrm{fib}_d^{\boxed{\scriptstyle\sum\limits_{i=1}^{n/d}\sum\limits_{j=1}^{m/d}\sum\limits_{k|\gcd(i,j)}\mu(k)}}
 \end{aligned}</script><p>考察指数上的部分，是</p>
 <script type="math/tex; mode=display">
 \sum_{k=1}^{\lfloor\frac nd\rfloor}\mu(k)\left\lfloor\dfrac n{kd}\right\rfloor\left\lfloor\dfrac m{kd}\right\rfloor</script><p>套路地枚举 $T=kd$。那么式子变为</p>
@@ -261,17 +267,53 @@ f(n)&=\sum_{d|n}\mu(d)\cdot\sum_{k|\frac nd}f(k)\\
 <script type="math/tex; mode=display">
 \begin{aligned}
 \sum_{i=1}^n\sum_{j=1}^m\dfrac{ij}{\gcd(i,j)}&=\sum_{i=1}^n\sum_{j=1}^m\sum_{j=1}^n[\gcd(i,j)=d]\dfrac{ij}{d}\\
-&=\sum_{d=1}^nd\sum_{i=1}^{\lfloor\frac nd\rfloor}\sum_{j=1}^{\lfloor\frac md\rfloor}[\gcd(i,j)=1]ij
+&=\sum_{d=1}^nd\cdot\boxed{\sum_{i=1}^{\lfloor\frac nd\rfloor}\sum_{j=1}^{\lfloor\frac md\rfloor}[\gcd(i,j)=1]ij}
 \end{aligned}</script><p>我们把目光放在后半部分上，记 $\displaystyle s(n,m)=\sum_{i=1}^n\sum_{j=1}^m[\gcd(i,j)=1]ij$，则有</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
 \sum_{i=1}^n\sum_{j=1}^m[\gcd(i,j)=1]ij&=\sum_{i=1}^n\sum_{j=1}^mij\sum_{k|\gcd(i,j)}\mu(k)\\
 &=\sum_{k=1}^n\mu(k)k^2\sum_{i=1}^{\lfloor\frac nk\rfloor}\sum_{i=1}^{\lfloor\frac mk\rfloor}ij\\
-&=\sum_{k=1}^n\mu(k)k^2\cdot\sum_{i=1}^{\lfloor\frac nk\rfloor}i\cdot\sum_{i=1}^{\lfloor\frac mk\rfloor}j
+&=\sum_{k=1}^n\mu(k)k^2\cdot\boxed{\sum_{i=1}^{\lfloor\frac nk\rfloor}i}\cdot\boxed{\sum_{i=1}^{\lfloor\frac mk\rfloor}j}
 \end{aligned}</script><p>我们发现形如 $\displaystyle f(n)=\sum_{i=1}^ni=\dfrac{n(n+1)}{2}$，因此 $s(n,m)$ 可以通过数论分块在 $O(\sqrt n)$ 的时间复杂度内求出。</p>
 <p>回过头来，原式就是</p>
 <script type="math/tex; mode=display">
 \sum_{d=1}^nd\cdot s\left(\left\lfloor{\dfrac nd}\right\rfloor,\left\lfloor{\dfrac md}\right\rfloor\right)</script><p>再利用一次数论分块，总时间复杂度 $O(n)$。因此加上预处理后复杂度为 $O(n+m)$。</p>
+<h2 id="P6156"><a href="#P6156" class="headerlink" title="P6156"></a>P6156</h2><blockquote>
+<p>给定 $n,k$，求</p>
+<script type="math/tex; mode=display">
+\sum_{i=1}^n\sum_{j=1}^n(i+1)^k\cdot\gcd(i,j)\cdot\mu^2(\gcd(i,j))</script></blockquote>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\sum_{i=1}^n\sum_{j=1}^n(i+1)^k\cdot\gcd(i,j)\cdot\mu^2(\gcd(i,j))\\
+=\vphantom{+}&\sum_{d=1}^nd^{k+1}\cdot\mu^2(d)\cdot\sum_{i=1}^{\lfloor\frac nd\rfloor}\sum_{j=1}^{\lfloor\frac nd\rfloor}(i+j)^k[\gcd(i,j)=1]\\
+=\vphantom{+}&\sum_{d=1}^nd^{k+1}\cdot\mu^2(d)\cdot\sum_{i=1}^{\lfloor\frac nd\rfloor}\sum_{j=1}^{\lfloor\frac nd\rfloor}(i+j)^k\sum_{t|\gcd(i,j)}\mu(t)\\
+=\vphantom{+}&\sum_{d=1}^nd^{k+1}\cdot\mu^2(d)\sum_{t=1}^{\lfloor\frac nd\rfloor}\mu(t)t^k\cdot\boxed{\sum_{i=1}^{\lfloor\frac n{dt}\rfloor}\sum_{j=1}^{\lfloor\frac n{dt}\rfloor}(i+j)^k}
+\end{aligned}</script><p>我们定义 $\displaystyle S(n)=\sum_{i=1}^n\sum_{j=1}^n(i+j)^k$，记 $\displaystyle F(n)=\sum_{i=1}^ni^k$、$\displaystyle G(n)=\sum_{i=1}^nF(i)$。考虑求解这个式子：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+S(n)&=\sum_{i=n+1}^{2n}F(i)-\sum_{i=1}^nF(i)\\
+&=G(2n)-2G(n)
+\end{aligned}</script><p>考虑到 $n^k$ 可以线性筛。具体的在 $p$ 位置快速幂，在合数位置求解，时间复杂度为 $O(n)$。因此 $S(n)$ 可以预处理后 $O(1)$ 求解。</p>
+<blockquote>
+<p>其实到这里就可以两次整除分块 $O(n)$ 求解了……</p>
+</blockquote>
+<hr>
+<p>接下来看原式子：</p>
+<script type="math/tex; mode=display">
+\sum_{d=1}^nd^{k+1}\cdot\mu^2(d)\sum_{t=1}^{\lfloor\frac nd\rfloor}\mu(t)t^k\cdot S\left(\left\lfloor\dfrac{n}{dt}\right\rfloor\right)</script><p>套路地枚举 $dt$，则有</p>
+<script type="math/tex; mode=display">
+\sum_{T=1}^nT^kS\left(\left\lfloor\dfrac{n}{T}\right\rfloor\right)\cdot\boxed{\sum_{d|T}d\cdot\mu^2(d)\cdot\mu\left(\dfrac Td\right)}</script><p>发现框内是一个 Dirichlet 卷积的形式，由于其中 $d\mu^2(d)$ 和 $\mu\left(\dfrac nd\right)$ 都是积性函数，因此可知 $\displaystyle f(n)=\sum_{d|n}d\mu^2(d)\cdot\mu\left(\dfrac nd\right)$ 同样也是积性函数。因此我们在线性筛的同时求解 $f(n)$。</p>
+<p>考虑 $f(p^\alpha)$ 的取值。由于式子中有 $\mu(d)$ 因此可以从 $\alpha$ 的大小来考虑。</p>
+<ul>
+<li>$\alpha=0$：即为 $f(1)=1$。</li>
+<li>$\alpha=1$：即为 $f(p)=p\cdot\mu(1)+1\cdot\mu(p)=p-1$。</li>
+<li>$\alpha=2$：$f(p^2)=p\cdot\mu(p)=-p$。</li>
+<li>$\alpha\ge3$：注意到在 $p^\alpha$ 的因子 $p^\beta$ 中，$\beta$ 和 $\alpha-\beta$ 至少有一个大于等于 $2$，因此此时 $f(p^\alpha)=0$。</li>
+</ul>
+<p>所以可以 $O(1)$ 求解 $f(p^\alpha)$ 的值，也就可以 $O(n)$ 筛出 $f$ 的值。</p>
+<p>现在原式子变成了</p>
+<script type="math/tex; mode=display">
+\sum_{T=1}^nT^kf(t)\cdot S\left(\left\lfloor\dfrac nT\right\rfloor\right)</script><p>至此可以 $O(\sqrt n)$ 求解答案。时间复杂度为 $O(n)-O(\sqrt n)$。</p>
 
     </div>
 
@@ -349,7 +391,7 @@ f(n)&=\sum_{d|n}\mu(d)\cdot\sum_{k|\frac nd}f(k)\\
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%AB%E5%8F%8D%E5%85%AC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">莫反公式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%AB%E5%8F%8D%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">莫反常见套路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%8F%8D%E6%BC%94%E5%85%AC%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">使用反演公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%8D%A2%E6%B1%82%E5%92%8C%E9%A1%BA%E5%BA%8F"><span class="nav-number">2.2.</span> <span class="nav-text">更换求和顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E6%9E%9A%E4%B8%BE%E9%A1%B9"><span class="nav-number">2.3.</span> <span class="nav-text">合并枚举项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">例题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#P3704"><span class="nav-number">3.1.</span> <span class="nav-text">P3704</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#P1829"><span class="nav-number">3.2.</span> <span class="nav-text">P1829</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%AB%E5%8F%8D%E5%85%AC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">莫反公式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%AB%E5%8F%8D%E5%B8%B8%E8%A7%81%E5%A5%97%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">莫反常见套路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%8F%8D%E6%BC%94%E5%85%AC%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">使用反演公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%8D%A2%E6%B1%82%E5%92%8C%E9%A1%BA%E5%BA%8F"><span class="nav-number">2.2.</span> <span class="nav-text">更换求和顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E6%9E%9A%E4%B8%BE%E9%A1%B9"><span class="nav-number">2.3.</span> <span class="nav-text">合并枚举项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">例题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#P3704"><span class="nav-number">3.1.</span> <span class="nav-text">P3704</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#P1829"><span class="nav-number">3.2.</span> <span class="nav-text">P1829</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#P6156"><span class="nav-number">3.3.</span> <span class="nav-text">P6156</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
