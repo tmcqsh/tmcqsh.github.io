@@ -150,6 +150,75 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/07/07/%E5%88%86%E5%9D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Qinshihuang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Qinshihuang's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/07/07/%E5%88%86%E5%9D%97/" class="post-title-link" itemprop="url">分块</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-07-07 09:17:18 / 修改时间：09:17:46" itemprop="dateCreated datePublished" datetime="2024-07-07T09:17:18+08:00">2024-07-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="线段树-1"><a href="#线段树-1" class="headerlink" title="线段树 1"></a>线段树 1</h1><p>区间加区间和。看看怎么暴力地分块。</p>
+<p>考虑最暴力的做法就是 $O(n^2)$，但是可以将序列中一部分合成一个块来进行处理。</p>
+<p>设块长为 $B$，那么就会分出 $\dfrac nB$ 个块，此时修改的时候最多会遍历 $\dfrac nB$ 个整块和 $2$ 个散块。我们在整块上打懒标记修改，在散块上暴力修改，因此此时时间复杂度是 $O\left(\dfrac nB+2B\right)$。</p>
+<p>在查询的时候是同理的，我们另外维护每个块的和，整块拿和加上懒标记的影响、散块直接暴力加起来，此时时间复杂度是 $O\left(\dfrac nB+2B\right)$。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/07/07/%E5%88%86%E5%9D%97/#more" rel="contents">
+                好奇了？点这里试试 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/06/20/%E8%8E%AB%E5%8F%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -801,76 +870,6 @@ F(n)=\sum_{d|n}f(d)\Leftrightarrow f(n)=\sum_{d|n}\mu(d)F\left(\dfrac{n}{d}\righ
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/09/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Qinshihuang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Qinshihuang's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/05/09/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" class="post-title-link" itemprop="url">线性代数</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-05-09 21:07:30 / 修改时间：21:41:47" itemprop="dateCreated datePublished" datetime="2024-05-09T21:07:30+08:00">2024-05-09</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="线性代数"><a href="#线性代数" class="headerlink" title="线性代数"></a>线性代数</h1><p>Uh-oh.</p>
-<blockquote>
-<p>也就是说，只要多写写公式你的水平自然会提升。——离散小波变换°</p>
-</blockquote>
-<h2 id="矩阵和线性方程组"><a href="#矩阵和线性方程组" class="headerlink" title="矩阵和线性方程组"></a>矩阵和线性方程组</h2><p>矩阵是什么。嘴巴嘴巴嘴巴</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/05/09/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/#more" rel="contents">
-                好奇了？点这里试试 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -940,7 +939,7 @@ F(n)=\sum_{d|n}f(d)\Leftrightarrow f(n)=\sum_{d|n}\mu(d)F\left(\dfrac{n}{d}\righ
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">博客</span>
         </a>
       </div>
