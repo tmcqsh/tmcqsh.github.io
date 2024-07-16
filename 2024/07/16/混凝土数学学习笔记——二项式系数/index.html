@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN-diy">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言大战混凝土。 定义通常的定义是 $\dbinom nk$ 表示在 $n$ 个元素里挑选 $k$ 个的方案数。 为了拓宽定义，我们先定义下降幂 $r^{\underline k}$ 为：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="混凝土数学学习笔记——二项式系数">
+<meta property="og:url" content="http://example.com/2024/07/16/%E6%B7%B7%E5%87%9D%E5%9C%9F%E6%95%B0%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%BA%8C%E9%A1%B9%E5%BC%8F%E7%B3%BB%E6%95%B0/index.html">
+<meta property="og:site_name" content="Qinshihuang&#39;s Blog">
+<meta property="og:description" content="前言大战混凝土。 定义通常的定义是 $\dbinom nk$ 表示在 $n$ 个元素里挑选 $k$ 个的方案数。 为了拓宽定义，我们先定义下降幂 $r^{\underline k}$ 为：">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-07-16T13:34:09.000Z">
+<meta property="article:modified_time" content="2024-07-16T13:34:44.740Z">
+<meta property="article:author" content="Qinshihuang">
+<meta property="article:tag" content="数学">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2024/07/16/%E6%B7%B7%E5%87%9D%E5%9C%9F%E6%95%B0%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%BA%8C%E9%A1%B9%E5%BC%8F%E7%B3%BB%E6%95%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN-diy'
+  };
+</script>
+
+  <title>混凝土数学学习笔记——二项式系数 | Qinshihuang's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Qinshihuang's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">tmc的小窝</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>目录</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN-diy">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/07/16/%E6%B7%B7%E5%87%9D%E5%9C%9F%E6%95%B0%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%BA%8C%E9%A1%B9%E5%BC%8F%E7%B3%BB%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Qinshihuang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Qinshihuang's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          混凝土数学学习笔记——二项式系数
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-07-16 21:34:09 / 修改时间：21:34:44" itemprop="dateCreated datePublished" datetime="2024-07-16T21:34:09+08:00">2024-07-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>大战混凝土。</p>
+<h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><p>通常的定义是 $\dbinom nk$ 表示在 $n$ 个元素里挑选 $k$ 个的方案数。</p>
+<p>为了拓宽定义，我们先定义<strong>下降幂</strong> $r^{\underline k}$ 为：</p>
+<script type="math/tex; mode=display">
+r^{\underline k}=\prod_{i=1}^{k}(r-i+1),\quad r\in\mathbf R,k\in\mathbf Z</script><p>比如 $5^{\underline 3}=5\times4\times3=60$，$\left(\dfrac 12\right)^{\underline2}=\dfrac12\cdot\left(-\dfrac12\right)-\dfrac14$。</p>
+<p>现在我们有了二项式系数的新定义</p>
+<script type="math/tex; mode=display">
+\dbinom rk=
+\begin{cases}
+\dfrac{r^{\underline k}}{k!},&k\ge 0\\
+0,&k<0
+\end{cases}\quad(r\in\mathbf R,k\in\mathbf Z)</script><p>这个定义将原来 $\dbinom nk$ 的定义域从 $\mathbf N\times\mathbf N$ 拓宽到了 $\mathbf R\times\mathbf Z$。这是一个非常大的突破。</p>
+<p>如果参数是自然数 $n\ge k\ge 0$，那么这个式子还可以被写成</p>
+<script type="math/tex; mode=display">
+\dbinom nk=\dfrac{n!}{k!(n-k)!}</script><h2 id="基本性质"><a href="#基本性质" class="headerlink" title="基本性质"></a>基本性质</h2><p>在定义的基础上我们可以发现一些有用的性质。</p>
+<script type="math/tex; mode=display">
+\dbinom nk=\dbinom n{n-k}\tag1,\quad n\ge 0</script><p>原因很简单，将上公式中 $k$ 和 $n-k$ 地位对调即可。对于 $k&gt;n$ 和 $k&lt;0$ 的情况等式两边都为 $0$。</p>
+<hr>
+<script type="math/tex; mode=display">
+\dbinom rk=\dfrac rk\dbinom{r-1}{k-1}\tag2,\quad k\neq0</script><p>考虑将两侧展开</p>
+<script type="math/tex; mode=display">
+\dbinom rk=\dfrac{r^{\underline k}}{k!}=\dfrac rk\cdot\dfrac{(r-1)^{\underline{k-1}}}{(k-1)!}=\dfrac rk\dbinom{r-1}{k-1}</script><p>上述等式还可以被表达成一个有用的形式</p>
+<script type="math/tex; mode=display">
+k\dbinom rk=r\dbinom{r-1}{k-1}\tag3</script><p>另一个形式可以将下标保持不变：</p>
+<script type="math/tex; mode=display">
+(r-k)\dbinom rk=r\dbinom{r-1}k\tag4</script><p>其原因也是简单的：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+(r-k)\dbinom rk&=(r-k)\dbinom r{r-k}\\
+&=r\dbinom{r-1}{r-k-1}=r\dbinom{r-1}{k}
+\end{aligned}</script><hr>
+<p>下一个等式是我们熟知的组合递推式：</p>
+<script type="math/tex; mode=display">
+\dbinom rk=\dbinom{r-1}{k-1}+\dbinom{r-1}k\tag5</script><p>在 $r$ 为正整数时该式子的组合意义为：在 $n$ 个元素里选择 $k$ 个，可以先选择第 $1$ 个，然后在剩下的 $n-1$ 个元素里选择 $k-1$ 个；也可以不选择第一个，然后在剩下 $n-1$ 个元素里选择 $k$ 个。两者的值是相等的。</p>
+<p>在 $r$ 是实数的时候，我们可以用上面的公式进行证明：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\because (r-k)\dbinom rk=r\dbinom{r-1}k,k\dbinom rk=r\dbinom{r-1}{k-1}\\
+&\begin{aligned}
+\ \therefore(r-k)\dbinom rk+k\dbinom rk&=r\dbinom{r-1}{k}+r\dbinom{r-1}{k-1}\\
+r\dbinom rk&=r\left[\dbinom{r-1}{k-1}+\dbinom{r-1}k\right]\\
+\dbinom rk&=\dbinom{r-1}{k-1}+\dbinom{r-1}k
+\end{aligned}
+\end{aligned}</script><p>上过程在所有 $r\neq 0$ 时成立，而在 $r=0$ 时可以简单特判。</p>
+<p>当然还可以根据定义：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\dbinom{r-1}{k-1}+\dbinom{r-1}k&=\dfrac{(r-1)^{\underline{k-1}}}{(k-1)!}+\dfrac{(r-1)^{\underline k}}{k!}\\
+&=\dfrac{k(r-1)^{\underline{k-1}}}{k!}+\dfrac{(r-1)^{\underline{k-1}}\cdot(r-k)}{k!}\\
+&=\dfrac{r\cdot(r-1)^{\underline{k-1}}}{k!}=\dfrac{r^{\underline k}}{k!}=\dbinom rk
+\end{aligned}</script><hr>
+<p>展开 $(5)$ 我们可以得到一系列有用的恒等式。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\sum_{k=0}^n\dbinom{r+k}k&=\dbinom{r}{-1}+\dbinom{r}{0}+\sum_{k=1}^n\dbinom{r+k}k\\
+&=\dbinom{r+1}{0}+\dbinom{r+1}1+\sum_{k=2}^n\dbinom{r+k}k\\
+&=\cdots\\
+&=\dbinom{r+n}{n-1}+\dbinom{r+n}n=\dbinom{r+n+1}n
+\end{aligned}\tag 6</script><p>比如 $\dbinom10+\dbinom21+\dbinom32+\dbinom43=4=\dbinom{1+3+1}{3}=\dbinom53$。</p>
+<hr>
+<p>另一个有用的式子有相似的形式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\sum_{k=0}^n\dbinom km&=\dbinom 0{m+1}+\dbinom0m+\sum_{k=1}^n\dbinom km\\
+&=\dbinom 1{m+1}+\dbinom1m+\sum_{k=2}^n\dbinom km\\
+&=\cdots\\
+&=\dbinom{n}{m+1}+\dbinom nm=\dbinom{n+1}{m+1}
+\end{aligned}\tag7</script><p>相当于是对杨辉三角的列求部分和。</p>
+<h1 id="二项式定理"><a href="#二项式定理" class="headerlink" title="二项式定理"></a>二项式定理</h1><p>最基础的二项式定理是这样的：</p>
+<script type="math/tex; mode=display">
+(x+y)^n=\sum_{k=0}^n\dbinom nkx^ky^{n-k}\tag8,\quad n\in\mathbf N</script><p>两个特殊情况是：</p>
+<ol>
+<li>当 $x=y=1$ 时原式变为</li>
+</ol>
+<script type="math/tex; mode=display">
+\sum_{k=0}^n\dbinom nk=2^n\tag9</script><ol>
+<li>当 $x=-1,y=1$ 时原式为（$n\neq0$）</li>
+</ol>
+<script type="math/tex; mode=display">
+\sum_{k=0}^n(-1)^k\dbinom nk=0\tag{10}</script><h1 id="上标取反"><a href="#上标取反" class="headerlink" title="上标取反"></a>上标取反</h1><script type="math/tex; mode=display">
+\dbinom rk=(-1)^k\dbinom{k-r-1}{k}
+\tag{11}</script><p>证明起来很简单，因为</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+r^{\underline k}&=r(r-1)\cdots(r-k+1)\\
+&=(-1)^k(-r)(-r+1)\cdots(-r+k-1)\\
+&=(-1)^k(k-r+1)^{\underline k}
+\end{aligned}</script><p>根据这个性质可以得到</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\sum_{k=0}^m(-1)^k\dbinom rk&=\sum_{k=0}^m\dbinom{k-r-1}{k}\\
+&=\dbinom{m-r}{m}\\
+&=(-1)^m\dbinom{r-1}{m}
+\end{aligned}\tag{12}</script><h1 id="散装公式"><a href="#散装公式" class="headerlink" title="散装公式"></a>散装公式</h1><script type="math/tex; mode=display">
+\dbinom nk\dbinom km=\dbinom nm\dbinom{n-m}{k-m}\tag{13}</script><p>证明可以直接看定义：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\dbinom nk\dbinom km&=\dfrac{n!}{k!(n-k)!}\cdot\dfrac{k!}{m!(k-m)!}\\
+&=\dfrac{n!}{(n-k)!m!(k-m)!}\\
+&=\dfrac{n!}{m!(n-m)!}\cdot\dfrac{(n-m)!}{(n-k)!(k-m)!}\\
+&=\dbinom nm\dbinom{n-m}{k-m}
+\end{aligned}</script><hr>
+<script type="math/tex; mode=display">
+\sum_{k}\dbinom r{m+k}\dbinom s{n-k}=\dbinom{r+s}{m+n}\tag{14}</script><p>证明需要一定技巧，我们令 $k^\prime=k+m$，令 $n^\prime=n+m$，这样我们消掉了 $m$，原式变成</p>
+<script type="math/tex; mode=display">
+\sum_{k^\prime}\dbinom r{k^\prime}\dbinom{s}{n^\prime-k^\prime}</script><p>如果 $r,s$ 都是正整数，那么这个式子有很清晰的组合意义：在由 $r$ 个红球和 $s$ 个蓝球组成的 $r+s$ 个球中选择 $n^\prime$ 个，可以枚举所有选择的红球数量 $k^\prime$，那么此时选择蓝球的数量是 $n^\prime-k^\prime$，那么此时方案数为 $\dbinom r{k^\prime}\dbinom{s}{n^\prime-k^\prime}$，而总方案数显然是 $\dbinom{r+s}{n^\prime}$。</p>
+<hr>
+<script type="math/tex; mode=display">
+\sum_{k}\dbinom l{m+k}\dbinom s{n+k}=\dbinom{l+s}{l-m+n}\tag{15},\quad l\in\mathbf N</script><p>利用公式 $(1)$ 将项 $\dbinom l{m+k}$ 变为 $\dbinom l{l-m-k}$，可以直接套 $(14)$。</p>
+<h1 id="练习题"><a href="#练习题" class="headerlink" title="练习题"></a>练习题</h1><h2 id="1"><a href="#1" class="headerlink" title="1"></a>1</h2><p>求下式的封闭形式：</p>
+<script type="math/tex; mode=display">
+\sum_{k=0}^m\dbinom mk\bigg/\dbinom nk,\quad n\ge m\ge 0</script><hr>
+<p>首先我们知道</p>
+<script type="math/tex; mode=display">
+\dbinom nm\dbinom mk=\dbinom nk\dbinom{n-k}{m-k}</script><p>因此我们移项得到</p>
+<script type="math/tex; mode=display">
+\dbinom mk\bigg/\dbinom nk=\dbinom{n-k}{m-k}\bigg/\dbinom nm</script><p>因此原式化简为</p>
+<script type="math/tex; mode=display">
+\sum_{k=0}^m\dbinom{n-k}{m-k}\bigg/\dbinom nm</script><p>现在看 $\sum\limits_{k=0}^m\binom{n-k}{m-k}$ 的值，我们考虑将 $k$ 的符号变为正的之后套用 $(6)$，因此得到</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\sum_{k=0}^m\dbinom{n-k}{m-k}&=\sum_{k=0}^m\dbinom{n-(m-k)}{m-(m-k)}\\
+&=\sum_{k=0}^m\dbinom{n-m+k}{k}=\dbinom{n+1}{m}
+\end{aligned}</script><p>所以原式就是</p>
+<script type="math/tex; mode=display">
+\dbinom{n+1}m\bigg/\dbinom nm=\dfrac{n+1}{n-m+1}</script><h2 id="2"><a href="#2" class="headerlink" title="2"></a>2</h2><p>求下式的封闭形式：</p>
+<script type="math/tex; mode=display">
+T=\sum_{k=0}^nk\dbinom{m-k-1}{m-n-1}</script><hr>
+<p>我们发现我们可以转化为</p>
+<script type="math/tex; mode=display">
+S=\sum_{k=0}^n(m-k)\dbinom{m-k-1}{m-n-1}=m\sum_{k=0}^n\dbinom{m-k-1}{m-n-1}-T</script><p>而</p>
+<script type="math/tex; mode=display">
+(m-k)\dbinom{m-k-1}{m-n-1}=(m-n)\dbinom{m-k}{m-n}</script><p>因此</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+S&=(m-n)\sum_{k=0}^n\dbinom{m-k}{m-n}\\
+&=(m-n)\sum_{k=m-n}^m\dbinom{k}{m-n}\\
+&=(m-n)\left[\dbinom{m+1}{m-n+1}-\dbinom{m-n}{m-n+1}\right]\\
+&=(m-n)\dbinom{m+1}{m-n+1}
+\end{aligned}</script><p>接下来我们要求 $\sum\limits_{k=0}^n\binom{m-k-1}{m-n-1}$，而这等于 $\dbinom{m}{m-n}$，因此</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+T&=m\dbinom m{m-n}-(m-n)\dbinom{m+1}{m-n+1}\\
+&=m\dbinom m{m-n}-(m-n)\dfrac{m+1}{m-n+1}\dbinom m{m-n}\\
+&=\dfrac{n}{m-n+1}\dbinom{m}{n}
+\end{aligned}</script><h2 id="3"><a href="#3" class="headerlink" title="3"></a>3</h2><p>求下式的封闭形式：</p>
+<script type="math/tex; mode=display">
+\sum_kk\dbinom nk\dbinom rk,\quad n\in\mathbf N</script><hr>
+<p>首先那个单独的 $k$ 不好处理，考虑将其与一个二项式系数合并起来。</p>
+<p>如果和 $\dbinom rk$ 合并，因为</p>
+<script type="math/tex; mode=display">
+k\dbinom rk=r\dbinom{r-1}{k-1}</script><p>所以原式就是</p>
+<script type="math/tex; mode=display">
+r\sum_k\dbinom nk\dbinom{r-1}{k-1}=r\dbinom{n+r-1}{n-1}</script><p>套上 $(15)$。如果将 $k$ 和 $\dbinom nk$ 合并我们发现式子变成</p>
+<script type="math/tex; mode=display">
+n\sum_{k}\dbinom rk\dbinom{n-1}{k-1}</script><p>而 $n-1$ 可能小于 $0$，因此 $(15)$ 不能用。</p>
+<h2 id="4"><a href="#4" class="headerlink" title="4"></a>4</h2><p>求下式的封闭形式：</p>
+<script type="math/tex; mode=display">
+\sum_{k\ge 0}\dbinom{n+k}{2k}\dbinom{2k}k\dfrac{(-1)^k}{k+1},\quad n\in\mathbf N</script><hr>
+<p>根据 $(13)$ 我们知道</p>
+<script type="math/tex; mode=display">
+\sum_{k\ge 0}\dbinom{n+k}{2k}\dbinom{2k}k\dfrac{(-1)^k}{k+1}=\sum_{k\ge 0}\dbinom{n+k}k\dbinom{n}{k}\dfrac{(-1)^k}{k+1}</script><p>接下来我们考虑把 $\dfrac{1}{k+1}$ 消去，因为 $(3)$ 可得</p>
+<script type="math/tex; mode=display">
+\dbinom{n+1}{k+1}(k+1)=\dbinom nk(n+1)</script><p>所以原式就是</p>
+<script type="math/tex; mode=display">
+\dfrac1{n+1}\sum_{k\ge0}\dbinom{n+k}k\dbinom{n+1}{k+1}(-1)^k</script><p>通过 $(11)$ 我们试着反转 $\dbinom{n+k}k$ 的上标，可以得到</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\dfrac1{n+1}\sum_{k\ge0}\dbinom{n+k}k\dbinom{n+1}{k+1}(-1)^k&=\dfrac1{n+1}\sum_{k\ge 0}\dbinom{-n-1}{k}\dbinom{n+1}{k+1}\\
+&=\dfrac1{n+1}\dbinom0n=[n=0]
+\end{aligned}</script><p>最后一步的转化可以通过 $(15)$ 推得。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag"><i class="fa fa-tag"></i> 数学</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/07/07/%E5%88%86%E5%9D%97/" rel="prev" title="分块">
+      <i class="fa fa-chevron-left"></i> 分块
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/07/16/%E8%8E%AB%E9%98%9F%EF%BC%882%EF%BC%89/" rel="next" title="莫队（2）">
+      莫队（2） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">2.</span> <span class="nav-text">定义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%A7%E8%B4%A8"><span class="nav-number">2.1.</span> <span class="nav-text">基本性质</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E9%A1%B9%E5%BC%8F%E5%AE%9A%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">二项式定理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8A%E6%A0%87%E5%8F%96%E5%8F%8D"><span class="nav-number">4.</span> <span class="nav-text">上标取反</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%A3%E8%A3%85%E5%85%AC%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text">散装公式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%83%E4%B9%A0%E9%A2%98"><span class="nav-number">6.</span> <span class="nav-text">练习题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1"><span class="nav-number">6.1.</span> <span class="nav-text">1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2"><span class="nav-number">6.2.</span> <span class="nav-text">2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3"><span class="nav-number">6.3.</span> <span class="nav-text">3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4"><span class="nav-number">6.4.</span> <span class="nav-text">4</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Qinshihuang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">博客</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Qinshihuang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+          load: ['[tex]/mhchem'],
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+          packages: {'[+]': ['mhchem']},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
